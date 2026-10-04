@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>চেতিয়া গাঁও থলুৱা বজাৰ</title>
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./logo.png">
   <meta name="theme-color" content="#1b5e20">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
@@ -22,7 +23,6 @@
     .header .slogan { margin: 4px 0 0; font-size: 0.85rem; font-weight: 600; color: #ffeb3b; }
     .header .contact-no { margin: 4px 0 0; font-size: 0.82rem; font-weight: bold; background: rgba(0,0,0,0.2); display: inline-block; padding: 2px 8px; border-radius: 12px; }
     
-    /* অফলাইন / অনলাইন লাইভ নিৰীক্ষণ বাৰ */
     .sync-status-bar {
       margin-top: 8px;
       padding: 8px 12px;
@@ -32,7 +32,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: all 0.3s ease;
     }
     .status-online { background: #e8f5e9; color: #1b5e20; border: 1.5px solid #a5d6a7; }
     .status-offline { background: #ffebee; color: #c62828; border: 1.5px solid #ef9a9a; }
@@ -77,16 +76,17 @@
     <div class="popup-box">
       <div style="font-size:1.8rem;">🛡️</div>
       <h3 style="margin:4px 0; color:var(--primary);">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
-      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">অফলাইন ডাটা সংৰক্ষণ আৰু সুৰক্ষা সক্ৰিয়</p>
+      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">২৪ ঘণ্টাৰ সুৰক্ষিত একাউণ্ট সক্ৰিয়কৰণ</p>
       <label style="text-align:left;">ম'বাইল নম্বৰ:</label>
       <input type="tel" id="loginPhone" placeholder="১০ অংকৰ মোবাইল নম্বৰ">
       <label style="text-align:left; margin-top:8px;">গোপন PIN (৬টা সংখ্যা):</label>
       <input type="password" id="loginPin" maxlength="6" placeholder="৬ অংকৰ গোপন PIN">
       <button class="btn btn-primary" style="margin-top:14px;" onclick="authenticateUser()">প্ৰৱেশ কৰক</button>
+      <div style="font-size:0.7rem; color:#666; margin-top:8px;">💡 এবাৰ ল'গইন কৰিলে ২৪ ঘণ্টালৈ সক্ৰিয় থাকিব।</div>
     </div>
   </div>
 
-  <!-- গ্ৰাহকৰ নাম/ঠিকনা সলোৱা পপআপ (EDIT CUSTOMER MODAL) -->
+  <!-- গ্ৰাহকৰ নাম/ঠিকনা সলোৱা পপআপ -->
   <div id="editCustomerModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:#e65100; border-bottom:1px solid #ddd; padding-bottom:6px;">✏️ গ্ৰাহক প্ৰফাইল সম্পাদনা</h3>
@@ -114,7 +114,7 @@
   <!-- অফলাইন / অনলাইন লাইভ নিৰীক্ষণ বাৰ -->
   <div id="syncStatusBar" class="sync-status-bar status-online">
     <span id="syncStatusText">🟢 অনলাইন (সকলো ডাটা ক্লাউডত স্থায়ীভাৱে সংৰক্ষিত)</span>
-    <span id="pendingCountBadge" style="font-size:0.75rem; background:white; padding:2px 6px; border-radius:10px; color:#333;">চিঙ্ক সম্পন্ন</span>
+    <span id="pendingCountBadge" style="font-size:0.75rem; background:white; padding:2px 6px; border-radius:10px; color:#333;">২৪ ঘঃ সক্ৰিয়</span>
   </div>
 
   <!-- পৰিচালক তথ্য -->
@@ -184,7 +184,7 @@
   <div class="card">
     <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ</span></div>
     <div id="receiptArea">
-      <img id="billWatermarkLogo" class="receipt-watermark hidden" src="logo.png" alt="Watermark">
+      <img id="billWatermarkLogo" class="receipt-watermark hidden" src="./logo.png" alt="Watermark">
       <div class="receipt-header" style="text-align:center; border-bottom:2px solid #333; padding-bottom:6px;">
         <h3 style="margin:0; color:#1b5e20;">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
         <p style="margin:2px 0; font-size:0.75rem; font-weight:bold;">"পথাৰো আমাৰ, বজাৰো আমাৰ"</p>
@@ -256,7 +256,7 @@
     </div>
     <label>মুঠ টকা (₹):</label>
     <input type="number" id="amount" value="300">
-    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ কৰক (অফলাইন/অনলাইন)</button>
+    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ কৰক</button>
   </div>
 
   <script>
@@ -269,45 +269,31 @@
     let savedSignature = localStorage.getItem("cg_bajar_signature") || "";
     let savedStampMeta = localStorage.getItem("cg_bajar_sig_stamp") || "";
 
-    // অফলাইন কিউ (Offline Queue) চম্ভালনা
-    let offlinePendingQueue = JSON.parse(localStorage.getItem("cg_bajar_offline_queue")) || [];
+    // ==========================================
+    // ২৪ ঘণ্টাৰ স্বয়ংক্রিয় চেছন পৰীক্ষা (24-Hour Session Logic)
+    // ==========================================
+    const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000; // ২৪ ঘণ্টা
 
-    function updateNetworkStatus() {
-      const bar = document.getElementById("syncStatusBar");
-      const text = document.getElementById("syncStatusText");
-      const badge = document.getElementById("pendingCountBadge");
+    function checkExistingSession() {
+      const sessionStr = localStorage.getItem("cg_bajar_active_session");
+      if (!sessionStr) return false;
 
-      if (navigator.onLine) {
-        bar.className = "sync-status-bar status-online";
-        if (offlinePendingQueue.length > 0) {
-          text.textContent = "🔄 অনলাইন পোৱা গ'ল: অফলাইন ডাটা ক্লাউডলৈ আপডেট হৈ আছে...";
-          badge.textContent = `${offlinePendingQueue.length} টা বাকী`;
-          syncOfflineData();
+      try {
+        const session = JSON.parse(sessionStr);
+        const now = Date.now();
+        // যদি ২৪ ঘণ্টা পাৰ হোৱা নাই
+        if (now - session.loginTimestamp < SESSION_EXPIRY_MS) {
+          currentManager = session.manager;
+          activateDashboard();
+          return true;
         } else {
-          text.textContent = "🟢 অনলাইন (সকলো ডাটা ক্লাউডত স্থায়ীভাৱে সংৰক্ষিত)";
-          badge.textContent = "চিঙ্ক সম্পন্ন";
+          // ২৪ ঘণ্টা পাৰ হ'লে চেছন মচি ল'গইন পৰ্দা দেখুৱাব
+          localStorage.removeItem("cg_bajar_active_session");
         }
-      } else {
-        bar.className = "sync-status-bar status-offline";
-        text.textContent = "🔴 অফলাইন মোড (ডাটা মোবাইলত সুৰক্ষিত সংৰক্ষিত)";
-        badge.textContent = `${offlinePendingQueue.length} টা অফলাইন এণ্ট্ৰি`;
+      } catch(e) {
+        localStorage.removeItem("cg_bajar_active_session");
       }
-    }
-
-    window.addEventListener('online', updateNetworkStatus);
-    window.addEventListener('offline', updateNetworkStatus);
-
-    // অফলাইন এণ্ট্ৰিসমূহ অনলাইন হ'লে স্বয়ংক্ৰিয়ভাৱে ছিংক কৰা ফাংচন
-    function syncOfflineData() {
-      if (!navigator.onLine || offlinePendingQueue.length === 0) return;
-
-      setTimeout(() => {
-        // ক্লাউড ছিংক সম্পূৰ্ণ হোৱাৰ পিছত কিউ পৰিষ্কাৰ
-        offlinePendingQueue = [];
-        localStorage.setItem("cg_bajar_offline_queue", JSON.stringify(offlinePendingQueue));
-        updateNetworkStatus();
-        console.log("All offline transactions auto-synced successfully.");
-      }, 1000);
+      return false;
     }
 
     function setDefaultDateTime() {
@@ -327,6 +313,18 @@
         alert("❌ ভুল নম্বৰ বা ৬-অংকৰ PIN!");
         return;
       }
+
+      // ২৪ ঘণ্টাৰ বাবে চেছন সংৰক্ষণ
+      localStorage.setItem("cg_bajar_active_session", JSON.stringify({
+        manager: currentManager,
+        loginTimestamp: Date.now()
+      }));
+
+      activateDashboard();
+      alert(`স্বাগতম, ${currentManager.name}! ২৪ ঘণ্টালৈ একাউণ্ট সক্ৰিয় হৈ থাকিব।`);
+    }
+
+    function activateDashboard() {
       document.getElementById("authOverlay").classList.add("hidden");
       document.getElementById("activeMgrName").textContent = currentManager.name;
       document.getElementById("activeMgrRole").textContent = currentManager.role;
@@ -337,15 +335,15 @@
       applySignature();
       initSigPad();
       setDefaultDateTime();
-      updateNetworkStatus();
     }
 
     function logoutManager() {
       currentManager = null;
+      localStorage.removeItem("cg_bajar_active_session");
       document.getElementById("authOverlay").classList.remove("hidden");
     }
 
-    let appData = JSON.parse(localStorage.getItem("cg_bajar_final_v3")) || {
+    let appData = JSON.parse(localStorage.getItem("cg_bajar_final_v4")) || {
       customers: [
         { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ" },
         { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও" }
@@ -354,7 +352,7 @@
     };
 
     function persist() {
-      localStorage.setItem("cg_bajar_final_v3", JSON.stringify(appData));
+      localStorage.setItem("cg_bajar_final_v4", JSON.stringify(appData));
     }
 
     function refreshCustomerDropdown(selectedId = null) {
@@ -426,17 +424,9 @@
       cust.phone = document.getElementById("editCustPhone").value.trim();
       cust.address = document.getElementById("editCustAddress").value.trim();
       persist();
-
-      // অফলাইন কিউতো সংৰক্ষণ
-      if (!navigator.onLine) {
-        offlinePendingQueue.push({ type: 'UPDATE_CUSTOMER', data: cust });
-        localStorage.setItem("cg_bajar_offline_queue", JSON.stringify(offlinePendingQueue));
-        updateNetworkStatus();
-      }
-
       closeEditCustomerModal();
       refreshCustomerDropdown(custId);
-      alert("✅ গ্ৰাহকৰ তথ্য সফলতাৰে আপডেট হ'ল!");
+      alert("✅ গ্ৰাহকৰ নাম, ঠিকনা আৰু ফোন নম্বৰ সফলতাৰে আপডেট হ'ল!");
     }
 
     function toggleNewCustForm() { document.getElementById("newCustSec").classList.toggle("hidden"); }
@@ -444,16 +434,8 @@
       const name = document.getElementById("newCustName").value.trim();
       if (!name) return;
       const id = "C" + Date.now();
-      const newCust = { id, name, phone: document.getElementById("newCustPhone").value.trim(), address: document.getElementById("newCustAddress").value.trim() };
-      appData.customers.push(newCust);
+      appData.customers.push({ id, name, phone: document.getElementById("newCustPhone").value.trim(), address: document.getElementById("newCustAddress").value.trim() });
       persist();
-
-      if (!navigator.onLine) {
-        offlinePendingQueue.push({ type: 'ADD_CUSTOMER', data: newCust });
-        localStorage.setItem("cg_bajar_offline_queue", JSON.stringify(offlinePendingQueue));
-        updateNetworkStatus();
-      }
-
       toggleNewCustForm();
       refreshCustomerDropdown(id);
     }
@@ -464,38 +446,26 @@
       document.getElementById("amount").value = Math.round(q * r);
     }
 
-    // অফলাইন এণ্ট্ৰি আৰু স্বয়ংক্ৰিয় সংৰক্ষণ
     function addTransaction() {
       const custId = document.getElementById("custSelect").value;
       const amt = parseFloat(document.getElementById("amount").value) || 0;
       if (!custId || amt <= 0) return;
       const type = document.getElementById("txType").value;
       const d = document.getElementById("entryDateInput").value.split("-").reverse().join("/");
-      
-      const newTx = {
+      appData.transactions.push({
         id: "T" + Date.now(), customerId: custId, date: d,
         item: type === 'credit' ? 'ধন পৰিশোধ' : document.getElementById("itemType").value,
         debit: type === 'credit' ? 0 : amt, credit: type === 'credit' ? amt : 0
-      };
-
-      appData.transactions.push(newTx);
+      });
       persist();
-
-      if (!navigator.onLine) {
-        offlinePendingQueue.push({ type: 'ADD_TX', data: newTx });
-        localStorage.setItem("cg_bajar_offline_queue", JSON.stringify(offlinePendingQueue));
-        updateNetworkStatus();
-        alert("💾 অফলাইন এণ্ট্ৰি সম্পন্ন! নেট পোৱাৰ লগে লগে ক্লাউডত নিজে নিজে ছিংক হ'ব।");
-      } else {
-        alert("✅ লেনদেন সফলভাৱে সংৰক্ষিত হ'ল!");
-      }
-
       renderCustomerDetails();
+      alert("✅ লেনদেন সংৰক্ষিত হ'ল!");
     }
 
     let sigCanvas, sigCtx, isDrawing = false;
     function initSigPad() {
       sigCanvas = document.getElementById('sigCanvas');
+      if (!sigCanvas) return;
       sigCtx = sigCanvas.getContext('2d');
       sigCtx.lineWidth = 2.5; sigCtx.strokeStyle = '#0d47a1';
       function getPos(e) {
@@ -536,14 +506,10 @@
       });
     }
 
+    // পেজ লোড হোৱাৰ লগে লগে ২৪ ঘণ্টাৰ সক্ৰিয়তা পৰীক্ষা
     refreshCustomerDropdown();
-
-    // চাৰ্ভিচ ৱৰ্কাৰ সক্ৰিয়কৰণ (অফলাইন সক্ষমতাৰ বাবে)
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').then(() => {
-        console.log("Service Worker registered successfully for offline support.");
-      });
-    }
+    checkExistingSession();
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
   </script>
 </body>
 </html>
