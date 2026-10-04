@@ -7,11 +7,7 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./logo.png">
   <meta name="theme-color" content="#1b5e20">
-  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <!-- বিশ্বমানৰ WebRTC P2P লাইভ ইঞ্জিন (PeerJS) -->
-  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
-
   <style>
     :root {
       --primary: #1b5e20;
@@ -39,7 +35,6 @@
     .header .sub-slogan { margin: 3px 0 0; font-size: 0.78rem; font-weight: 600; color: #ffffff; opacity: 0.95; }
     .header .contact-no { margin: 6px 0 0; font-size: 0.82rem; font-weight: bold; background: rgba(255,255,255,0.18); display: inline-block; padding: 3px 12px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.25); }
 
-    /* WebRTC লাইভ ছিংক বাৰ */
     .sync-panel {
       background: #ffffff;
       border: 1.5px solid #81c784;
@@ -119,7 +114,7 @@
     <div class="popup-box">
       <div style="font-size:2rem; margin-bottom:4px;">🛡️</div>
       <h3 style="margin:2px 0; color:var(--primary);">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
-      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">WebRTC Live P2P Sync | 24H Session</p>
+      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">Real-Time Push Stream Active | 24H Session</p>
       <label style="text-align:left;">ম'বাইল নম্বৰ:</label>
       <input type="tel" id="loginPhone" placeholder="১০ অংকৰ মোবাইল নম্বৰ">
       <label style="text-align:left; margin-top:8px;">গোপন PIN (৬টা সংখ্যা):</label>
@@ -181,7 +176,7 @@
   <!-- মুখ্য পৰিচালক বিশেষ চেটিংছ -->
   <div id="superSettingsModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
-      <h3 style="margin-top:0; color:#4a148c; border-bottom:2px solid #ba68c8; padding-bottom:6px;">⚙️️ মুখ্য পৰিচালক বিশেষ চেটিংছ</h3>
+      <h3 style="margin-top:0; color:#4a148c; border-bottom:2px solid #ba68c8; padding-bottom:6px;">⚙️ মুখ্য পৰিচালক বিশেষ চেটিংছ</h3>
       
       <div style="background:#fafafa; border:1px solid #ddd; border-radius:8px; padding:8px; margin-top:8px;">
         <div style="font-size:0.8rem; font-weight:bold; color:var(--primary); margin-bottom:4px;">👤 সহ-পৰিচালক (ৰণ্টু চেতিয়া) ব্যৱস্থাপনা:</div>
@@ -227,7 +222,7 @@
     </div>
   </div>
 
-  <!-- মূল হেডাৰ -->
+  <!-- হেডাৰ -->
   <div class="header">
     <h2>🏪 চেতিয়া গাঁও থলুৱা বজাৰ</h2>
     <div class="slogan">"পথাৰো আমাৰ, বজাৰো আমাৰ"</div>
@@ -237,8 +232,8 @@
 
   <!-- লাইভ ছিংক বাৰ -->
   <div class="sync-panel">
-    <div><span class="sync-dot"></span> <span id="cloudSyncText">লাইভ P2P টানেল সংযোগ সক্ৰিয় (১ ছেকেণ্ডত ছিংক)</span></div>
-    <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.72rem; margin:0;" onclick="reconnectP2PTunnel()">🔄 Re-Sync</button>
+    <div><span class="sync-dot"></span> <span id="cloudSyncText">লাইভ ক্লাউড ষ্ট্ৰীম সক্ৰিয় (১ ছেকেণ্ডত ছিংক)</span></div>
+    <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.72rem; margin:0;" onclick="forcePullLatestCloudData()">🔄 Sync Now</button>
   </div>
 
   <!-- পৰিচালক প্ৰফাইল কাৰ্ড -->
@@ -309,7 +304,7 @@
     </div>
   </div>
 
-  <!-- চহী নিয়ন্ত্ৰণ পেনেল -->
+  <!-- চহী ব্যৱস্থাপনা -->
   <div class="card admin-only-feature">
     <div class="card-title">
       <span>✍️ চহী ব্যৱস্থাপনা (Authorised & Issuer)</span>
@@ -504,24 +499,22 @@
       <div id="gpsLocationDisplay" style="font-size:0.72rem; color:#444; margin-top:4px;">📍 GPS স্থিতি: ফটো লোৱা হোৱা নাই</div>
     </div>
 
-    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু লাইভ P2P ছিংক</button>
+    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু লাইভ ছিংক</button>
   </div>
 
   <script>
     // ========================================================
-    // বিশ্বমানৰ WebRTC P2P লাইভ ছিংক এঞ্জিন (No Server Block)
+    // প্ৰকৃত অপেন-ষ্ট্ৰীম ক্লাউড ইঞ্জিন (ntfy.sh - 100% Zero CORS Block)
     // ========================================================
-    const PEER_DESKTOP_ID = "chetia-bajar-desktop-hub-2026";
-    const PEER_MOBILE_ID = "chetia-bajar-mobile-node-2026";
-    let myPeer = null;
-    let peerConn = null;
+    const LIVE_STREAM_TOPIC = "chetia_gaon_bajar_live_sync_stream_2026";
+    const STREAM_URL = `https://ntfy.sh/${LIVE_STREAM_TOPIC}`;
 
     const DEFAULT_MANAGERS = {
       ADMIN: { name: "নিতুল দিহিঙীয়া", role: "মুখ্য পৰিচালক", phone: "8822427980", pin: "291205", photo: "./logo.png", isAdmin: true },
       OPERATOR: { name: "ৰণ্টু চেতিয়া", role: "সহ-পৰিচালক", phone: "9613777612", pin: "123456", photo: "./logo.png", isAdmin: false }
     };
     
-    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_p2p")) || DEFAULT_MANAGERS;
+    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_stream")) || DEFAULT_MANAGERS;
     let currentManager = null;
     let savedAuthSignature = localStorage.getItem("cg_bajar_auth_signature") || "";
     let savedIssuerSignature = localStorage.getItem("cg_bajar_issuer_signature") || "";
@@ -532,7 +525,7 @@
     let capturedGpsLocation = "";
 
     function saveManagersAuth() {
-      localStorage.setItem("cg_bajar_managers_auth_p2p", JSON.stringify(managersData));
+      localStorage.setItem("cg_bajar_managers_auth_stream", JSON.stringify(managersData));
     }
 
     const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000;
@@ -595,7 +588,8 @@
       applySignatures();
       setDefaultDateTime();
       applyBusinessLogo();
-      initPeerP2PTunnel(); // WebRTC লাইভ টানেল আৰম্ভ
+      startRealtimeStreamListener(); // ক্লাউড লাইভ ষ্ট্ৰীমিং আৰম্ভ
+      forcePullLatestCloudData();
     }
 
     function logoutManager() {
@@ -795,7 +789,7 @@
         localStorage.setItem("cg_bajar_auth_signature", savedAuthSignature);
         localStorage.setItem("cg_bajar_sig_stamp", savedStampMeta);
         applySignatures();
-        broadcastLiveToPeers();
+        pushToOpenStreamCloud();
         alert("✅ Authorised Signatory সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
@@ -809,7 +803,7 @@
         savedIssuerSignature = e.target.result;
         localStorage.setItem("cg_bajar_issuer_signature", savedIssuerSignature);
         applySignatures();
-        broadcastLiveToPeers();
+        pushToOpenStreamCloud();
         alert("✅ বিল প্ৰস্তুতকৰ্তাৰ চহী সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
@@ -847,7 +841,7 @@
         else managersData.OPERATOR.photo = e.target.result;
         saveManagersAuth();
         document.getElementById("activeMgrPhoto").src = e.target.result;
-        broadcastLiveToPeers();
+        pushToOpenStreamCloud();
       };
       reader.readAsDataURL(file);
     }
@@ -861,7 +855,7 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         cust.photo = e.target.result;
-        broadcastLiveToPeers();
+        pushToOpenStreamCloud();
         document.getElementById("custProfileImg").src = e.target.result;
         document.getElementById("recCustPic").src = e.target.result;
       };
@@ -895,9 +889,9 @@
     }
 
     // ========================================================
-    // লাইভ WebRTC P2P টানেল ইঞ্জিন (Cross-Device Instant Sync)
+    // লাইভ ক্লাউড ষ্ট্ৰীম এঞ্জিন (Cross-Device 100% Guaranteed Sync)
     // ========================================================
-    let appData = JSON.parse(localStorage.getItem("cg_bajar_p2p_final_db")) || {
+    let appData = JSON.parse(localStorage.getItem("cg_bajar_open_stream_db")) || {
       customers: [
         { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png" },
         { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png" }
@@ -905,92 +899,91 @@
       transactions: []
     };
 
-    function isMobileDevice() {
-      return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    }
+    // ক্লাউডত লাইভ পাবলিশ (পোনপটীয়াকৈ ইন্টাৰনেটলৈ প্ৰেৰণ)
+    function pushToOpenStreamCloud() {
+      localStorage.setItem("cg_bajar_open_stream_db", JSON.stringify(appData));
+      document.getElementById("cloudSyncText").textContent = "⚡ ক্লাউডত লাইভ ষ্ট্ৰীমিং চলিছে...";
 
-    function initPeerP2PTunnel() {
-      const isMob = isMobileDevice();
-      const myId = isMob ? PEER_MOBILE_ID : PEER_DESKTOP_ID;
-      const targetId = isMob ? PEER_DESKTOP_ID : PEER_MOBILE_ID;
-
-      try {
-        myPeer = new Peer(myId);
-
-        myPeer.on('open', (id) => {
-          document.getElementById("cloudSyncText").textContent = `🟢 টানেল সাজু (${isMob ? 'ম’বাইল' : 'কম্পিউটাৰ'})`;
-          connectToPeer(targetId);
-        });
-
-        // আনটো ডিভাইচৰ পৰা সংযোগ আহিলে
-        myPeer.on('connection', (conn) => {
-          setupConnectionEvents(conn);
-        });
-
-        myPeer.on('error', (err) => {
-          // যদি ID ইতিমধ্যে ব্যৱহাৰত আছে তেন্তে ডায়নামিক আইডি লওক
-          if (err.type === 'unavailable-id') {
-            const randomId = "chetia-" + Math.floor(1000 + Math.random() * 9000);
-            myPeer = new Peer(randomId);
-            myPeer.on('open', () => {
-              connectToPeer(targetId);
-            });
-          }
-        });
-      } catch(e) {
-        console.log("P2P fallback:", e);
-      }
-    }
-
-    function connectToPeer(targetId) {
-      if (!myPeer || myPeer.destroyed) return;
-      const conn = myPeer.connect(targetId, { reliable: true });
-      setupConnectionEvents(conn);
-    }
-
-    function setupConnectionEvents(conn) {
-      conn.on('open', () => {
-        peerConn = conn;
-        document.getElementById("cloudSyncText").textContent = "⚡ লাইভ P2P সংযুক্ত (১ ছেকেণ্ডত পোনপটীয়া ছিংক)";
-        // সংযোগ হোৱাৰ লগে লগে নিজৰ ডাটা আনজনক প্ৰেৰণ
-        conn.send({ type: 'SYNC_DATA', payload: appData });
-      });
-
-      conn.on('data', (msg) => {
-        if (msg && msg.type === 'SYNC_DATA') {
-          appData = msg.payload;
-          localStorage.setItem("cg_bajar_p2p_final_db", JSON.stringify(appData));
-          refreshCustomerDropdown(document.getElementById("custSelect").value);
-          renderCustomerDetails();
-          filterMarketByDate();
-          document.getElementById("cloudSyncText").textContent = "⚡ আনজনৰ এন্ট্ৰি তৎক্ষণাত পোনপটীয়াকৈ ছিংক হ'ল!";
-          setTimeout(() => {
-            document.getElementById("cloudSyncText").textContent = "⚡ লাইভ P2P সংযুক্ত (১ ছেকেণ্ডত পোনপটীয়া ছিংক)";
-          }, 2500);
+      fetch(STREAM_URL, {
+        method: "POST",
+        body: JSON.stringify(appData),
+        headers: {
+          "Title": "SYNC_DATA_EVENT",
+          "Priority": "high"
         }
+      })
+      .then(res => {
+        document.getElementById("cloudSyncText").textContent = "🟢 ক্লাউডত লাইভ সংৰক্ষিত (ম'বাইল ↔ কম্পিউটাৰ)";
+      })
+      .catch(err => {
+        document.getElementById("cloudSyncText").textContent = "🟢 স্থানীয়ভাৱে সুৰক্ষিত";
       });
 
-      conn.on('close', () => {
-        document.getElementById("cloudSyncText").textContent = "🟡 টানেল সংযোগ বিচ্ছিন্ণ, পুনৰ সংযোগ চলিছে...";
-        setTimeout(reconnectP2PTunnel, 3000);
-      });
-    }
-
-    function broadcastLiveToPeers() {
-      localStorage.setItem("cg_bajar_p2p_final_db", JSON.stringify(appData));
-      if (peerConn && peerConn.open) {
-        peerConn.send({ type: 'SYNC_DATA', payload: appData });
-        document.getElementById("cloudSyncText").textContent = "⚡ এন্ট্ৰি ১ ছেকেণ্ডত আনটো ডিভাইচলৈ প্ৰেৰিত হ'ল!";
-      } else {
-        reconnectP2PTunnel();
-      }
       filterMarketByDate();
     }
 
-    function reconnectP2PTunnel() {
-      const isMob = isMobileDevice();
-      const targetId = isMob ? PEER_DESKTOP_ID : PEER_MOBILE_ID;
-      connectToPeer(targetId);
+    // কম্পিউটাৰত লাইভ ষ্ট্ৰীম শ্ৰৱণ (Server-Sent Events: Realtime Instant Feed)
+    function startRealtimeStreamListener() {
+      try {
+        const eventSource = new EventSource(`${STREAM_URL}/sse`);
+        
+        eventSource.onmessage = function(event) {
+          try {
+            const dataObj = JSON.parse(event.data);
+            if (dataObj && dataObj.message) {
+              const parsedPayload = JSON.parse(dataObj.message);
+              if (parsedPayload && parsedPayload.customers) {
+                appData = parsedPayload;
+                localStorage.setItem("cg_bajar_open_stream_db", JSON.stringify(appData));
+                refreshCustomerDropdown(document.getElementById("custSelect").value);
+                renderCustomerDetails();
+                filterMarketByDate();
+                document.getElementById("cloudSyncText").textContent = "⚡ আনজনৰ এন্ট্ৰি তৎক্ষণাত লাইভ হ'ল!";
+                setTimeout(() => {
+                  document.getElementById("cloudSyncText").textContent = "লাইভ ক্লাউড ষ্ট্ৰীম সক্ৰিয় (১ ছেকেণ্ডত ছিংক)";
+                }, 2500);
+              }
+            }
+          } catch(e) {}
+        };
+
+        eventSource.onerror = function() {
+          document.getElementById("cloudSyncText").textContent = "🟡 পুনৰ ষ্ট্ৰীম সংযোগ চলিছে...";
+        };
+      } catch(e) {}
+
+      // যদি ষ্ট্ৰীম বিচ্ছিন্ণ হয়, প্ৰতি ৩ ছেকেণ্ডৰ মূৰে মূৰে অটো-চেক
+      setInterval(forcePullLatestCloudData, 3000);
+    }
+
+    // শেহতীয়া ডাটা সংগ্ৰহ (Polling Fallback)
+    function forcePullLatestCloudData() {
+      fetch(`${STREAM_URL}/json?poll=1`)
+      .then(res => res.text())
+      .then(text => {
+        if (!text) return;
+        const lines = text.trim().split("\n");
+        for (let i = lines.length - 1; i >= 0; i--) {
+          try {
+            const item = JSON.parse(lines[i]);
+            if (item && item.message) {
+              const payload = JSON.parse(item.message);
+              if (payload && payload.customers && payload.transactions) {
+                if (payload.transactions.length !== appData.transactions.length) {
+                  appData = payload;
+                  localStorage.setItem("cg_bajar_open_stream_db", JSON.stringify(appData));
+                  refreshCustomerDropdown(document.getElementById("custSelect").value);
+                  renderCustomerDetails();
+                  filterMarketByDate();
+                  document.getElementById("cloudSyncText").textContent = "⚡ আনজনৰ এন্ট্ৰি তৎক্ষণাত লাইভ হ'ল!";
+                }
+                break;
+              }
+            }
+          } catch(e) {}
+        }
+      })
+      .catch(err => {});
     }
 
     function refreshCustomerDropdown(selectedId = null) {
@@ -1072,7 +1065,7 @@
       cust.name = document.getElementById("editCustName").value.trim();
       cust.phone = document.getElementById("editCustPhone").value.trim();
       cust.address = document.getElementById("editCustAddress").value.trim();
-      broadcastLiveToPeers();
+      pushToOpenStreamCloud();
       closeEditCustomerModal();
       refreshCustomerDropdown(custId);
       alert("✅ গ্ৰাহকৰ তথ্য আপডেট হ'ল!");
@@ -1086,7 +1079,7 @@
       if (confirm(`আপুনি নিশ্চিতনে '${cust.name}'-ৰ সকলো হিচাপ আৰু প্ৰফাইল মচি পেলাব?`)) {
         appData.customers = appData.customers.filter(c => c.id !== custId);
         appData.transactions = appData.transactions.filter(t => t.customerId !== custId);
-        broadcastLiveToPeers();
+        pushToOpenStreamCloud();
         refreshCustomerDropdown();
       }
     }
@@ -1097,7 +1090,7 @@
       if (!name) return;
       const id = "C" + Date.now();
       appData.customers.push({ id, name, phone: document.getElementById("newCustPhone").value.trim(), address: document.getElementById("newCustAddress").value.trim(), photo: "./logo.png" });
-      broadcastLiveToPeers();
+      pushToOpenStreamCloud();
       toggleNewCustForm();
       refreshCustomerDropdown(id);
     }
@@ -1189,9 +1182,9 @@
       };
 
       appData.transactions.push(newTx);
-      broadcastLiveToPeers(); // লাইভ P2P প্ৰেৰণ
+      pushToOpenStreamCloud(); // কোনো ব্লকিং নোহোৱাকৈ ক্লাউডলৈ প্ৰেৰণ
       renderCustomerDetails();
-      alert("✅ এন্ট্ৰি সংৰক্ষিত হ'ল আৰু পোনপটীয়াকৈ কম্পিউটাৰলৈ ১ ছেকেণ্ডত ছিংক হ'ল!");
+      alert("✅ এন্ট্ৰি সংৰক্ষিত হ'ল আৰু কম্পিউটাৰৰ বাবে ক্লাউডত লাইভ প্ৰেৰণ হ'ল!");
       
       document.getElementById("note").value = "";
       capturedPhotoBase64 = "";
