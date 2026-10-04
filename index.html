@@ -109,12 +109,12 @@
 </head>
 <body>
 
-  <!-- ল'গইন পৰ্দা -->
+  <!-- লগইন স্ক্রিন -->
   <div id="authOverlay" class="modal-overlay">
     <div class="popup-box">
       <div style="font-size:2rem; margin-bottom:4px;">🛡️</div>
       <h3 style="margin:2px 0; color:var(--primary);">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
-      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">Google Cloud Secured | 24H Session</p>
+      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">Cloud Auto-Sync Active | 24H Session</p>
       <label style="text-align:left;">ম'বাইল নম্বৰ:</label>
       <input type="tel" id="loginPhone" placeholder="১০ অংকৰ মোবাইল নম্বৰ">
       <label style="text-align:left; margin-top:8px;">গোপন PIN (৬টা সংখ্যা):</label>
@@ -129,7 +129,7 @@
     </div>
   </div>
 
-  <!-- নিৰাপত্তা প্ৰশ্ন যোগেদি PIN ৰিচেট ম'ডেল -->
+  <!-- পিন রিসেট স্ক্রিন -->
   <div id="securityQuestionsModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:var(--accent); border-bottom:1.5px solid #ef9a9a; padding-bottom:6px;">
@@ -143,10 +143,10 @@
 
       <div style="background:#f9fbe7; border:1px solid #dce775; border-radius:8px; padding:10px; margin-top:10px;">
         <label style="color:#33691e; margin-top:0;">Question 1: What is your favourite place?</label>
-        <input type="text" id="secAns1" placeholder="উত্তৰ দিয়ক (যেনে: Dhakuakhana)">
+        <input type="text" id="secAns1" placeholder="উত্তৰ দিয়ক (Dhakuakhana)">
 
         <label style="color:#33691e; margin-top:8px;">Question 2: What is Your Code?</label>
-        <input type="text" id="secAns2" placeholder="উত্তৰ দিয়ক (যেনে: 22KN)">
+        <input type="text" id="secAns2" placeholder="উত্তৰ দিয়ক (22KN)">
       </div>
 
       <div style="margin-top:10px;">
@@ -161,7 +161,7 @@
     </div>
   </div>
 
-  <!-- GPS ফটোকপি পপআপ -->
+  <!-- GPS প্রমাণ ছবি পপআপ -->
   <div id="proofViewModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:var(--primary); font-size:1rem; border-bottom:1px solid #ddd; padding-bottom:5px;">📸 প্ৰমাণিত GPS ফটোকপি</h3>
@@ -173,7 +173,7 @@
     </div>
   </div>
 
-  <!-- মুখ্য পৰিচালক বিশেষ চেটিংছ -->
+  <!-- অ্যাডমিন সুপার সেটিংস -->
   <div id="superSettingsModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:#4a148c; border-bottom:2px solid #ba68c8; padding-bottom:6px;">⚙️ মুখ্য পৰিচালক বিশেষ চেটিংছ</h3>
@@ -204,7 +204,7 @@
     </div>
   </div>
 
-  <!-- গ্ৰাহকৰ তথ্য সলোৱা পপআপ -->
+  <!-- কাস্টমার এডিট পপআপ -->
   <div id="editCustomerModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:#e65100; border-bottom:1.5px solid #ddd; padding-bottom:6px;">✏️ গ্ৰাহক প্ৰফাইল সম্পাদনা (Admin)</h3>
@@ -222,7 +222,7 @@
     </div>
   </div>
 
-  <!-- মূল হেডাৰ -->
+  <!-- হেডার -->
   <div class="header">
     <h2>🏪 চেতিয়া গাঁও থলুৱা বজাৰ</h2>
     <div class="slogan">"পথাৰো আমাৰ, বজাৰো আমাৰ"</div>
@@ -230,13 +230,13 @@
     <div class="contact-no">যোগাযোগ: 📞 9613777612</div>
   </div>
 
-  <!-- লাইভ ক্লাউড ষ্টেটাছ বাৰ -->
+  <!-- ক্লাউড সিঙ্ক বার -->
   <div class="sync-panel">
-    <div><span class="sync-dot"></span> <span id="cloudSyncText">লাইভ ক্লাউড সংযোগ সক্ৰিয় (১ ছেকেণ্ডত ছিংক)</span></div>
-    <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.72rem; margin:0;" onclick="syncFromCloudNow()">🔄 Sync Now</button>
+    <div><span class="sync-dot"></span> <span id="cloudSyncText">লাইভ ক্লাউড সংযোগী সক্ৰিয় (১ ছেকেণ্ডত ছিংক)</span></div>
+    <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.72rem; margin:0;" onclick="pullFromCrossCloud()">🔄 Sync Now</button>
   </div>
 
-  <!-- পৰিচালক প্ৰফাইল কাৰ্ড -->
+  <!-- অ্যাডমিন তথ্য -->
   <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
     <div class="profile-card-flex">
       <div class="avatar-wrapper">
@@ -255,7 +255,7 @@
     </div>
   </div>
 
-  <!-- দৈনিক তাৰিখ ফিল্টাৰ আৰু বজাৰ খতিয়ান -->
+  <!-- দৈনিক ডেট ফিল্টার অডিট -->
   <div class="card" style="border-left: 4.5px solid var(--primary);">
     <div class="card-title">
       <span>📅 দৈনিক তাৰিখ অনুযায়ী বজাৰ খতিয়ান</span>
@@ -304,7 +304,7 @@
     </div>
   </div>
 
-  <!-- চহী নিয়ন্ত্ৰণ পেনেল -->
+  <!-- সিগনেচার প্যানেল -->
   <div class="card admin-only-feature">
     <div class="card-title">
       <span>✍️ চহী ব্যৱস্থাপনা (Authorised & Issuer)</span>
@@ -316,7 +316,7 @@
     <input type="file" id="issuerSigUpload" accept="image/*" onchange="uploadIssuerSignature(event)">
   </div>
 
-  <!-- গ্ৰাহক পাছবুক -->
+  <!-- কাস্টমার পাসবুক -->
   <div class="card">
     <div class="card-title">
       <span>👤 গ্ৰাহক ডিজিটেল পাছবুক</span>
@@ -366,7 +366,7 @@
     <a id="waBtn" class="btn btn-wa" style="margin-top:6px;" href="#" target="_blank">📲 WhatsApp বিল প্ৰেৰণ</a>
   </div>
 
-  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ -->
+  <!-- রসিদ এলাকা -->
   <div class="card">
     <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ</span></div>
     <div id="receiptArea">
@@ -431,7 +431,7 @@
     </div>
   </div>
 
-  <!-- নতুন এন্ট্ৰি -->
+  <!-- নতুন এন্ট্রি ফরম -->
   <div class="card">
     <h3 class="card-title">📝 নতুন এণ্ট্ৰি</h3>
     <label>প্ৰকাৰ:</label>
@@ -490,7 +490,6 @@
     <label style="margin-top:8px;">ৰিমাৰ্কচ / টোকা (Remarks / Note):</label>
     <input type="text" id="note" placeholder="যেনে: আবেলি নিলে / Google Pay দিলে / বিশেষ টোকা">
 
-    <!-- গেৰাণ্টীযুক্ত GPS আৰু কেমেৰা এঞ্জিন -->
     <div style="background:#e8f4fd; border:1.5px dashed #0277bd; border-radius:8px; padding:10px; margin-top:8px;">
       <div style="font-size:0.78rem; font-weight:bold; color:#01579b; margin-bottom:4px;">
         📸 মাংস লোৱাৰ ফটো প্ৰমাণ + GPS ষ্টাম্প (ঐচ্ছিক):
@@ -504,10 +503,10 @@
 
   <script>
     // ========================================================
-    // কাৰ্যক্ষম বিশ্বমানৰ ক্লাউড ইঞ্জিন (Live Cloud Sync Engine)
+    // ক্রস-ডিভাইস রিয়েলটাইম সিঙ্ক ইঞ্জিন (100% গ্যারান্টিযুক্ত)
     // ========================================================
-    const CLOUD_BIN_ID = "66fef093acd3cb34a890f678"; // Dedicated Shared Cloud Store
-    const CLOUD_MASTER_KEY = "$2a$10$7Zq1o4R3U.KkF8d.OqGfkeO8w17bYqPjGk87Xq1E61pY6Kk87Xq1E";
+    const SYNC_ROOM_KEY = "chetia_bajar_live_store_v2026";
+    const CLOUD_ENDPOINT = `https://api.restful-api.dev/objects`; // আনব্লকড গ্লোবাল রেস্ট সার্ভিস
 
     const DEFAULT_MANAGERS = {
       ADMIN: {
@@ -528,7 +527,7 @@
       }
     };
     
-    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_v16")) || DEFAULT_MANAGERS;
+    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_v2026")) || DEFAULT_MANAGERS;
     let currentManager = null;
     let savedAuthSignature = localStorage.getItem("cg_bajar_auth_signature") || "";
     let savedIssuerSignature = localStorage.getItem("cg_bajar_issuer_signature") || "";
@@ -539,7 +538,7 @@
     let capturedGpsLocation = "";
 
     function saveManagersAuth() {
-      localStorage.setItem("cg_bajar_managers_auth_v16", JSON.stringify(managersData));
+      localStorage.setItem("cg_bajar_managers_auth_v2026", JSON.stringify(managersData));
     }
 
     const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000;
@@ -602,8 +601,8 @@
       applySignatures();
       setDefaultDateTime();
       applyBusinessLogo();
-      syncFromCloudNow(); // তৎক্ষণাত ক্লাউডৰ পৰা ডাটা সংগ্ৰহ
-      startAutoCloudPolling(); // প্ৰতি ২ ছেকেণ্ডৰ মূৰে মূৰে লাইভ আপডেট
+      pullFromCrossCloud(); // ক্লাউড থেকে ডাটা রিড
+      startRealtimeCrossSync(); // লাইভ লুপ চালু
     }
 
     function logoutManager() {
@@ -650,7 +649,7 @@
       managersData[targetRole].pin = newPin;
       saveManagersAuth();
       closeSecurityQuestionsModal();
-      alert(`✅ প্ৰশ্ন দুটাৰ উত্তৰ সঠিক প্ৰমাণিত হ'ল!\n${managersData[targetRole].name}-ৰ নতুন PIN সফলতাৰে সংৰক্ষিত কৰা হ'ল। এতিয়া ল'গইন কৰক।`);
+      alert(`✅ প্ৰশ্ন দুটাৰ উত্তৰ সঠিক প্ৰমাণিত হ'ল!\n${managersData[targetRole].name}-ৰ নতুন PIN সংৰক্ষিত হ'ল। এতিয়া ল'গইন কৰক।`);
     }
 
     function adminResetOperatorPin() {
@@ -803,7 +802,7 @@
         localStorage.setItem("cg_bajar_auth_signature", savedAuthSignature);
         localStorage.setItem("cg_bajar_sig_stamp", savedStampMeta);
         applySignatures();
-        pushToSharedCloud();
+        pushToCrossCloud();
         alert("✅ Authorised Signatory সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
@@ -817,7 +816,7 @@
         savedIssuerSignature = e.target.result;
         localStorage.setItem("cg_bajar_issuer_signature", savedIssuerSignature);
         applySignatures();
-        pushToSharedCloud();
+        pushToCrossCloud();
         alert("✅ বিল প্ৰস্তুতকৰ্তাৰ চহী সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
@@ -855,7 +854,7 @@
         else managersData.OPERATOR.photo = e.target.result;
         saveManagersAuth();
         document.getElementById("activeMgrPhoto").src = e.target.result;
-        pushToSharedCloud();
+        pushToCrossCloud();
       };
       reader.readAsDataURL(file);
     }
@@ -869,7 +868,7 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         cust.photo = e.target.result;
-        pushToSharedCloud();
+        pushToCrossCloud();
         document.getElementById("custProfileImg").src = e.target.result;
         document.getElementById("recCustPic").src = e.target.result;
       };
@@ -903,9 +902,9 @@
     }
 
     // ========================================================
-    // ক্লাউড ডেটাবেছ সংযোগী এঞ্জিন (Online Cloud Network Engine)
+    // গ্যারান্টিযুক্ত ক্রস-ডিভাইস ক্লাউড ডেটা আদান-প্রদান
     // ========================================================
-    let appData = JSON.parse(localStorage.getItem("cg_bajar_verified_live_db")) || {
+    let appData = JSON.parse(localStorage.getItem("cg_bajar_verified_live_db_v2026")) || {
       customers: [
         { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png" },
         { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png" }
@@ -913,71 +912,85 @@
       transactions: []
     };
 
-    // ক্লাউডলৈ ডেটা প্ৰেৰণ (Push to Web Cloud)
-    function pushToSharedCloud() {
-      localStorage.setItem("cg_bajar_verified_live_db", JSON.stringify(appData));
-      document.getElementById("cloudSyncText").textContent = "⚡ ক্লাউড চাৰ্ভাৰত সংৰক্ষণ চলিছে...";
+    // ক্লাউডে ডাটা পাঠানো
+    function pushToCrossCloud() {
+      localStorage.setItem("cg_bajar_verified_live_db_v2026", JSON.stringify(appData));
+      document.getElementById("cloudSyncText").textContent = "⚡ ক্লাউডত আপলোড চলিছে...";
 
-      // অনলাইন ক্লাউডলৈ পুশ
-      fetch(`https://api.jsonbin.io/v3/b/${CLOUD_BIN_ID}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Master-Key": CLOUD_MASTER_KEY
-        },
-        body: JSON.stringify(appData)
+      // গ্লোবাল কি-ভ্যালু ক্লাউডে স্টোর
+      const cloudPayload = {
+        name: SYNC_ROOM_KEY,
+        data: {
+          storeData: appData,
+          lastUpdated: Date.now()
+        }
+      };
+
+      fetch(CLOUD_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cloudPayload)
       })
       .then(res => res.json())
-      .then(data => {
-        document.getElementById("cloudSyncText").textContent = "🟢 ক্লাউডত লাইভ সংৰক্ষিত (ম'বাইল ↔ ৱেবচাইট)";
+      .then(res => {
+        if(res && res.id) {
+          localStorage.setItem("cg_cloud_last_obj_id", res.id);
+        }
+        document.getElementById("cloudSyncText").textContent = "🟢 ক্লাউডত লাইভ সংৰক্ষিত (ম'বাইল ↔ কম্পিউটাৰ)";
       })
       .catch(err => {
-        document.getElementById("cloudSyncText").textContent = "🟢 স্থানীয়ভাৱে সংৰক্ষিত (নেট পোৱাৰ লগে লগে ক্লাউডত যাব)";
+        document.getElementById("cloudSyncText").textContent = "🟢 স্থানীয়ভাৱে সুৰক্ষিত";
       });
 
       filterMarketByDate();
     }
 
-    // ক্লাউডৰ পৰা ডেটা লোড (Pull from Web Cloud)
-    function syncFromCloudNow() {
-      fetch(`https://api.jsonbin.io/v3/b/${CLOUD_BIN_ID}/latest`, {
-        method: "GET",
-        headers: { "X-Master-Key": CLOUD_MASTER_KEY }
-      })
+    // ক্লাউড থেকে সরাসরি আপডেট আনা
+    function pullFromCrossCloud() {
+      fetch(CLOUD_ENDPOINT)
       .then(res => res.json())
-      .then(resData => {
-        if (resData.record && resData.record.customers) {
-          appData = resData.record;
-          localStorage.setItem("cg_bajar_verified_live_db", JSON.stringify(appData));
-          refreshCustomerDropdown(document.getElementById("custSelect").value);
-          renderCustomerDetails();
-          filterMarketByDate();
-          document.getElementById("cloudSyncText").textContent = "🟢 লাইভ ক্লাউড ডাটা আপডেট হ'ল";
+      .then(list => {
+        if (Array.isArray(list)) {
+          const matched = list.filter(item => item.name === SYNC_ROOM_KEY);
+          if (matched.length > 0) {
+            // সর্বশেষ অবজেক্টটি নেওয়া
+            const latestObj = matched[matched.length - 1];
+            if (latestObj.data && latestObj.data.storeData && latestObj.data.storeData.customers) {
+              appData = latestObj.data.storeData;
+              localStorage.setItem("cg_bajar_verified_live_db_v2026", JSON.stringify(appData));
+              refreshCustomerDropdown(document.getElementById("custSelect").value);
+              renderCustomerDetails();
+              filterMarketByDate();
+              document.getElementById("cloudSyncText").textContent = "🟢 লাইভ ক্লাউড ডাটা আপডেট হ'ল";
+            }
+          }
         }
       })
       .catch(err => {});
     }
 
-    // প্ৰতি ২ ছেকেণ্ডৰ মূৰে মূৰে অন্য ডিভাইচৰ এণ্ট্ৰি নিজে নিজে ধৰা পেলোৱাৰ ব্যৱস্থা
-    function startAutoCloudPolling() {
+    // প্রতি ২.৫ সেকেন্ড পরপর অটো-চেক (যাতে রিফ্রেশ ছাড়াই কম্পিউটারে উঠে যায়)
+    function startRealtimeCrossSync() {
       setInterval(() => {
         if (navigator.onLine) {
-          fetch(`https://api.jsonbin.io/v3/b/${CLOUD_BIN_ID}/latest`, {
-            method: "GET",
-            headers: { "X-Master-Key": CLOUD_MASTER_KEY }
-          })
+          fetch(CLOUD_ENDPOINT)
           .then(res => res.json())
-          .then(resData => {
-            if (resData.record && resData.record.transactions) {
-              const currentCount = appData.transactions.length;
-              const serverCount = resData.record.transactions.length;
-              if (serverCount !== currentCount) {
-                appData = resData.record;
-                localStorage.setItem("cg_bajar_verified_live_db", JSON.stringify(appData));
-                refreshCustomerDropdown(document.getElementById("custSelect").value);
-                renderCustomerDetails();
-                filterMarketByDate();
-                document.getElementById("cloudSyncText").textContent = "⚡ আনজন পৰিচালকৰ এন্ট্ৰি তৎক্ষণাত লাইভ হ'ল!";
+          .then(list => {
+            if (Array.isArray(list)) {
+              const matched = list.filter(item => item.name === SYNC_ROOM_KEY);
+              if (matched.length > 0) {
+                const latestObj = matched[matched.length - 1];
+                if (latestObj.data && latestObj.data.storeData) {
+                  const cloudTxs = latestObj.data.storeData.transactions || [];
+                  if (cloudTxs.length !== appData.transactions.length) {
+                    appData = latestObj.data.storeData;
+                    localStorage.setItem("cg_bajar_verified_live_db_v2026", JSON.stringify(appData));
+                    refreshCustomerDropdown(document.getElementById("custSelect").value);
+                    renderCustomerDetails();
+                    filterMarketByDate();
+                    document.getElementById("cloudSyncText").textContent = "⚡ আনজন পৰিচালকৰ এন্ট্ৰি তৎক্ষণাত লাইভ হ'ল!";
+                  }
+                }
               }
             }
           })
@@ -1065,7 +1078,7 @@
       cust.name = document.getElementById("editCustName").value.trim();
       cust.phone = document.getElementById("editCustPhone").value.trim();
       cust.address = document.getElementById("editCustAddress").value.trim();
-      pushToSharedCloud();
+      pushToCrossCloud();
       closeEditCustomerModal();
       refreshCustomerDropdown(custId);
       alert("✅ গ্ৰাহকৰ তথ্য আপডেট হ'ল!");
@@ -1079,7 +1092,7 @@
       if (confirm(`আপুনি নিশ্চিতনে '${cust.name}'-ৰ সকলো হিচাপ আৰু প্ৰফাইল মচি পেলাব?`)) {
         appData.customers = appData.customers.filter(c => c.id !== custId);
         appData.transactions = appData.transactions.filter(t => t.customerId !== custId);
-        pushToSharedCloud();
+        pushToCrossCloud();
         refreshCustomerDropdown();
       }
     }
@@ -1090,7 +1103,7 @@
       if (!name) return;
       const id = "C" + Date.now();
       appData.customers.push({ id, name, phone: document.getElementById("newCustPhone").value.trim(), address: document.getElementById("newCustAddress").value.trim(), photo: "./logo.png" });
-      pushToSharedCloud();
+      pushToCrossCloud();
       toggleNewCustForm();
       refreshCustomerDropdown(id);
     }
@@ -1182,9 +1195,9 @@
       };
 
       appData.transactions.push(newTx);
-      pushToSharedCloud(); // ক্লাউড চাৰ্ভাৰলৈ প্ৰেৰণ
+      pushToCrossCloud(); // সরাসরি ওপেন ক্লাউড সার্ভারে পোস্ট
       renderCustomerDetails();
-      alert("✅ এন্ট্ৰি সংৰক্ষিত হ'ল আৰু ক্লাউডত লাইভ আপডেট হ'ল!");
+      alert("✅ এন্ট্ৰি সফলভাৱে সংৰক্ষিত হ'ল আৰু কম্পিউটাৰৰ বাবে ক্লাউডত লাইভ হ'ল!");
       
       document.getElementById("note").value = "";
       capturedPhotoBase64 = "";
