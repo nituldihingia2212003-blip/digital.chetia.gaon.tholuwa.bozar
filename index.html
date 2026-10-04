@@ -41,7 +41,6 @@
     .card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-top: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
     .card-title { margin: 0 0 8px 0; color: var(--secondary); font-size: 0.95rem; border-bottom: 2px solid var(--light); padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
     
-    /* প্ৰফাইল কাৰ্ড আৰু এভাটাৰ */
     .profile-card-flex { display: flex; align-items: center; gap: 12px; }
     .avatar-wrapper { position: relative; width: 56px; height: 56px; flex-shrink: 0; }
     .avatar-img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); background: #fff; }
@@ -63,12 +62,19 @@
     .btn-settings { background: #4a148c; color: white; }
     .btn-outline { background: transparent; border: 1px solid var(--secondary); color: var(--secondary); }
     
-    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.76rem; }
-    th, td { border: 1px solid #e0e0e0; padding: 6px 4px; text-align: left; }
+    /* আধুনিক পৰিমাণ নিয়ন্ত্ৰক (Stepper & Quick Chips) */
+    .qty-stepper { display: flex; align-items: center; gap: 6px; }
+    .qty-step-btn { width: 44px; height: 38px; background: #e8f5e9; border: 1.5px solid var(--secondary); border-radius: 6px; font-size: 1.2rem; font-weight: bold; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .qty-step-btn:active { background: #c8e6c9; }
+    .qty-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .qty-chip { background: #fff; border: 1px solid #a5d6a7; color: var(--primary); padding: 4px 10px; border-radius: 14px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+    .qty-chip.active { background: var(--primary); color: #fff; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.74rem; }
+    th, td { border: 1px solid #e0e0e0; padding: 6px 3px; text-align: left; }
     th { background: var(--light); color: var(--primary); }
     .hidden { display: none !important; }
     
-    /* ডিজিটেল বিল ৰচিদ */
     #receiptArea { position: relative; background: #ffffff; padding: 16px; border: 2px dashed #2e7d32; border-radius: 8px; margin-top: 10px; color: #000; overflow: hidden; }
     .receipt-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 68%; opacity: 0.09; pointer-events: none; }
     .receipt-content { position: relative; z-index: 2; }
@@ -109,19 +115,17 @@
         ⚙️ মুখ্য পৰিচালক বিশেষ চেটিংছ (Admin Control)
       </h3>
 
-      <!-- সহ-পৰিচালক PIN ৰিচেট -->
       <div class="setting-section">
         <div class="setting-title">🔑 সহ-পৰিচালকৰ (ৰণ্টু চেতিয়া) PIN ৰিচেট</div>
         <label>নতুন ৬-অংকৰ PIN দিয়ক:</label>
-        <input type="password" id="resetOperatorPin" maxlength="6" placeholder="৬ অংকৰ PIN (যেনে: 123456)">
+        <input type="password" id="resetOperatorPin" maxlength="6" placeholder="৬ অংকৰ PIN">
         <button class="btn btn-primary" style="margin-top:6px; padding:6px; font-size:0.8rem;" onclick="adminResetOperatorPin()">
           ✅ ৰণ্টু চেতিয়াৰ PIN সলনি কৰক
         </button>
       </div>
 
-      <!-- মুখ্য পৰিচালক নিজৰ PIN সলনি -->
       <div class="setting-section">
-        <div class="setting-title">🔐 মুখ্য পৰিচালকৰ (নিতুল দিহিঙীয়া) নিজৰ PIN সলনি</div>
+        <div class="setting-title">🔐 মুখ্য পৰিচালকৰ নিজৰ PIN সলনি</div>
         <label>নতুন ৬-অংকৰ PIN দিয়ক:</label>
         <input type="password" id="adminSelfNewPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN">
         <button class="btn btn-secondary" style="margin-top:6px; padding:6px; font-size:0.8rem;" onclick="adminChangeSelfPin()">
@@ -129,7 +133,6 @@
         </button>
       </div>
 
-      <!-- ব্যৱসায়িক ল'গ' পৰিচালনা -->
       <div class="setting-section">
         <div class="setting-title">🏪 ব্যৱসায়িক ল'গ' (বিল ৱাটাৰমাৰ্ক) পৰিচালনা</div>
         <input type="file" id="logoUploadInput" accept="image/*" onchange="uploadBusinessLogo(event)">
@@ -138,7 +141,6 @@
         </button>
       </div>
 
-      <!-- ডাটা বেকআপ -->
       <div class="setting-section">
         <div class="setting-title">☁️ ব্যৱসায়িক ডাটা বেকআপ আৰু ৰিষ্ট'ৰ</div>
         <button class="btn btn-outline" style="margin-top:4px; padding:6px; font-size:0.78rem;" onclick="exportDataBackup()">
@@ -179,13 +181,13 @@
     <div class="contact-no">যোগাযোগ: 📞 9613777612</div>
   </div>
 
-  <!-- অফলাইন / অনলাইন লাইভ নিৰীক্ষণ বাৰ -->
+  <!-- অফলাইন / অনলাইন নিৰীক্ষণ বাৰ -->
   <div id="syncStatusBar" class="sync-status-bar status-online">
     <span id="syncStatusText">🟢 অনলাইন (সকলো ডাটা ক্লাউডত স্থায়ীভাৱে সংৰক্ষিত)</span>
     <span id="pendingCountBadge" style="font-size:0.75rem; background:white; padding:2px 6px; border-radius:10px; color:#333;">২৪ ঘঃ সক্ৰিয়</span>
   </div>
 
-  <!-- পৰিচালক প্ৰফাইল কাৰ্ড (ফটো আপলোড সহ) -->
+  <!-- পৰিচালক প্ৰফাইল কাৰ্ড -->
   <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
     <div class="profile-card-flex">
       <div class="avatar-wrapper">
@@ -208,7 +210,7 @@
     </div>
   </div>
 
-  <!-- দ্বৈত চহী ব্যৱস্থা: লাইভ পেড অথবা গেলেৰী আপলোড -->
+  <!-- চহী ব্যৱস্থা: লাইভ পেড অথবা গেলেৰী আপলোড -->
   <div class="card admin-only-feature">
     <div class="card-title">
       <span>✍️ Authorised Signature ব্যৱস্থা</span>
@@ -230,7 +232,7 @@
     </div>
   </div>
 
-  <!-- গ্ৰাহক পাছবুক আৰু প্ৰফাইল ফটো -->
+  <!-- গ্ৰাহক পাছবুক -->
   <div class="card">
     <div class="card-title">
       <span>👤 গ্ৰাহক পাছবুক পৰিচালনা</span>
@@ -281,7 +283,7 @@
     </div>
   </div>
 
-  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ (পৰিমাণ, ৰিমাৰ্কচ আৰু ধন্যবাদ সহ) -->
+  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ (ৰিমাৰ্কচ শেষৰ স্তম্ভত আৰু ধন্যবাদ সহ) -->
   <div class="card">
     <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ (প্ৰিভিউ)</span></div>
     <div id="receiptArea">
@@ -302,16 +304,16 @@
           <div style="text-align:right;"><b>তাৰিখ:</b> <span id="recGeneratedTime">-</span><br><b>ফোন:</b> <span id="recPhone">-</span></div>
         </div>
 
-        <!-- সম্পূৰ্ণ কলম: তাৰিখ, সামগ্ৰী, পৰিমাণ, ৰিমাৰ্কচ, বাকী, জমা -->
+        <!-- ক্ৰম: তাৰিখ | সামগ্ৰী | পৰিমাণ | বাকী | জমা | ৰিমাৰ্কচ -->
         <table style="width:100%; border-collapse:collapse;">
           <thead>
-            <tr style="background:#eee; font-size:0.7rem;">
+            <tr style="background:#eee; font-size:0.68rem;">
               <th>তাৰিখ</th>
               <th>সামগ্ৰী</th>
               <th>পৰিমাণ</th>
-              <th>ৰিমাৰ্কচ</th>
               <th>বাকী (+)</th>
               <th>জমা (-)</th>
+              <th>ৰিমাৰ্কচ</th>
             </tr>
           </thead>
           <tbody id="recTableBody"></tbody>
@@ -322,7 +324,7 @@
           <span style="font-size:1.15rem; font-weight:bold; color:#c62828;">₹<span id="recTotalDue">0</span></span>
         </div>
 
-        <!-- আন্তৰিক ধন্যবাদ জ্ঞাপন -->
+        <!-- ধন্যবাদ জ্ঞাপন -->
         <div class="thankyou-box">
           🙏 ধন্যবাদ! আপোনাৰ সেৱাত চেতিয়া গাঁও থলুৱা বজাৰ। পুনৰ আহিব।
         </div>
@@ -346,33 +348,66 @@
     </div>
   </div>
 
-  <!-- নতুন এণ্ট্ৰি (পৰিমাণ আৰু ৰিমাৰ্কচ সহ) -->
+  <!-- নতুন এণ্ট্ৰি (আধুনিক পৰিমাণ কমাব-বঢ়াব পৰা ব্যৱস্থা সহ) -->
   <div class="card">
-    <h3 class="card-title">📝 নতুন এণ্ট্ৰি (পৰিমাণ আৰু ৰিমাৰ্কচ সংলগ্ন)</h3>
+    <h3 class="card-title">📝 নতুন এণ্ট্ৰি</h3>
     <label>প্ৰকাৰ:</label>
-    <select id="txType">
+    <select id="txType" onchange="toggleTxTypeFields()">
       <option value="debit">বাকী বিক্ৰী (নতুন বাকী)</option>
       <option value="credit">ধন জমা (পৰিশোধ)</option>
       <option value="old_due">পুৰণি বাকী সংমিশ্ৰণ</option>
     </select>
+    
     <div class="row">
       <div><label>📅 তাৰিখ:</label><input type="date" id="entryDateInput"></div>
       <div><label>⏰ সময়:</label><input type="time" id="entryTimeInput"></div>
     </div>
-    <label>সামগ্ৰী:</label>
-    <select id="itemType">
-      <option value="থলুৱা গাহৰি মাংস">থলুৱা গাহৰি মাংস</option>
-      <option value="সতেজ মাছ">সতেজ মাছ</option>
-      <option value="অন্যান্য">অন্যান্য</option>
-    </select>
-    <div class="row">
-      <div><label>পৰিমাণ (কেজি/জোখ):</label><input type="text" id="qty" placeholder="যেনে: 1.5 কেজি"></div>
-      <div><label>দৰ (টকা):</label><input type="number" id="rate" value="300" oninput="calcAmount()"></div>
+    
+    <div id="itemDetailSection">
+      <label>সামগ্ৰী:</label>
+      <select id="itemType" onchange="updateDefaultRate()">
+        <option value="থলুৱা গাহৰি মাংস">থলুৱা গাহৰি মাংস</option>
+        <option value="সতেজ মাছ">সতেজ মাছ</option>
+        <option value="অন্যান্য">অন্যান্য</option>
+      </select>
+
+      <!-- আধুনিক পৰিমাণ নিয়ন্ত্ৰক -->
+      <label>সামগ্ৰীৰ পৰিমাণ (কেজি):</label>
+      <div class="qty-stepper">
+        <button type="button" class="qty-step-btn" onclick="stepQty(-0.25)">➖</button>
+        <input type="number" id="qtyNumber" step="0.05" min="0" value="1.0" style="text-align:center; font-weight:bold; font-size:1.05rem;" oninput="calcTotalAmount()">
+        <button type="button" class="qty-step-btn" onclick="stepQty(0.25)">➕</button>
+      </div>
+      
+      <!-- দ্ৰুত চয়ন বুটামসমূহ -->
+      <div class="qty-chips">
+        <span class="qty-chip" onclick="setQuickQty(0.5)">0.5 কেজি</span>
+        <span class="qty-chip active" onclick="setQuickQty(1.0)">1.0 কেজি</span>
+        <span class="qty-chip" onclick="setQuickQty(1.5)">1.5 কেজি</span>
+        <span class="qty-chip" onclick="setQuickQty(2.0)">2.0 কেজি</span>
+        <span class="qty-chip" onclick="setQuickQty(3.0)">3.0 কেজি</span>
+        <span class="qty-chip" onclick="setQuickQty(5.0)">5.0 কেজি</span>
+      </div>
+
+      <div class="row" style="margin-top:8px;">
+        <div>
+          <label>দৰ (প্ৰতি কেজি ₹):</label>
+          <input type="number" id="rate" value="300" oninput="calcTotalAmount()">
+        </div>
+        <div>
+          <label>মুঠ টকা (₹):</label>
+          <input type="number" id="amount" value="300">
+        </div>
+      </div>
     </div>
-    <label>মুঠ টকা (₹):</label>
-    <input type="number" id="amount" value="300">
-    <label>ৰিমাৰ্কচ / টোকা (Remarks):</label>
-    <input type="text" id="note" placeholder="যেনে: আবেলি নিলে / Google Pay দিলে">
+
+    <div id="creditAmountRow" class="hidden">
+      <label>জমা ধনৰ পৰিমাণ (₹):</label>
+      <input type="number" id="creditAmountInput" placeholder="টকা দিয়ক">
+    </div>
+
+    <label style="margin-top:8px;">ৰিমাৰ্কচ / টোকা (Remarks):</label>
+    <input type="text" id="note" placeholder="যেনে: আবেলি নিলে / Google Pay দিলে / পুৰণি বহীৰ">
 
     <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ কৰক</button>
   </div>
@@ -382,14 +417,14 @@
       ADMIN: { name: "নিতুল দিহিঙীয়া", role: "মুখ্য পৰিচালক", phone: "8822427980", pin: "291205", photo: "./logo.png", isAdmin: true },
       OPERATOR: { name: "ৰণ্টু চেতিয়া", role: "সহ-পৰিচালক", phone: "9613777612", pin: "123456", photo: "./logo.png", isAdmin: false }
     };
-    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_v7")) || DEFAULT_MANAGERS;
+    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_v8")) || DEFAULT_MANAGERS;
     let currentManager = null;
     let savedSignature = localStorage.getItem("cg_bajar_signature") || "";
     let savedStampMeta = localStorage.getItem("cg_bajar_sig_stamp") || "";
     let businessLogo = localStorage.getItem("cg_bajar_business_logo") || "";
 
     function saveManagersAuth() {
-      localStorage.setItem("cg_bajar_managers_auth_v7", JSON.stringify(managersData));
+      localStorage.setItem("cg_bajar_managers_auth_v8", JSON.stringify(managersData));
     }
 
     const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000;
@@ -460,7 +495,7 @@
       document.getElementById("authOverlay").classList.remove("hidden");
     }
 
-    // পৰিচালকৰ ফটো আপলোড
+    // পৰিচালক ফটো
     function uploadManagerPhoto(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -471,12 +506,12 @@
         else managersData.OPERATOR.photo = e.target.result;
         saveManagersAuth();
         document.getElementById("activeMgrPhoto").src = e.target.result;
-        alert("✅ পৰিচালকৰ প্ৰফাইল ফটো সংৰক্ষিত হ'ল!");
+        alert("✅ পৰিচালকৰ ফটো সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
     }
 
-    // গ্ৰাহকৰ ফটো আপলোড
+    // গ্ৰাহকৰ ফটো
     function uploadCustomerPhoto(event) {
       const custId = document.getElementById("custSelect").value;
       const cust = appData.customers.find(c => c.id === custId);
@@ -489,7 +524,7 @@
         persist();
         document.getElementById("custProfileImg").src = e.target.result;
         document.getElementById("recCustPic").src = e.target.result;
-        alert("✅ গ্ৰাহকৰ প্ৰফাইল ফটো সংৰক্ষিত হ'ল!");
+        alert("✅ গ্ৰাহকৰ ফটো সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
     }
@@ -564,13 +599,13 @@
           appData = JSON.parse(e.target.result);
           persist();
           refreshCustomerDropdown();
-          alert("✅ সকলো ডাটা সফলতাৰে পুনৰুদ্ধাৰ কৰা হ'ল!");
+          alert("✅ সকলো ব্যৱসায়িক ডাটা সফলতাৰে পুনৰুদ্ধাৰ কৰা হ'ল!");
         } catch(err) { alert("ফাইলটো সঠিক নহয়!"); }
       };
       reader.readAsText(file);
     }
 
-    let appData = JSON.parse(localStorage.getItem("cg_bajar_final_v7")) || {
+    let appData = JSON.parse(localStorage.getItem("cg_bajar_final_v8")) || {
       customers: [
         { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png" },
         { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png" }
@@ -579,7 +614,7 @@
     };
 
     function persist() {
-      localStorage.setItem("cg_bajar_final_v7", JSON.stringify(appData));
+      localStorage.setItem("cg_bajar_final_v8", JSON.stringify(appData));
     }
 
     function refreshCustomerDropdown(selectedId = null) {
@@ -621,9 +656,9 @@
           <td>${t.date}</td>
           <td>${t.item}</td>
           <td>${t.qty || '-'}</td>
-          <td style="color:#555; font-size:0.7rem;">${t.note || '-'}</td>
-          <td style="color:#d32f2f;">${t.debit ? '₹'+t.debit : '-'}</td>
-          <td style="color:#1b5e20;">${t.credit ? '₹'+t.credit : '-'}</td>
+          <td style="color:#d32f2f; font-weight:bold;">${t.debit ? '₹'+t.debit : '-'}</td>
+          <td style="color:#1b5e20; font-weight:bold;">${t.credit ? '₹'+t.credit : '-'}</td>
+          <td style="color:#555; font-size:0.68rem;">${t.note || '-'}</td>
         </tr>`;
       });
       const due = debit - credit;
@@ -685,33 +720,101 @@
       refreshCustomerDropdown(id);
     }
 
-    function calcAmount() {
-      const q = parseFloat(document.getElementById("qty").value) || 0;
-      const r = parseFloat(document.getElementById("rate").value) || 0;
-      if (q > 0 && r > 0) document.getElementById("amount").value = Math.round(q * r);
+    // ==========================================
+    // আধুনিক পৰিমাণ নিয়ন্ত্ৰক লজিক (Stepper & Chips)
+    // ==========================================
+    function stepQty(amount) {
+      let input = document.getElementById("qtyNumber");
+      let currentVal = parseFloat(input.value) || 0;
+      let newVal = Math.max(0.1, currentVal + amount);
+      input.value = newVal.toFixed(2).replace(/\.00$/, '').replace(/(\.[1-9])0$/, '$1');
+      calcTotalAmount();
+      updateChipActiveState();
+    }
+
+    function setQuickQty(val) {
+      let input = document.getElementById("qtyNumber");
+      input.value = val;
+      calcTotalAmount();
+      updateChipActiveState();
+    }
+
+    function updateChipActiveState() {
+      let val = parseFloat(document.getElementById("qtyNumber").value) || 0;
+      document.querySelectorAll(".qty-chip").forEach(chip => {
+        let chipVal = parseFloat(chip.textContent);
+        if (chipVal === val) chip.classList.add("active");
+        else chip.classList.remove("active");
+      });
+    }
+
+    function calcTotalAmount() {
+      let q = parseFloat(document.getElementById("qtyNumber").value) || 0;
+      let r = parseFloat(document.getElementById("rate").value) || 0;
+      if (q > 0 && r > 0) {
+        document.getElementById("amount").value = Math.round(q * r);
+      }
+    }
+
+    function updateDefaultRate() {
+      let item = document.getElementById("itemType").value;
+      if (item === "থলুৱা গাহৰি মাংস") document.getElementById("rate").value = 300;
+      else if (item === "সতেজ মাছ") document.getElementById("rate").value = 250;
+      calcTotalAmount();
+    }
+
+    function toggleTxTypeFields() {
+      let type = document.getElementById("txType").value;
+      if (type === "credit") {
+        document.getElementById("itemDetailSection").classList.add("hidden");
+        document.getElementById("creditAmountRow").classList.remove("hidden");
+      } else {
+        document.getElementById("itemDetailSection").classList.remove("hidden");
+        document.getElementById("creditAmountRow").classList.add("hidden");
+      }
     }
 
     function addTransaction() {
       const custId = document.getElementById("custSelect").value;
-      const amt = parseFloat(document.getElementById("amount").value) || 0;
-      if (!custId || amt <= 0) return;
+      if (!custId) return;
       const type = document.getElementById("txType").value;
       const d = document.getElementById("entryDateInput").value.split("-").reverse().join("/");
       
+      let amt = 0;
+      let item = "";
+      let qtyStr = "-";
+
+      if (type === "credit") {
+        amt = parseFloat(document.getElementById("creditAmountInput").value) || 0;
+        item = "ধন পৰিশোধ (জমা)";
+      } else {
+        amt = parseFloat(document.getElementById("amount").value) || 0;
+        item = (type === "old_due") ? "পুৰণি বাকী সংমিশ্ৰণ" : document.getElementById("itemType").value;
+        let q = parseFloat(document.getElementById("qtyNumber").value) || 0;
+        qtyStr = (q > 0) ? `${q} কেজি` : "-";
+      }
+
+      if (amt <= 0) { alert("সঠিক টকাৰ পৰিমাণ দিয়ক!"); return; }
+
       appData.transactions.push({
-        id: "T" + Date.now(), customerId: custId, date: d,
-        item: type === 'credit' ? 'ধন পৰিশোধ' : document.getElementById("itemType").value,
-        qty: type === 'credit' ? '-' : (document.getElementById("qty").value || '-'),
-        note: document.getElementById("note").value.trim(),
-        debit: type === 'credit' ? 0 : amt, credit: type === 'credit' ? amt : 0
+        id: "T" + Date.now(),
+        customerId: custId,
+        date: d,
+        item: item,
+        qty: qtyStr,
+        note: document.getElementById("note").value.trim() || "-",
+        debit: (type === 'credit') ? 0 : amt,
+        credit: (type === 'credit') ? amt : 0
       });
+
       persist();
       renderCustomerDetails();
       alert("✅ লেনদেন সংৰক্ষিত হ'ল!");
       document.getElementById("note").value = "";
+      if (type === "credit") document.getElementById("creditAmountInput").value = "";
     }
 
-    // লাইভ ছিগনেচাৰ পেড
+    // লাইভ ছিগনেচাৰ
     let sigCanvas, sigCtx, isDrawing = false;
     function initSigPad() {
       sigCanvas = document.getElementById('sigCanvas');
@@ -741,7 +844,6 @@
       alert("✅ অঁকা চহী Digitally Verified: Rantu Chetia হিচাপে সংৰক্ষিত হ'ল!");
     }
 
-    // গেলেৰীৰ পৰা চহী আপলোড
     function uploadGallerySignature(event) {
       if (!currentManager || !currentManager.isAdmin) return;
       const file = event.target.files[0];
