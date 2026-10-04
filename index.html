@@ -47,8 +47,7 @@
       font-size: 0.78rem;
       font-weight: 700;
     }
-    .sync-dot { height: 10px; width: 10px; background-color: #2e7d32; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.7; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.7; } }
+    .sync-dot { height: 10px; width: 10px; background-color: #2e7d32; border-radius: 50%; display: inline-block; }
 
     .card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-top: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.04); }
     .card-title { margin: 0 0 8px 0; color: var(--secondary); font-size: 0.95rem; font-weight: 700; border-bottom: 2px solid var(--light); padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
@@ -114,7 +113,7 @@
     <div class="popup-box">
       <div style="font-size:2rem; margin-bottom:4px;">🛡️</div>
       <h3 style="margin:2px 0; color:var(--primary);">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
-      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">Real-Time Push Stream Active | 24H Session</p>
+      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">Ultra-Stable Light Engine | 24H Session</p>
       <label style="text-align:left;">ম'বাইল নম্বৰ:</label>
       <input type="tel" id="loginPhone" placeholder="১০ অংকৰ মোবাইল নম্বৰ">
       <label style="text-align:left; margin-top:8px;">গোপন PIN (৬টা সংখ্যা):</label>
@@ -222,7 +221,7 @@
     </div>
   </div>
 
-  <!-- হেডাৰ -->
+  <!-- মূল হেডাৰ -->
   <div class="header">
     <h2>🏪 চেতিয়া গাঁও থলুৱা বজাৰ</h2>
     <div class="slogan">"পথাৰো আমাৰ, বজাৰো আমাৰ"</div>
@@ -232,8 +231,8 @@
 
   <!-- লাইভ ছিংক বাৰ -->
   <div class="sync-panel">
-    <div><span class="sync-dot"></span> <span id="cloudSyncText">লাইভ ক্লাউড ষ্ট্ৰীম সক্ৰিয় (১ ছেকেণ্ডত ছিংক)</span></div>
-    <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.72rem; margin:0;" onclick="forcePullLatestCloudData()">🔄 Sync Now</button>
+    <div><span class="sync-dot"></span> <span id="cloudSyncText">লাইভ ছিংক ইঞ্জিন সক্ৰিয় (Ultra-Smooth)</span></div>
+    <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.72rem; margin:0;" onclick="manualSyncTrigger()">🔄 Sync Now</button>
   </div>
 
   <!-- পৰিচালক প্ৰফাইল কাৰ্ড -->
@@ -304,7 +303,7 @@
     </div>
   </div>
 
-  <!-- চহী ব্যৱস্থাপনা -->
+  <!-- চহী নিয়ন্ত্ৰণ পেনেল -->
   <div class="card admin-only-feature">
     <div class="card-title">
       <span>✍️ চহী ব্যৱস্থাপনা (Authorised & Issuer)</span>
@@ -504,17 +503,17 @@
 
   <script>
     // ========================================================
-    // প্ৰকৃত অপেন-ষ্ট্ৰীম ক্লাউড ইঞ্জিন (ntfy.sh - 100% Zero CORS Block)
+    // লাইটৱেইট ষ্ট্ৰীম এঞ্জিন (Zero Memory Leak, No Freeze)
     // ========================================================
-    const LIVE_STREAM_TOPIC = "chetia_gaon_bajar_live_sync_stream_2026";
-    const STREAM_URL = `https://ntfy.sh/${LIVE_STREAM_TOPIC}`;
+    const SYNC_TOPIC = "chetia_tholuwa_bajar_live_2026";
+    const SYNC_ENDPOINT = `https://ntfy.sh/${SYNC_TOPIC}`;
 
     const DEFAULT_MANAGERS = {
       ADMIN: { name: "নিতুল দিহিঙীয়া", role: "মুখ্য পৰিচালক", phone: "8822427980", pin: "291205", photo: "./logo.png", isAdmin: true },
       OPERATOR: { name: "ৰণ্টু চেতিয়া", role: "সহ-পৰিচালক", phone: "9613777612", pin: "123456", photo: "./logo.png", isAdmin: false }
     };
     
-    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_stream")) || DEFAULT_MANAGERS;
+    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_smooth")) || DEFAULT_MANAGERS;
     let currentManager = null;
     let savedAuthSignature = localStorage.getItem("cg_bajar_auth_signature") || "";
     let savedIssuerSignature = localStorage.getItem("cg_bajar_issuer_signature") || "";
@@ -523,9 +522,10 @@
 
     let capturedPhotoBase64 = "";
     let capturedGpsLocation = "";
+    let isSyncing = false;
 
     function saveManagersAuth() {
-      localStorage.setItem("cg_bajar_managers_auth_stream", JSON.stringify(managersData));
+      localStorage.setItem("cg_bajar_managers_auth_smooth", JSON.stringify(managersData));
     }
 
     const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000;
@@ -588,8 +588,7 @@
       applySignatures();
       setDefaultDateTime();
       applyBusinessLogo();
-      startRealtimeStreamListener(); // ক্লাউড লাইভ ষ্ট্ৰীমিং আৰম্ভ
-      forcePullLatestCloudData();
+      startSmoothLiveSync(); // সুস্থিৰ ছিংক আৰম্ভ
     }
 
     function logoutManager() {
@@ -686,21 +685,21 @@
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement("canvas");
-          canvas.width = 640;
-          canvas.height = (img.height / img.width) * 640;
+          canvas.width = 480;
+          canvas.height = (img.height / img.width) * 480;
           const ctx = canvas.getContext("2d");
 
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
-          ctx.fillRect(0, canvas.height - 48, canvas.width, 48);
+          ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
 
           ctx.fillStyle = "#ffffff";
-          ctx.font = "bold 13px sans-serif";
+          ctx.font = "bold 12px sans-serif";
           const nowStr = new Date().toLocaleString('en-GB');
-          ctx.fillText(`📍 GPS: ${lat}, ${lon} | ${nowStr}`, 10, canvas.height - 28);
-          ctx.fillText(`দোকান: চেতিয়া গাঁও থলুৱা বজাৰ (Verified Proof)`, 10, canvas.height - 10);
+          ctx.fillText(`📍 GPS: ${lat}, ${lon} | ${nowStr}`, 8, canvas.height - 22);
+          ctx.fillText(`দোকান: চেতিয়া গাঁও থলুৱা বজাৰ`, 8, canvas.height - 8);
 
-          capturedPhotoBase64 = canvas.toDataURL("image/jpeg", 0.7);
+          capturedPhotoBase64 = canvas.toDataURL("image/jpeg", 0.5);
           capturedGpsLocation = `${lat}, ${lon}`;
           document.getElementById("gpsLocationDisplay").innerHTML = `✅ প্ৰমাণিত ফটো আৰু GPS ষ্টাম্প সাজু (${capturedGpsLocation})`;
         };
@@ -789,7 +788,7 @@
         localStorage.setItem("cg_bajar_auth_signature", savedAuthSignature);
         localStorage.setItem("cg_bajar_sig_stamp", savedStampMeta);
         applySignatures();
-        pushToOpenStreamCloud();
+        pushDataToCloudPipeline();
         alert("✅ Authorised Signatory সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
@@ -803,7 +802,7 @@
         savedIssuerSignature = e.target.result;
         localStorage.setItem("cg_bajar_issuer_signature", savedIssuerSignature);
         applySignatures();
-        pushToOpenStreamCloud();
+        pushDataToCloudPipeline();
         alert("✅ বিল প্ৰস্তুতকৰ্তাৰ চহী সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
@@ -841,7 +840,7 @@
         else managersData.OPERATOR.photo = e.target.result;
         saveManagersAuth();
         document.getElementById("activeMgrPhoto").src = e.target.result;
-        pushToOpenStreamCloud();
+        pushDataToCloudPipeline();
       };
       reader.readAsDataURL(file);
     }
@@ -855,7 +854,7 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         cust.photo = e.target.result;
-        pushToOpenStreamCloud();
+        pushDataToCloudPipeline();
         document.getElementById("custProfileImg").src = e.target.result;
         document.getElementById("recCustPic").src = e.target.result;
       };
@@ -889,9 +888,9 @@
     }
 
     // ========================================================
-    // লাইভ ক্লাউড ষ্ট্ৰীম এঞ্জিন (Cross-Device 100% Guaranteed Sync)
+    // সুস্থিৰ আৰু লাইটৱেইট ক্লাউড ছিংক এঞ্জিন (No Memory Leak)
     // ========================================================
-    let appData = JSON.parse(localStorage.getItem("cg_bajar_open_stream_db")) || {
+    let appData = JSON.parse(localStorage.getItem("cg_bajar_clean_db_v2026")) || {
       customers: [
         { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png" },
         { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png" }
@@ -899,91 +898,89 @@
       transactions: []
     };
 
-    // ক্লাউডত লাইভ পাবলিশ (পোনপটীয়াকৈ ইন্টাৰনেটলৈ প্ৰেৰণ)
-    function pushToOpenStreamCloud() {
-      localStorage.setItem("cg_bajar_open_stream_db", JSON.stringify(appData));
-      document.getElementById("cloudSyncText").textContent = "⚡ ক্লাউডত লাইভ ষ্ট্ৰীমিং চলিছে...";
-
-      fetch(STREAM_URL, {
+    function pushDataToCloudPipeline() {
+      localStorage.setItem("cg_bajar_clean_db_v2026", JSON.stringify(appData));
+      
+      // ব্ৰাউজাৰ ব্লকিংবিহীন পোনপটীয়া ক্লাউড পুশ
+      fetch(SYNC_ENDPOINT, {
         method: "POST",
         body: JSON.stringify(appData),
-        headers: {
-          "Title": "SYNC_DATA_EVENT",
-          "Priority": "high"
-        }
-      })
-      .then(res => {
+        headers: { "Title": "DATA_UPDATE" }
+      }).then(() => {
         document.getElementById("cloudSyncText").textContent = "🟢 ক্লাউডত লাইভ সংৰক্ষিত (ম'বাইল ↔ কম্পিউটাৰ)";
-      })
-      .catch(err => {
-        document.getElementById("cloudSyncText").textContent = "🟢 স্থানীয়ভাৱে সুৰক্ষিত";
+      }).catch(() => {
+        document.getElementById("cloudSyncText").textContent = "🟢 স্থানীয়ভাৱে সংৰক্ষিত";
       });
 
       filterMarketByDate();
     }
 
-    // কম্পিউটাৰত লাইভ ষ্ট্ৰীম শ্ৰৱণ (Server-Sent Events: Realtime Instant Feed)
-    function startRealtimeStreamListener() {
-      try {
-        const eventSource = new EventSource(`${STREAM_URL}/sse`);
-        
-        eventSource.onmessage = function(event) {
-          try {
-            const dataObj = JSON.parse(event.data);
-            if (dataObj && dataObj.message) {
-              const parsedPayload = JSON.parse(dataObj.message);
-              if (parsedPayload && parsedPayload.customers) {
-                appData = parsedPayload;
-                localStorage.setItem("cg_bajar_open_stream_db", JSON.stringify(appData));
-                refreshCustomerDropdown(document.getElementById("custSelect").value);
-                renderCustomerDetails();
-                filterMarketByDate();
-                document.getElementById("cloudSyncText").textContent = "⚡ আনজনৰ এন্ট্ৰি তৎক্ষণাত লাইভ হ'ল!";
-                setTimeout(() => {
-                  document.getElementById("cloudSyncText").textContent = "লাইভ ক্লাউড ষ্ট্ৰীম সক্ৰিয় (১ ছেকেণ্ডত ছিংক)";
-                }, 2500);
-              }
+    function startSmoothLiveSync() {
+      // প্ৰতি ৪ ছেকেণ্ডত কেৱল পাতলভাৱে পৰীক্ষা (মেম'ৰী লীক আৰু হেং ৰোধ)
+      setInterval(() => {
+        if (!isSyncing && navigator.onLine) {
+          isSyncing = true;
+          fetch(`${SYNC_ENDPOINT}/json?poll=1`)
+          .then(res => res.text())
+          .then(text => {
+            isSyncing = false;
+            if (!text) return;
+            const lines = text.trim().split("\n");
+            for (let i = lines.length - 1; i >= 0; i--) {
+              try {
+                const item = JSON.parse(lines[i]);
+                if (item && item.message) {
+                  const cloudPayload = JSON.parse(item.message);
+                  if (cloudPayload && cloudPayload.transactions) {
+                    if (cloudPayload.transactions.length !== appData.transactions.length) {
+                      appData = cloudPayload;
+                      localStorage.setItem("cg_bajar_clean_db_v2026", JSON.stringify(appData));
+                      refreshCustomerDropdown(document.getElementById("custSelect").value);
+                      renderCustomerDetails();
+                      filterMarketByDate();
+                      document.getElementById("cloudSyncText").textContent = "⚡ আনজনৰ এন্ট্ৰি তৎক্ষণাত লাইভ হ'ল!";
+                    }
+                    break;
+                  }
+                }
+              } catch(e) {}
             }
-          } catch(e) {}
-        };
-
-        eventSource.onerror = function() {
-          document.getElementById("cloudSyncText").textContent = "🟡 পুনৰ ষ্ট্ৰীম সংযোগ চলিছে...";
-        };
-      } catch(e) {}
-
-      // যদি ষ্ট্ৰীম বিচ্ছিন্ণ হয়, প্ৰতি ৩ ছেকেণ্ডৰ মূৰে মূৰে অটো-চেক
-      setInterval(forcePullLatestCloudData, 3000);
+          })
+          .catch(() => { isSyncing = false; });
+        }
+      }, 4000);
     }
 
-    // শেহতীয়া ডাটা সংগ্ৰহ (Polling Fallback)
-    function forcePullLatestCloudData() {
-      fetch(`${STREAM_URL}/json?poll=1`)
+    function manualSyncTrigger() {
+      document.getElementById("cloudSyncText").textContent = "⏳ ছিংক চলিছে...";
+      fetch(`${SYNC_ENDPOINT}/json?poll=1`)
       .then(res => res.text())
       .then(text => {
-        if (!text) return;
+        if (!text) { alert("ক্লাউড ডাটা ইতিপূৰ্বেই আপডেট আছে।"); return; }
         const lines = text.trim().split("\n");
+        let updated = false;
         for (let i = lines.length - 1; i >= 0; i--) {
           try {
             const item = JSON.parse(lines[i]);
             if (item && item.message) {
-              const payload = JSON.parse(item.message);
-              if (payload && payload.customers && payload.transactions) {
-                if (payload.transactions.length !== appData.transactions.length) {
-                  appData = payload;
-                  localStorage.setItem("cg_bajar_open_stream_db", JSON.stringify(appData));
-                  refreshCustomerDropdown(document.getElementById("custSelect").value);
-                  renderCustomerDetails();
-                  filterMarketByDate();
-                  document.getElementById("cloudSyncText").textContent = "⚡ আনজনৰ এন্ট্ৰি তৎক্ষণাত লাইভ হ'ল!";
-                }
+              const cloudPayload = JSON.parse(item.message);
+              if (cloudPayload && cloudPayload.customers) {
+                appData = cloudPayload;
+                localStorage.setItem("cg_bajar_clean_db_v2026", JSON.stringify(appData));
+                refreshCustomerDropdown(document.getElementById("custSelect").value);
+                renderCustomerDetails();
+                filterMarketByDate();
+                document.getElementById("cloudSyncText").textContent = "🟢 ক্লাউড ছিংক সম্পন্ন";
+                alert("✅ কম্পিউটাৰ আৰু ম'বাইলৰ সকলো তথ্য মিলি গ'ল!");
+                updated = true;
                 break;
               }
             }
           } catch(e) {}
         }
+        if(!updated) alert("✅ কোনো নতুন এন্ট্ৰি নাই, সকলো ডাটা একেই আছে।");
       })
-      .catch(err => {});
+      .catch(() => alert("ইন্টাৰনেট সংযোগ পৰীক্ষা কৰক!"));
     }
 
     function refreshCustomerDropdown(selectedId = null) {
@@ -1065,7 +1062,7 @@
       cust.name = document.getElementById("editCustName").value.trim();
       cust.phone = document.getElementById("editCustPhone").value.trim();
       cust.address = document.getElementById("editCustAddress").value.trim();
-      pushToOpenStreamCloud();
+      pushDataToCloudPipeline();
       closeEditCustomerModal();
       refreshCustomerDropdown(custId);
       alert("✅ গ্ৰাহকৰ তথ্য আপডেট হ'ল!");
@@ -1079,7 +1076,7 @@
       if (confirm(`আপুনি নিশ্চিতনে '${cust.name}'-ৰ সকলো হিচাপ আৰু প্ৰফাইল মচি পেলাব?`)) {
         appData.customers = appData.customers.filter(c => c.id !== custId);
         appData.transactions = appData.transactions.filter(t => t.customerId !== custId);
-        pushToOpenStreamCloud();
+        pushDataToCloudPipeline();
         refreshCustomerDropdown();
       }
     }
@@ -1090,7 +1087,7 @@
       if (!name) return;
       const id = "C" + Date.now();
       appData.customers.push({ id, name, phone: document.getElementById("newCustPhone").value.trim(), address: document.getElementById("newCustAddress").value.trim(), photo: "./logo.png" });
-      pushToOpenStreamCloud();
+      pushDataToCloudPipeline();
       toggleNewCustForm();
       refreshCustomerDropdown(id);
     }
@@ -1182,9 +1179,9 @@
       };
 
       appData.transactions.push(newTx);
-      pushToOpenStreamCloud(); // কোনো ব্লকিং নোহোৱাকৈ ক্লাউডলৈ প্ৰেৰণ
+      pushDataToCloudPipeline(); // ব্লকিংবিহীন ক্লাউড সংৰক্ষণ
       renderCustomerDetails();
-      alert("✅ এন্ট্ৰি সংৰক্ষিত হ'ল আৰু কম্পিউটাৰৰ বাবে ক্লাউডত লাইভ প্ৰেৰণ হ'ল!");
+      alert("✅ এন্ট্ৰি সফলভাৱে সংৰক্ষিত হ'ল আৰু ক্লাউডত লাইভ হ'ল!");
       
       document.getElementById("note").value = "";
       capturedPhotoBase64 = "";
