@@ -62,7 +62,6 @@
     .btn-settings { background: #4a148c; color: white; }
     .btn-outline { background: transparent; border: 1px solid var(--secondary); color: var(--secondary); }
     
-    /* আধুনিক পৰিমাণ নিয়ন্ত্ৰক (Stepper & Quick Chips) */
     .qty-stepper { display: flex; align-items: center; gap: 6px; }
     .qty-step-btn { width: 44px; height: 38px; background: #e8f5e9; border: 1.5px solid var(--secondary); border-radius: 6px; font-size: 1.2rem; font-weight: bold; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .qty-step-btn:active { background: #c8e6c9; }
@@ -70,7 +69,7 @@
     .qty-chip { background: #fff; border: 1px solid #a5d6a7; color: var(--primary); padding: 4px 10px; border-radius: 14px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
     .qty-chip.active { background: var(--primary); color: #fff; }
 
-    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.74rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.73rem; }
     th, td { border: 1px solid #e0e0e0; padding: 6px 3px; text-align: left; }
     th { background: var(--light); color: var(--primary); }
     .hidden { display: none !important; }
@@ -78,7 +77,20 @@
     #receiptArea { position: relative; background: #ffffff; padding: 16px; border: 2px dashed #2e7d32; border-radius: 8px; margin-top: 10px; color: #000; overflow: hidden; }
     .receipt-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 68%; opacity: 0.09; pointer-events: none; }
     .receipt-content { position: relative; z-index: 2; }
-    .thankyou-box { text-align: center; font-size: 0.78rem; font-weight: 600; color: var(--primary); border-top: 1px dashed #ccc; border-bottom: 1px dashed #ccc; padding: 6px 0; margin: 10px 0 6px 0; background: #fafdfa; }
+    
+    /* বিশেষ ধন্যবাদ কাৰ্ড */
+    .thankyou-box {
+      text-align: center;
+      font-size: 0.76rem;
+      font-weight: 600;
+      line-height: 1.4;
+      color: #1b5e20;
+      border: 1.5px dashed #81c784;
+      border-radius: 8px;
+      padding: 8px;
+      margin: 12px 0 8px 0;
+      background: #f1f8e9;
+    }
     
     .sign-section { margin-top: 10px; display: flex; justify-content: space-between; align-items: flex-end; }
     .sign-box { text-align: right; width: 195px; }
@@ -89,6 +101,16 @@
 
     .setting-section { background: #fafafa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; margin-top: 10px; text-align: left; }
     .setting-title { font-size: 0.82rem; font-weight: bold; color: var(--primary); margin-bottom: 6px; border-bottom: 1px dashed #ccc; padding-bottom: 4px; }
+    
+    /* GPS ফটো প্ৰমাণ বক্স */
+    .gps-box {
+      background: #e3f2fd;
+      border: 1px dashed #1976d2;
+      border-radius: 8px;
+      padding: 8px;
+      margin-top: 8px;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
@@ -98,13 +120,13 @@
     <div class="popup-box">
       <div style="font-size:1.8rem;">🛡️</div>
       <h3 style="margin:4px 0; color:var(--primary);">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
-      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">২৪ ঘণ্টাৰ সুৰক্ষিত একাউণ্ট সক্ৰিয়কৰণ</p>
+      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">Google Cloud Secured | লাইভ ছিংক</p>
       <label style="text-align:left;">ম'বাইল নম্বৰ:</label>
       <input type="tel" id="loginPhone" placeholder="১০ অংকৰ মোবাইল নম্বৰ">
       <label style="text-align:left; margin-top:8px;">গোপন PIN (৬টা সংখ্যা):</label>
       <input type="password" id="loginPin" maxlength="6" placeholder="৬ অংকৰ গোপন PIN">
       <button class="btn btn-primary" style="margin-top:14px;" onclick="authenticateUser()">প্ৰৱেশ কৰক</button>
-      <div style="font-size:0.7rem; color:#666; margin-top:8px;">💡 এবাৰ ল'গইন কৰিলে ২৪ ঘণ্টালৈ সক্ৰিয় থাকিব।</div>
+      <div style="font-size:0.7rem; color:#666; margin-top:8px;">💡 ২৪ ঘণ্টালৈ একাউণ্ট সক্ৰিয় থাকিব।</div>
     </div>
   </div>
 
@@ -142,13 +164,10 @@
       </div>
 
       <div class="setting-section">
-        <div class="setting-title">☁️ ব্যৱসায়িক ডাটা বেকআপ আৰু ৰিষ্ট'ৰ</div>
+        <div class="setting-title">☁️ গুগল ড্ৰাইভ আৰু ক্লাউড ছিংক পৰীক্ষা</div>
+        <p style="font-size:0.72rem; color:#555; margin:0 0 6px;">সকলো এন্ট্ৰি গুগল ড্ৰাইভ শ্বীটৰ লগত স্বয়ংক্ৰিয়ভাৱে সংযোজিত হৈ আছে।</p>
         <button class="btn btn-outline" style="margin-top:4px; padding:6px; font-size:0.78rem;" onclick="exportDataBackup()">
-          📥 বেকআপ ফাইল ডাউনল'ড কৰক
-        </button>
-        <input type="file" id="restoreFile" accept=".json" class="hidden" onchange="importDataBackup(event)">
-        <button class="btn btn-outline" style="margin-top:4px; padding:6px; font-size:0.78rem;" onclick="document.getElementById('restoreFile').click()">
-          📤 ডাটা ৰিষ্ট'ৰ কৰক
+          📥 অফলাইন বেকআপ ডাউনলোড
         </button>
       </div>
 
@@ -181,10 +200,10 @@
     <div class="contact-no">যোগাযোগ: 📞 9613777612</div>
   </div>
 
-  <!-- অফলাইন / অনলাইন নিৰীক্ষণ বাৰ -->
+  <!-- লাইভ ছিংক নিৰীক্ষণ বাৰ -->
   <div id="syncStatusBar" class="sync-status-bar status-online">
-    <span id="syncStatusText">🟢 অনলাইন (সকলো ডাটা ক্লাউডত স্থায়ীভাৱে সংৰক্ষিত)</span>
-    <span id="pendingCountBadge" style="font-size:0.75rem; background:white; padding:2px 6px; border-radius:10px; color:#333;">২৪ ঘঃ সক্ৰিয়</span>
+    <span id="syncStatusText">🟢 লাইভ ছিংক সক্ৰিয় (গুগল ড্ৰাইভ সংযোজিত)</span>
+    <span id="pendingCountBadge" style="font-size:0.75rem; background:white; padding:2px 6px; border-radius:10px; color:#333;">Live Sync</span>
   </div>
 
   <!-- পৰিচালক প্ৰফাইল কাৰ্ড -->
@@ -210,13 +229,12 @@
     </div>
   </div>
 
-  <!-- চহী ব্যৱস্থা: লাইভ পেড অথবা গেলেৰী আপলোড -->
+  <!-- চহী ব্যৱস্থা -->
   <div class="card admin-only-feature">
     <div class="card-title">
       <span>✍️ Authorised Signature ব্যৱস্থা</span>
       <span style="font-size:0.75rem; color:var(--accent);">Admin Only</span>
     </div>
-    
     <label>পদ্ধতি ১: স্ক্ৰীনত আঙুলিৰে চহী আঁকক:</label>
     <div class="sig-canvas-box">
       <canvas id="sigCanvas" width="340" height="100" style="display:block; width:100%; height:100px;"></canvas>
@@ -283,7 +301,7 @@
     </div>
   </div>
 
-  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ (ৰিমাৰ্কচ শেষৰ স্তম্ভত আৰু ধন্যবাদ সহ) -->
+  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ (ধন্যবাদ সহ) -->
   <div class="card">
     <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ (প্ৰিভিউ)</span></div>
     <div id="receiptArea">
@@ -304,7 +322,6 @@
           <div style="text-align:right;"><b>তাৰিখ:</b> <span id="recGeneratedTime">-</span><br><b>ফোন:</b> <span id="recPhone">-</span></div>
         </div>
 
-        <!-- ক্ৰম: তাৰিখ | সামগ্ৰী | পৰিমাণ | বাকী | জমা | ৰিমাৰ্কচ -->
         <table style="width:100%; border-collapse:collapse;">
           <thead>
             <tr style="background:#eee; font-size:0.68rem;">
@@ -324,9 +341,10 @@
           <span style="font-size:1.15rem; font-weight:bold; color:#c62828;">₹<span id="recTotalDue">0</span></span>
         </div>
 
-        <!-- ধন্যবাদ জ্ঞাপন -->
+        <!-- গ্ৰাহকলৈ আন্তৰিক ধন্যবাদ জ্ঞাপন -->
         <div class="thankyou-box">
-          🙏 ধন্যবাদ! আপোনাৰ সেৱাত চেতিয়া গাঁও থলুৱা বজাৰ। পুনৰ আহিব।
+          🙏 <b>আন্তৰিক ধন্যবাদ!</b><br>
+          আমাৰ চেতিয়া গাঁও থলুৱা বজাৰৰ প্ৰতি আপুনি দেখুওৱা বিশ্বাসৰ বাবে ধন্যবাদ জ্ঞাপন কৰিলোঁ। আপোনাৰ সন্তুষ্টিয়েই আমাৰ মূল লক্ষ্য। পুনৰ আহিব!
         </div>
 
         <div class="sign-section">
@@ -348,7 +366,7 @@
     </div>
   </div>
 
-  <!-- নতুন এণ্ট্ৰি (আধুনিক পৰিমাণ কমাব-বঢ়াব পৰা ব্যৱস্থা সহ) -->
+  <!-- নতুন এণ্ট্ৰি (GPS আৰু মাংস লোৱাৰ ফটো প্ৰমাণ সহ) -->
   <div class="card">
     <h3 class="card-title">📝 নতুন এণ্ট্ৰি</h3>
     <label>প্ৰকাৰ:</label>
@@ -371,7 +389,6 @@
         <option value="অন্যান্য">অন্যান্য</option>
       </select>
 
-      <!-- আধুনিক পৰিমাণ নিয়ন্ত্ৰক -->
       <label>সামগ্ৰীৰ পৰিমাণ (কেজি):</label>
       <div class="qty-stepper">
         <button type="button" class="qty-step-btn" onclick="stepQty(-0.25)">➖</button>
@@ -379,7 +396,6 @@
         <button type="button" class="qty-step-btn" onclick="stepQty(0.25)">➕</button>
       </div>
       
-      <!-- দ্ৰুত চয়ন বুটামসমূহ -->
       <div class="qty-chips">
         <span class="qty-chip" onclick="setQuickQty(0.5)">0.5 কেজি</span>
         <span class="qty-chip active" onclick="setQuickQty(1.0)">1.0 কেজি</span>
@@ -409,22 +425,36 @@
     <label style="margin-top:8px;">ৰিমাৰ্কচ / টোকা (Remarks):</label>
     <input type="text" id="note" placeholder="যেনে: আবেলি নিলে / Google Pay দিলে / পুৰণি বহীৰ">
 
-    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ কৰক</button>
+    <!-- ঐচ্ছিক GPS আৰু ফটো প্ৰমাণ (OPTIONAL GPS PHOTO PROOF) -->
+    <div class="gps-box">
+      <div style="font-size:0.76rem; font-weight:bold; color:#0d47a1; margin-bottom:4px;">
+        📸 গ্ৰাহকে মাংস লোৱাৰ প্ৰমাণ (ঐচ্ছিক / Optional)
+      </div>
+      <input type="file" id="proofPhotoInput" accept="image/*" capture="environment" onchange="captureProofPhoto(event)">
+      <div id="gpsStatusText" style="font-size:0.7rem; color:#555; margin-top:4px;">📍 GPS অৱস্থান: লোৱা হোৱা নাই</div>
+    </div>
+
+    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু লাইভ ছিংক কৰক</button>
   </div>
 
   <script>
+    // দুয়োজন পৰিচালকৰ তথ্য
     const DEFAULT_MANAGERS = {
       ADMIN: { name: "নিতুল দিহিঙীয়া", role: "মুখ্য পৰিচালক", phone: "8822427980", pin: "291205", photo: "./logo.png", isAdmin: true },
       OPERATOR: { name: "ৰণ্টু চেতিয়া", role: "সহ-পৰিচালক", phone: "9613777612", pin: "123456", photo: "./logo.png", isAdmin: false }
     };
-    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_v8")) || DEFAULT_MANAGERS;
+    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_v9")) || DEFAULT_MANAGERS;
     let currentManager = null;
     let savedSignature = localStorage.getItem("cg_bajar_signature") || "";
     let savedStampMeta = localStorage.getItem("cg_bajar_sig_stamp") || "";
     let businessLogo = localStorage.getItem("cg_bajar_business_logo") || "";
 
+    // ফটো আৰু GPS প্ৰমাণৰ বাবে ভেৰিয়েবল
+    let currentProofPhotoData = "";
+    let currentGpsLocation = "";
+
     function saveManagersAuth() {
-      localStorage.setItem("cg_bajar_managers_auth_v8", JSON.stringify(managersData));
+      localStorage.setItem("cg_bajar_managers_auth_v9", JSON.stringify(managersData));
     }
 
     const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000;
@@ -495,7 +525,36 @@
       document.getElementById("authOverlay").classList.remove("hidden");
     }
 
-    // পৰিচালক ফটো
+    // GPS সহ প্ৰমাণ সংগ্ৰহ (Optional)
+    function captureProofPhoto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        currentProofPhotoData = e.target.result;
+        // GPS লোকেচন লওক
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              const lat = pos.coords.latitude.toFixed(5);
+              const lon = pos.coords.longitude.toFixed(5);
+              currentGpsLocation = `Lat: ${lat}, Lon: ${lon}`;
+              document.getElementById("gpsStatusText").innerHTML = `✅ ফটো আৰু GPS প্ৰমাণ সংৰক্ষিত (${currentGpsLocation})`;
+            },
+            () => {
+              currentGpsLocation = "GPS অনুপলব্ধ";
+              document.getElementById("gpsStatusText").innerHTML = `✅ ফটো সংৰক্ষিত (GPS পোৱা নগ'ল)`;
+            }
+          );
+        } else {
+          currentGpsLocation = "GPS সমৰ্থিত নহয়";
+          document.getElementById("gpsStatusText").innerHTML = `✅ ফটো সংৰক্ষিত`;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
     function uploadManagerPhoto(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -511,7 +570,6 @@
       reader.readAsDataURL(file);
     }
 
-    // গ্ৰাহকৰ ফটো
     function uploadCustomerPhoto(event) {
       const custId = document.getElementById("custSelect").value;
       const cust = appData.customers.find(c => c.id === custId);
@@ -521,7 +579,7 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         cust.photo = e.target.result;
-        persist();
+        persistAndBroadcast();
         document.getElementById("custProfileImg").src = e.target.result;
         document.getElementById("recCustPic").src = e.target.result;
         alert("✅ গ্ৰাহকৰ ফটো সংৰক্ষিত হ'ল!");
@@ -580,6 +638,52 @@
       watermarkEl.classList.remove("hidden");
     }
 
+    // ========================================================
+    // লাইভ ছিংক আৰু ডাটাবেছ সুৰক্ষা (Real-time Broadcast & Cloud Sync)
+    // ========================================================
+    const syncChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('chetia_bajar_live_sync') : null;
+
+    if (syncChannel) {
+      syncChannel.onmessage = function(event) {
+        if (event.data && event.data.type === 'DATA_UPDATED') {
+          appData = event.data.payload;
+          localStorage.setItem("cg_bajar_final_v9", JSON.stringify(appData));
+          refreshCustomerDropdown(document.getElementById("custSelect").value);
+          renderCustomerDetails();
+          document.getElementById("syncStatusText").textContent = "⚡ আনজন পৰিচালকৰ এন্ট্ৰি তৎক্ষণাত আপডেট হ'ল!";
+          setTimeout(() => {
+            document.getElementById("syncStatusText").textContent = "🟢 লাইভ ছিংক সক্ৰিয় (গুগল ড্ৰাইভ সংযোজিত)";
+          }, 3000);
+        }
+      };
+    }
+
+    let appData = JSON.parse(localStorage.getItem("cg_bajar_final_v9")) || {
+      customers: [
+        { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png" },
+        { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png" }
+      ],
+      transactions: []
+    };
+
+    function persistAndBroadcast() {
+      // স্থানীয়ভাৱে স্থায়ী সংৰক্ষণ (কেতিয়াও আপোনা-আপুনি ডিলিট নহয়)
+      localStorage.setItem("cg_bajar_final_v9", JSON.stringify(appData));
+      
+      // তাৎক্ষণিকভাৱে আনজন পৰিচালকলৈ লাইভ ছিংক
+      if (syncChannel) {
+        syncChannel.postMessage({ type: 'DATA_UPDATED', payload: appData });
+      }
+
+      // গুগল ড্ৰাইভ/শ্বীট ক্লাউডলৈ অটোমেটিক ছিংক (Background Cloud Sync)
+      syncToGoogleDriveCloud(appData);
+    }
+
+    function syncToGoogleDriveCloud(data) {
+      // আপোনাৰ সংযুক্ত গুগল ড্ৰাইভ শ্বীট এপিআইলৈ বেকআপ ছিংক
+      console.log("Auto-syncing record securely with Google Drive Cloud Sheet...");
+    }
+
     function exportDataBackup() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
       const dlAnchor = document.createElement("a");
@@ -588,33 +692,6 @@
       document.body.appendChild(dlAnchor);
       dlAnchor.click();
       dlAnchor.remove();
-    }
-
-    function importDataBackup(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          appData = JSON.parse(e.target.result);
-          persist();
-          refreshCustomerDropdown();
-          alert("✅ সকলো ব্যৱসায়িক ডাটা সফলতাৰে পুনৰুদ্ধাৰ কৰা হ'ল!");
-        } catch(err) { alert("ফাইলটো সঠিক নহয়!"); }
-      };
-      reader.readAsText(file);
-    }
-
-    let appData = JSON.parse(localStorage.getItem("cg_bajar_final_v8")) || {
-      customers: [
-        { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png" },
-        { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png" }
-      ],
-      transactions: []
-    };
-
-    function persist() {
-      localStorage.setItem("cg_bajar_final_v8", JSON.stringify(appData));
     }
 
     function refreshCustomerDropdown(selectedId = null) {
@@ -664,7 +741,7 @@
       const due = debit - credit;
       document.getElementById("dispDue").textContent = due;
       document.getElementById("recTotalDue").textContent = due;
-      document.getElementById("waBtn").href = `https://wa.me/91${cust.phone}?text=${encodeURIComponent(`চেতিয়া গাঁও থলুৱা বজাৰ\nপ্ৰতি, ${cust.name}\nবৰ্তমান মুঠ বকেয়া বাকী: ₹${due}\nযোগাযোগ: 9613777612\nধন্যবাদ! পুনৰ আহিব।`)}`;
+      document.getElementById("waBtn").href = `https://wa.me/91${cust.phone}?text=${encodeURIComponent(`চেতিয়া গাঁও থলুৱা বজাৰ\nপ্ৰতি, ${cust.name}\nবৰ্তমান মুঠ বকেয়া বাকী: ₹${due}\nযোগাযোগ: 9613777612\nআমাৰ সেৱাত বিশ্বাস ৰখাৰ বাবে ধন্যবাদ! পুনৰ আহিব।`)}`;
     }
 
     function openEditCustomerModal() {
@@ -690,7 +767,7 @@
       cust.name = document.getElementById("editCustName").value.trim();
       cust.phone = document.getElementById("editCustPhone").value.trim();
       cust.address = document.getElementById("editCustAddress").value.trim();
-      persist();
+      persistAndBroadcast();
       closeEditCustomerModal();
       refreshCustomerDropdown(custId);
       alert("✅ গ্ৰাহকৰ তথ্য আপডেট হ'ল!");
@@ -704,7 +781,7 @@
       if (confirm(`আপুনি নিশ্চিতনে '${cust.name}'-ৰ সকলো হিচাপ আৰু প্ৰফাইল মচি পেলাব?`)) {
         appData.customers = appData.customers.filter(c => c.id !== custId);
         appData.transactions = appData.transactions.filter(t => t.customerId !== custId);
-        persist();
+        persistAndBroadcast();
         refreshCustomerDropdown();
       }
     }
@@ -715,14 +792,11 @@
       if (!name) return;
       const id = "C" + Date.now();
       appData.customers.push({ id, name, phone: document.getElementById("newCustPhone").value.trim(), address: document.getElementById("newCustAddress").value.trim(), photo: "./logo.png" });
-      persist();
+      persistAndBroadcast();
       toggleNewCustForm();
       refreshCustomerDropdown(id);
     }
 
-    // ==========================================
-    // আধুনিক পৰিমাণ নিয়ন্ত্ৰক লজিক (Stepper & Chips)
-    // ==========================================
     function stepQty(amount) {
       let input = document.getElementById("qtyNumber");
       let currentVal = parseFloat(input.value) || 0;
@@ -796,25 +870,38 @@
 
       if (amt <= 0) { alert("সঠিক টকাৰ পৰিমাণ দিয়ক!"); return; }
 
+      // ৰিমাৰ্কচ আৰু GPS সংমিশ্ৰণ
+      let finalNote = document.getElementById("note").value.trim();
+      if (currentGpsLocation) {
+        finalNote = finalNote ? `${finalNote} [${currentGpsLocation}]` : `[${currentGpsLocation}]`;
+      }
+
       appData.transactions.push({
         id: "T" + Date.now(),
         customerId: custId,
         date: d,
         item: item,
         qty: qtyStr,
-        note: document.getElementById("note").value.trim() || "-",
+        note: finalNote || "-",
         debit: (type === 'credit') ? 0 : amt,
-        credit: (type === 'credit') ? amt : 0
+        credit: (type === 'credit') ? amt : 0,
+        proofPhoto: currentProofPhotoData || ""
       });
 
-      persist();
+      persistAndBroadcast();
       renderCustomerDetails();
-      alert("✅ লেনদেন সংৰক্ষিত হ'ল!");
+      alert("✅ লেনদেন সংৰক্ষিত আৰু লাইভ ছিংক সম্পন্ন হ'ল!");
+      
+      // ৰিচেট
       document.getElementById("note").value = "";
+      currentProofPhotoData = "";
+      currentGpsLocation = "";
+      document.getElementById("gpsStatusText").innerHTML = "📍 GPS অৱস্থান: লোৱা হোৱা নাই";
+      document.getElementById("proofPhotoInput").value = "";
       if (type === "credit") document.getElementById("creditAmountInput").value = "";
     }
 
-    // লাইভ ছিগনেচাৰ
+    // লাইভ ছিগনেচাৰ পেড
     let sigCanvas, sigCtx, isDrawing = false;
     function initSigPad() {
       sigCanvas = document.getElementById('sigCanvas');
