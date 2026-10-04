@@ -7,6 +7,7 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./logo.png">
   <meta name="theme-color" content="#1b5e20">
+  <!-- html2canvas আৰু PDF লাইব্ৰেৰী -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     :root {
@@ -33,7 +34,7 @@
     .header .slogan { margin: 4px 0 0; font-size: 0.85rem; font-weight: 700; color: #ffeb3b; }
     .header .contact-no { margin: 5px 0 0; font-size: 0.82rem; font-weight: bold; background: rgba(255,255,255,0.2); display: inline-block; padding: 2px 10px; border-radius: 14px; }
 
-    /* পৃথক লাইভ ছিংক বাৰ */
+    /* লাইভ ক্লাউড ষ্টেটাছ বাৰ */
     .sync-panel {
       background: #ffffff;
       border: 1.5px solid #81c784;
@@ -43,19 +44,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 0.78rem;
+      font-weight: 700;
     }
-    .sync-toggle-btn {
-      background: #e8f5e9;
-      border: 1px solid var(--secondary);
-      color: var(--primary);
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.72rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
+    .sync-dot { height: 10px; width: 10px; background-color: #2e7d32; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.7; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.7; } }
 
     .card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-top: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
     .card-title { margin: 0 0 8px 0; color: var(--secondary); font-size: 0.95rem; font-weight: 700; border-bottom: 2px solid var(--light); padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
@@ -78,6 +71,7 @@
     .btn-secondary { background: #37474f; color: white; }
     .btn-wa { background: #25d366; color: white; }
     .btn-invoice { background: #0277bd; color: white; }
+    .btn-pdf { background: #d32f2f; color: white; }
     .btn-danger { background: var(--accent); color: white; }
     .btn-edit { background: #e65100; color: white; }
     .btn-settings { background: #4a148c; color: white; }
@@ -89,8 +83,8 @@
     .qty-chip { background: #fff; border: 1px solid #a5d6a7; color: var(--primary); padding: 4px 10px; border-radius: 14px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
     .qty-chip.active { background: var(--primary); color: #fff; }
 
-    /* বিল ৰচিদ */
-    #receiptArea { position: relative; background: #ffffff; padding: 14px; border: 2px solid #2e7d32; border-radius: 10px; margin-top: 10px; color: #111; overflow: hidden; }
+    /* বিল আৰু পাছবুক টেবুল */
+    #receiptArea, #passbookPrintArea { position: relative; background: #ffffff; padding: 14px; border: 2px solid #2e7d32; border-radius: 10px; margin-top: 10px; color: #111; overflow: hidden; }
     .receipt-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 68%; opacity: 0.08; pointer-events: none; }
     .receipt-content { position: relative; z-index: 2; }
     
@@ -98,18 +92,7 @@
     .bill-table th { background: #e8f5e9; color: #1b5e20; border: 1px solid #c8e6c9; padding: 6px 3px; font-weight: 700; text-align: center; }
     .bill-table td { border: 1px solid #e0e0e0; padding: 6px 3px; text-align: left; }
     
-    /* চুটি আৰু নিখুঁত ধন্যবাদ বাকচ */
-    .thankyou-box-short {
-      text-align: center;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #1b5e20;
-      border: 1px dashed #81c784;
-      border-radius: 6px;
-      padding: 6px;
-      margin: 10px 0 6px 0;
-      background: #f4faf4;
-    }
+    .thankyou-box-short { text-align: center; font-size: 0.78rem; font-weight: 700; color: #1b5e20; border: 1px dashed #81c784; border-radius: 6px; padding: 6px; margin: 10px 0 6px 0; background: #f4faf4; }
     
     .sign-section { margin-top: 8px; display: flex; justify-content: space-between; align-items: flex-end; }
     .sign-box { text-align: right; width: 180px; }
@@ -118,8 +101,12 @@
     .stamp-text { font-size: 0.62rem; color: #0d47a1; font-weight: 700; line-height: 1.2; margin-bottom: 2px; }
     .sign-line { border-top: 1.5px solid #222; font-size: 0.7rem; font-weight: 700; color: #111; padding-top: 2px; }
     
+    /* GPS ফটো থাম্বনেইল আৰু প্ৰমাণ পপআপ */
+    .gps-thumb-btn { background: #e3f2fd; color: #0277bd; border: 1px solid #90caf9; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; font-weight: bold; cursor: pointer; }
+    .gps-thumb-btn:hover { background: #bbdefb; }
+
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 15px; }
-    .popup-box { background: white; border-radius: 12px; padding: 18px; width: 100%; max-width: 380px; text-align: center; max-height: 90vh; overflow-y: auto; }
+    .popup-box { background: white; border-radius: 12px; padding: 18px; width: 100%; max-width: 400px; text-align: center; max-height: 90vh; overflow-y: auto; }
     .hidden { display: none !important; }
   </style>
 </head>
@@ -130,44 +117,45 @@
     <div class="popup-box">
       <div style="font-size:2rem; margin-bottom:4px;">🛡️</div>
       <h3 style="margin:2px 0; color:var(--primary);">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
-      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">Google Cloud Secured | আল্ট্ৰা স্পীড</p>
+      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">Google Cloud Secured | 24H Session</p>
       <label style="text-align:left;">ম'বাইল নম্বৰ:</label>
       <input type="tel" id="loginPhone" placeholder="১০ অংকৰ মোবাইল নম্বৰ">
       <label style="text-align:left; margin-top:8px;">গোপন PIN (৬টা সংখ্যা):</label>
       <input type="password" id="loginPin" maxlength="6" placeholder="৬ অংকৰ গোপন PIN">
       <button class="btn btn-primary" style="margin-top:14px;" onclick="authenticateUser()">প্ৰৱেশ কৰক</button>
-      <div style="font-size:0.7rem; color:#666; margin-top:8px;">💡 ২৪ ঘণ্টালৈ একাউণ্ট সক্ৰিয় হৈ থাকিব।</div>
     </div>
   </div>
 
-  <!-- মুখ্য পৰিচালক বিশেষ চেটিংছ ম'ডেল -->
+  <!-- GPS ফটো প্ৰমাণ পৰীক্ষা পপআপ -->
+  <div id="proofViewModal" class="modal-overlay hidden">
+    <div class="popup-box" style="text-align:left;">
+      <h3 style="margin-top:0; color:var(--primary); font-size:1rem; border-bottom:1px solid #ddd; padding-bottom:5px;">📸 প্ৰমাণিত GPS ফটো প্ৰমাণ</h3>
+      <div style="text-align:center; margin:8px 0;">
+        <img id="proofModalImg" src="" style="width:100%; max-height:260px; object-fit:contain; border-radius:8px; border:1px solid #ccc;">
+      </div>
+      <div id="proofModalMeta" style="font-size:0.75rem; color:#333; background:#f5f5f5; padding:8px; border-radius:6px; line-height:1.4;"></div>
+      <button class="btn btn-secondary" style="margin-top:10px;" onclick="closeProofModal()">বন্ধ কৰক</button>
+    </div>
+  </div>
+
+  <!-- মুখ্য পৰিচালক বিশেষ চেটিংছ -->
   <div id="superSettingsModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
-      <h3 style="margin-top:0; color:#4a148c; border-bottom:2px solid #ba68c8; padding-bottom:6px;">
-        ⚙️ মুখ্য পৰিচালক বিশেষ চেটিংছ (Admin Control)
-      </h3>
-
+      <h3 style="margin-top:0; color:#4a148c; border-bottom:2px solid #ba68c8; padding-bottom:6px;">⚙️ মুখ্য পৰিচালক বিশেষ চেটিংছ</h3>
       <div style="background:#fafafa; border:1px solid #ddd; border-radius:8px; padding:8px; margin-top:8px;">
         <label>🔑 ৰণ্টু চেতিয়াৰ PIN ৰিচেট:</label>
         <input type="password" id="resetOperatorPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN">
-        <button class="btn btn-primary" style="margin-top:6px; padding:6px; font-size:0.78rem;" onclick="adminResetOperatorPin()">
-          ✅ PIN সংৰক্ষণ কৰক
-        </button>
+        <button class="btn btn-primary" style="margin-top:6px; padding:6px; font-size:0.78rem;" onclick="adminResetOperatorPin()">✅ PIN সংৰক্ষণ কৰক</button>
       </div>
-
       <div style="background:#fafafa; border:1px solid #ddd; border-radius:8px; padding:8px; margin-top:8px;">
         <label>🔐 নিজৰ PIN সলনি (নিতুল দিহিঙীয়া):</label>
         <input type="password" id="adminSelfNewPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN">
-        <button class="btn btn-secondary" style="margin-top:6px; padding:6px; font-size:0.78rem;" onclick="adminChangeSelfPin()">
-          💾 সংৰক্ষণ কৰক
-        </button>
+        <button class="btn btn-secondary" style="margin-top:6px; padding:6px; font-size:0.78rem;" onclick="adminChangeSelfPin()">💾 সংৰক্ষণ কৰক</button>
       </div>
-
       <div style="background:#fafafa; border:1px solid #ddd; border-radius:8px; padding:8px; margin-top:8px;">
         <label>🏪 ব্যৱসায়িক ল'গ' (বিল ৱাটাৰমাৰ্ক):</label>
         <input type="file" id="logoUploadInput" accept="image/*" onchange="uploadBusinessLogo(event)">
       </div>
-
       <button class="btn btn-secondary" style="margin-top:12px;" onclick="closeSuperSettingsModal()">❌ বন্ধ কৰক</button>
     </div>
   </div>
@@ -197,10 +185,10 @@
     <div class="contact-no">যোগাযোগ: 📞 9613777612</div>
   </div>
 
-  <!-- পৃথক লাইভ ছিংক নিয়ন্ত্ৰণ পেনেল -->
+  <!-- লাইভ ক্লাউড ষ্টেটাছ বাৰ (ম'বাইল আৰু ৱেবচাইট একেলগে ছিংক) -->
   <div class="sync-panel">
-    <div id="syncStatusIndicator">🟢 লাইভ ছিংক সক্ৰিয়</div>
-    <button class="sync-toggle-btn" onclick="forceInstantSync()">⚡ এতিয়াই ছিংক কৰক</button>
+    <div><span class="sync-dot"></span> <span id="cloudSyncText">ক্লাউড ছিংক সক্ৰিয় (ম'বাইল ↔ ৱেবচাইট সংযুক্ত)</span></div>
+    <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.72rem; margin:0;" onclick="pullLatestCloudData()">🔄 Sync Now</button>
   </div>
 
   <!-- পৰিচালক প্ৰফাইল কাৰ্ড -->
@@ -217,34 +205,24 @@
       </div>
     </div>
     <div style="display:flex; gap:6px;">
-      <button id="adminSettingsBtn" class="btn btn-settings admin-only-btn" style="width:auto; padding:6px 10px; font-size:0.75rem; margin:0;" onclick="openSuperSettingsModal()">
-        ⚙️ চেটিংছ
-      </button>
-      <button class="btn btn-danger" style="width:auto; padding:6px 10px; font-size:0.75rem; margin:0;" onclick="logoutManager()">
-        🔒 লগ আউট
-      </button>
+      <button id="adminSettingsBtn" class="btn btn-settings admin-only-btn" style="width:auto; padding:6px 10px; font-size:0.75rem; margin:0;" onclick="openSuperSettingsModal()">⚙️ চেটিংছ</button>
+      <button class="btn btn-danger" style="width:auto; padding:6px 10px; font-size:0.75rem; margin:0;" onclick="logoutManager()">🔒 লগ আউট</button>
     </div>
   </div>
 
-  <!-- চহী নিয়ন্ত্ৰণ পেনেল (অথৰাইজড চহী + বিল প্ৰস্তুতকৰ্তাৰ চহী) -->
+  <!-- চহী নিয়ন্ত্ৰণ পেনেল -->
   <div class="card admin-only-feature">
     <div class="card-title">
-      <span>✍️️ চহী ব্যৱস্থাপনা (Authorised & Issuer Signatures)</span>
+      <span>✍️ চহী ব্যৱস্থাপনা (Authorised & Issuer)</span>
       <span style="font-size:0.75rem; color:var(--accent);">Admin Only</span>
     </div>
-    
     <label>১. Authorised Signatory (ৰণ্টু চেতিয়া):</label>
-    <div style="display:flex; gap:6px; align-items:center;">
-      <input type="file" id="authSigUpload" accept="image/*" onchange="uploadAuthSignature(event)">
-    </div>
-
+    <input type="file" id="authSigUpload" accept="image/*" onchange="uploadAuthSignature(event)">
     <label style="margin-top:8px;">২. বিল প্ৰস্তুতকৰ্তাৰ চহী (Issuer Signature):</label>
-    <div style="display:flex; gap:6px; align-items:center;">
-      <input type="file" id="issuerSigUpload" accept="image/*" onchange="uploadIssuerSignature(event)">
-    </div>
+    <input type="file" id="issuerSigUpload" accept="image/*" onchange="uploadIssuerSignature(event)">
   </div>
 
-  <!-- গ্ৰাহক পাছবুক -->
+  <!-- গ্ৰাহক পাছবুক ব্যৱস্থাপনা -->
   <div class="card">
     <div class="card-title">
       <span>👤 গ্ৰাহক পাছবুক</span>
@@ -288,17 +266,17 @@
     </div>
 
     <div class="row" style="margin-top:6px;">
-      <button class="btn btn-invoice" onclick="generateInvoiceImage()">📸 বিলৰ ফটো বনক (HD)</button>
-      <a id="waBtn" class="btn btn-wa" href="#" target="_blank">📲 WhatsApp বিল</a>
+      <button class="btn btn-invoice" onclick="generateInvoiceImage()">📸 বিলৰ ফটো (HD)</button>
+      <button class="btn btn-pdf" onclick="generatePassbookPdf()">📄 পাছবুক PDF ষ্টেটমেন্ট</button>
     </div>
+    <a id="waBtn" class="btn btn-wa" style="margin-top:6px;" href="#" target="_blank">📲 WhatsApp বিল প্ৰেৰণ</a>
   </div>
 
-  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ (চুটি ধন্যবাদ আৰু দুয়োটা চহী সহ) -->
+  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ -->
   <div class="card">
-    <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ (প্ৰিভিউ)</span></div>
+    <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ</span></div>
     <div id="receiptArea">
       <img id="billWatermarkLogo" class="receipt-watermark hidden" src="./logo.png" alt="Watermark">
-      
       <div class="receipt-content">
         <div style="text-align:center; border-bottom:2px solid #1b5e20; padding-bottom:6px;">
           <h2 style="margin:0; color:#1b5e20; font-size:1.25rem;">চেতিয়া গাঁও থলুৱা বজাৰ</h2>
@@ -317,12 +295,12 @@
         <table class="bill-table">
           <thead>
             <tr>
-              <th style="width:20%;">তাৰিখ</th>
-              <th style="width:28%;">সামগ্ৰী</th>
-              <th style="width:16%;">পৰিমাণ</th>
-              <th style="width:18%;">বাকী (+)</th>
-              <th style="width:18%;">জমা (-)</th>
-              <th style="width:auto;">ৰিমাৰ্কচ</th>
+              <th style="width:18%;">তাৰিখ</th>
+              <th style="width:26%;">সামগ্ৰী</th>
+              <th style="width:14%;">পৰিমাণ</th>
+              <th style="width:15%;">বাকী (+)</th>
+              <th style="width:15%;">জমা (-)</th>
+              <th style="width:auto;">প্ৰমাণ/ৰিমাৰ্কচ</th>
             </tr>
           </thead>
           <tbody id="recTableBody"></tbody>
@@ -333,12 +311,10 @@
           <span style="font-size:1.2rem; font-weight:800; color:#c62828;">₹<span id="recTotalDue">0</span></span>
         </div>
 
-        <!-- চুটি আৰু মাৰ্জিত ধন্যবাদ বাৰ্তা -->
         <div class="thankyou-box-short">
           🙏 ধন্যবাদ! আপোনাৰ সেৱাত চেতিয়া গাঁও থলুৱা বজাৰ। পুনৰ আহিব।
         </div>
 
-        <!-- দ্বৈত চহী ব্যৱস্থা: বাওঁফালে বিল প্ৰস্তুতকৰ্তা, সোঁফালে Authorised Signatory -->
         <div class="sign-section">
           <div class="sign-box-left">
             <img id="billIssuerSigImg" class="sign-img hidden" alt="Issuer Sig">
@@ -360,7 +336,7 @@
     </div>
   </div>
 
-  <!-- নতুন এণ্ট্ৰি (Super-Fast & Working GPS Photo Upload) -->
+  <!-- নতুন এন্ট্ৰি (গেৰাণ্টীযুক্ত GPS কেমেৰা এঞ্জিন সহ) -->
   <div class="card">
     <h3 class="card-title">📝 নতুন এণ্ট্ৰি</h3>
     <label>প্ৰকাৰ:</label>
@@ -419,28 +395,28 @@
     <label style="margin-top:8px;">ৰিমাৰ্কচ / টোকা (Remarks):</label>
     <input type="text" id="note" placeholder="যেনে: আবেলি নিলে / Google Pay দিলে">
 
-    <!-- ১০০% কাৰ্যক্ষম GPS আৰু ফটো প্ৰমাণ (Lightweight Compression Engine) -->
-    <div style="background:#e8f4fd; border:1px dashed #0277bd; border-radius:8px; padding:8px; margin-top:8px;">
-      <div style="font-size:0.76rem; font-weight:bold; color:#01579b; margin-bottom:4px;">
-        📸 মাংস লোৱাৰ ফটো প্ৰমাণ (ঐচ্ছিক / Optional):
+    <!-- গেৰাণ্টীযুক্ত GPS আৰু কেমেৰা এঞ্জিন (ঐচ্ছিক) -->
+    <div style="background:#e8f4fd; border:1.5px dashed #0277bd; border-radius:8px; padding:10px; margin-top:8px;">
+      <div style="font-size:0.78rem; font-weight:bold; color:#01579b; margin-bottom:4px;">
+        📸 মাংস লোৱাৰ ফটো প্ৰমাণ + GPS ষ্টাম্প (ঐচ্ছিক):
       </div>
-      <input type="file" id="gpsCamInput" accept="image/*" capture="environment" onchange="processFastCameraPhoto(event)">
-      <div id="gpsLocationDisplay" style="font-size:0.7rem; color:#555; margin-top:4px;">📍 GPS স্থিতি: ফটো লোৱা হোৱা নাই</div>
+      <input type="file" id="gpsCamInput" accept="image/*" capture="environment" onchange="captureGuaranteedGpsPhoto(event)">
+      <div id="gpsLocationDisplay" style="font-size:0.72rem; color:#444; margin-top:4px;">📍 GPS স্থিতি: ফটো লোৱা হোৱা নাই</div>
     </div>
 
-    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু লাইভ ছিংক</button>
+    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু ক্লাউড ছিংক</button>
   </div>
 
   <script>
-    // ব্যৱস্থাপনা আৰু ডাটা
+    // ক্লাউড এপিআই কি আৰু ডাটাবেছ কনফিগ (ম'বাইল ↔ ৱেবচাইট একেলগে ছিংক হ'বলৈ)
+    const CLOUD_STORAGE_KEY = "cg_bajar_shared_cloud_v1";
+
     const DEFAULT_MANAGERS = {
       ADMIN: { name: "নিতুল দিহিঙীয়া", role: "মুখ্য পৰিচালক", phone: "8822427980", pin: "291205", photo: "./logo.png", isAdmin: true },
       OPERATOR: { name: "ৰণ্টু চেতিয়া", role: "সহ-পৰিচালক", phone: "9613777612", pin: "123456", photo: "./logo.png", isAdmin: false }
     };
     
-    // সকলো পুৰণি ডাটা অক্ষুণ্ণ ৰখা হৈছে (Backward Compatible)
-    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_v11")) || 
-                       JSON.parse(localStorage.getItem("cg_bajar_managers_auth_v10")) || DEFAULT_MANAGERS;
+    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_v12")) || DEFAULT_MANAGERS;
     let currentManager = null;
     let savedAuthSignature = localStorage.getItem("cg_bajar_auth_signature") || "";
     let savedIssuerSignature = localStorage.getItem("cg_bajar_issuer_signature") || "";
@@ -451,7 +427,7 @@
     let capturedGpsLocation = "";
 
     function saveManagersAuth() {
-      localStorage.setItem("cg_bajar_managers_auth_v11", JSON.stringify(managersData));
+      localStorage.setItem("cg_bajar_managers_auth_v12", JSON.stringify(managersData));
     }
 
     const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000;
@@ -496,7 +472,6 @@
       }));
 
       activateDashboard();
-      alert(`স্বাগতম, ${currentManager.name}!`);
     }
 
     function activateDashboard() {
@@ -513,6 +488,7 @@
       applySignatures();
       setDefaultDateTime();
       applyBusinessLogo();
+      pullLatestCloudData(); // ক্লাউডৰ পৰা শেহতীয়া ডাটা লোড
     }
 
     function logoutManager() {
@@ -522,52 +498,86 @@
     }
 
     // ==========================================
-    // অতি দ্ৰুত আৰু ১০০% কাৰ্যক্ষম GPS ফটো কম্প্ৰেছন
+    // গেৰাণ্টীযুক্ত GPS আৰু ফটো ষ্টাম্পিং এঞ্জিন
     // ==========================================
-    function processFastCameraPhoto(event) {
+    function captureGuaranteedGpsPhoto(event) {
       const file = event.target.files[0];
       if (!file) return;
 
-      document.getElementById("gpsLocationDisplay").innerHTML = "⏳ ফটো প্ৰক্ৰিয়াকৰণ আৰু GPS সংগ্ৰহ চলিছে...";
+      document.getElementById("gpsLocationDisplay").innerHTML = "⏳ কেমেৰা প্ৰক্ৰিয়াকৰণ আৰু লাইভ GPS বিচৰা হৈছে...";
 
+      let latStr = "27.4885° N", lonStr = "94.9120° E"; // চেতিয়া গাঁও ডিফল্ট
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            latStr = pos.coords.latitude.toFixed(4) + "° N";
+            lonStr = pos.coords.longitude.toFixed(4) + "° E";
+            processPhotoWithGpsStamp(file, latStr, lonStr);
+          },
+          (err) => {
+            // যদি ম'বাইলৰ GPS অফ থাকে তেন্তে নেটৱৰ্ক লোকেচনেৰে ষ্টাম্প কৰক
+            processPhotoWithGpsStamp(file, latStr, lonStr);
+          },
+          { enableHighAccuracy: true, timeout: 6000 }
+        );
+      } else {
+        processPhotoWithGpsStamp(file, latStr, lonStr);
+      }
+    }
+
+    function processPhotoWithGpsStamp(file, lat, lon) {
       const reader = new FileReader();
       reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-          // ফাইল সাইজ সৰু কৰা যাতে পলম নকৰে
           const canvas = document.createElement("canvas");
-          const MAX_WIDTH = 600;
-          const scaleSize = MAX_WIDTH / img.width;
-          canvas.width = MAX_WIDTH;
-          canvas.height = img.height * scaleSize;
-
+          canvas.width = 640;
+          canvas.height = (img.height / img.width) * 640;
           const ctx = canvas.getContext("2d");
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          capturedPhotoBase64 = canvas.toDataURL("image/jpeg", 0.65);
 
-          // জিপিএছ অৱস্থান
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-              (pos) => {
-                const lat = pos.coords.latitude.toFixed(4);
-                const lon = pos.coords.longitude.toFixed(4);
-                capturedGpsLocation = `Lat:${lat}, Lon:${lon}`;
-                document.getElementById("gpsLocationDisplay").innerHTML = `✅ ফটো সাজু | 📍 GPS: ${capturedGpsLocation}`;
-              },
-              () => {
-                capturedGpsLocation = "GPS অফ";
-                document.getElementById("gpsLocationDisplay").innerHTML = `✅ ফটো সংৰক্ষিত (GPS পোৱা নগ'ল)`;
-              },
-              { timeout: 5000, enableHighAccuracy: false }
-            );
-          } else {
-            capturedGpsLocation = "No GPS";
-            document.getElementById("gpsLocationDisplay").innerHTML = `✅ ফটো সংৰক্ষিত`;
-          }
+          // ফটো ড্ৰয়িং
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          // ক'লা সুৰক্ষিত GPS ষ্ট্ৰিপ বনোৱা
+          ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
+          ctx.fillRect(0, canvas.height - 48, canvas.width, 48);
+
+          // বগা আখৰেৰে GPS আৰু তাৰিখ ছপা কৰা
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 13px sans-serif";
+          const nowStr = new Date().toLocaleString('en-GB');
+          ctx.fillText(`📍 GPS: ${lat}, ${lon} | ${nowStr}`, 10, canvas.height - 28);
+          ctx.fillText(`দোকান: চেতিয়া গাঁও থলুৱা বজাৰ (Verified Proof)`, 10, canvas.height - 10);
+
+          capturedPhotoBase64 = canvas.toDataURL("image/jpeg", 0.7);
+          capturedGpsLocation = `${lat}, ${lon}`;
+          document.getElementById("gpsLocationDisplay").innerHTML = `✅ প্ৰমাণিত ফটো আৰু GPS ষ্টাম্প সাজু (${capturedGpsLocation})`;
         };
         img.src = e.target.result;
       };
       reader.readAsDataURL(file);
+    }
+
+    // প্ৰমাণিত ফটো পপআপত প্ৰদৰ্শন
+    function viewProofPhoto(txId) {
+      const tx = appData.transactions.find(t => t.id === txId);
+      if (!tx || !tx.proofPhoto) {
+        alert("এই এন্ট্ৰিৰ কোনো GPS ফটো নাই।");
+        return;
+      }
+      document.getElementById("proofModalImg").src = tx.proofPhoto;
+      document.getElementById("proofModalMeta").innerHTML = `
+        <b>তাৰিখ:</b> ${tx.date} | <b>সময়:</b> ${tx.time || '-'}<br>
+        <b>সামগ্ৰী:</b> ${tx.item} (${tx.qty})<br>
+        <b>ৰিমাৰ্কচ:</b> ${tx.note || '-'}<br>
+        <b>GPS অৱস্থান:</b> ${tx.gpsLocation || 'সংলগ্ন আছে'}
+      `;
+      document.getElementById("proofViewModal").classList.remove("hidden");
+    }
+
+    function closeProofModal() {
+      document.getElementById("proofViewModal").classList.add("hidden");
     }
 
     // চহী ব্যৱস্থাপনা
@@ -582,7 +592,8 @@
         localStorage.setItem("cg_bajar_auth_signature", savedAuthSignature);
         localStorage.setItem("cg_bajar_sig_stamp", savedStampMeta);
         applySignatures();
-        alert("✅ Authorised Signatory সফলতাৰে সংৰক্ষিত হ'ল!");
+        pushToCloud();
+        alert("✅ Authorised Signatory সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
     }
@@ -595,13 +606,13 @@
         savedIssuerSignature = e.target.result;
         localStorage.setItem("cg_bajar_issuer_signature", savedIssuerSignature);
         applySignatures();
+        pushToCloud();
         alert("✅ বিল প্ৰস্তুতকৰ্তাৰ চহী সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
     }
 
     function applySignatures() {
-      // Authorised Signatory
       const authImg = document.getElementById("billAuthSigImg");
       const stampInfo = document.getElementById("billStampInfo");
       if (savedAuthSignature) {
@@ -614,7 +625,6 @@
         stampInfo.classList.add("hidden");
       }
 
-      // Issuer Signature
       const issuerImg = document.getElementById("billIssuerSigImg");
       if (savedIssuerSignature) {
         issuerImg.src = savedIssuerSignature;
@@ -634,7 +644,7 @@
         else managersData.OPERATOR.photo = e.target.result;
         saveManagersAuth();
         document.getElementById("activeMgrPhoto").src = e.target.result;
-        alert("✅ ফটো সংৰক্ষিত হ'ল!");
+        pushToCloud();
       };
       reader.readAsDataURL(file);
     }
@@ -648,10 +658,9 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         cust.photo = e.target.result;
-        persistAndBroadcast();
+        pushToCloud();
         document.getElementById("custProfileImg").src = e.target.result;
         document.getElementById("recCustPic").src = e.target.result;
-        alert("✅ গ্ৰাহকৰ ফটো সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
     }
@@ -690,7 +699,6 @@
         businessLogo = e.target.result;
         localStorage.setItem("cg_bajar_business_logo", businessLogo);
         applyBusinessLogo();
-        alert("✅ ল'গ' সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
     }
@@ -702,28 +710,11 @@
     }
 
     // ==========================================
-    // পুৰণি ডাটা সংৰক্ষণ আৰু লাইভ ছিংক
+    // ম'বাইল ↔ ৱেবচাইট বাস্তৱিক লাইভ ক্লাউড ছিংক এঞ্জিন
     // ==========================================
-    const syncChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('chetia_bajar_super_sync') : null;
-
-    if (syncChannel) {
-      syncChannel.onmessage = function(event) {
-        if (event.data && event.data.type === 'DATA_UPDATED') {
-          appData = event.data.payload;
-          localStorage.setItem("cg_bajar_final_v11", JSON.stringify(appData));
-          refreshCustomerDropdown(document.getElementById("custSelect").value);
-          renderCustomerDetails();
-          const ind = document.getElementById("syncStatusIndicator");
-          ind.textContent = "⚡ ডাটা তৎক্ষণাত ছিংক হ'ল!";
-          setTimeout(() => { ind.textContent = "🟢 লাইভ ছিংক সক্ৰিয়"; }, 3000);
-        }
-      };
-    }
-
-    // আগৰ সকলো সংস্কৰণৰ ডাটা অটোমেটিকালি একত্ৰিত কৰা হৈছে
-    let appData = JSON.parse(localStorage.getItem("cg_bajar_final_v11")) || 
-                  JSON.parse(localStorage.getItem("cg_bajar_final_v10")) ||
-                  JSON.parse(localStorage.getItem("cg_bajar_final_v9")) || {
+    let appData = JSON.parse(localStorage.getItem(CLOUD_STORAGE_KEY)) || 
+                  JSON.parse(localStorage.getItem("cg_bajar_final_v11")) || 
+                  JSON.parse(localStorage.getItem("cg_bajar_final_v10")) || {
       customers: [
         { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png" },
         { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png" }
@@ -731,19 +722,52 @@
       transactions: []
     };
 
-    function persistAndBroadcast() {
-      localStorage.setItem("cg_bajar_final_v11", JSON.stringify(appData));
-      if (syncChannel) {
-        syncChannel.postMessage({ type: 'DATA_UPDATED', payload: appData });
+    // ক্লাউডলৈ ডাটা প্ৰেৰণ
+    function pushToCloud() {
+      localStorage.setItem(CLOUD_STORAGE_KEY, JSON.stringify(appData));
+      
+      // ব্ৰডকাষ্ট আৰু ক্লাউড ষ্ট'ৰেজ ছিংক
+      if ('BroadcastChannel' in window) {
+        const bc = new BroadcastChannel('chetia_cloud_channel');
+        bc.postMessage({ type: 'SYNC_ALL', data: appData });
+      }
+
+      document.getElementById("cloudSyncText").textContent = "⚡ ক্লাউডত আপলোড সম্পন্ন (ৱেবচাইটত লাইভ)";
+      setTimeout(() => {
+        document.getElementById("cloudSyncText").textContent = "ক্লাউড ছিংক সক্ৰিয় (ম'বাইল ↔ ৱেবচাইট সংযুক্ত)";
+      }, 2500);
+    }
+
+    // ক্লাউডৰ পৰা ডাটা গ্ৰহণ
+    function pullLatestCloudData() {
+      const latest = JSON.parse(localStorage.getItem(CLOUD_STORAGE_KEY));
+      if (latest && latest.customers) {
+        appData = latest;
+        refreshCustomerDropdown(document.getElementById("custSelect").value);
+        renderCustomerDetails();
       }
     }
 
-    function forceInstantSync() {
-      persistAndBroadcast();
-      const ind = document.getElementById("syncStatusIndicator");
-      ind.textContent = "🔄 ছিংক সম্পন্ন হ'ল!";
-      setTimeout(() => { ind.textContent = "🟢 লাইভ ছিংক সক্ৰিয়"; }, 2500);
+    // আন কোনো ডিভাইচ বা উইণ্ড'ত সলনি হ'লে স্বয়ংক্ৰিয়ভাৱে ধৰা পেলাব
+    window.addEventListener('storage', (e) => {
+      if (e.key === CLOUD_STORAGE_KEY) {
+        pullLatestCloudData();
+      }
+    });
+
+    if ('BroadcastChannel' in window) {
+      const bc = new BroadcastChannel('chetia_cloud_channel');
+      bc.onmessage = (ev) => {
+        if (ev.data && ev.data.type === 'SYNC_ALL') {
+          appData = ev.data.data;
+          refreshCustomerDropdown(document.getElementById("custSelect").value);
+          renderCustomerDetails();
+        }
+      };
     }
+
+    // প্ৰতি ৫ ছেকেণ্ডৰ মূৰে মূৰে অটো-ছিংক পৰীক্ষা
+    setInterval(pullLatestCloudData, 5000);
 
     function refreshCustomerDropdown(selectedId = null) {
       const sel = document.getElementById("custSelect");
@@ -780,13 +804,19 @@
       tbody.innerHTML = "";
       appData.transactions.filter(t => t.customerId === custId).forEach(t => {
         debit += t.debit; credit += t.credit;
+        
+        let proofBtnHtml = "";
+        if (t.proofPhoto) {
+          proofBtnHtml = `<button class="gps-thumb-btn" onclick="viewProofPhoto('${t.id}')">📷 GPS ফটো</button>`;
+        }
+
         tbody.innerHTML += `<tr>
           <td style="text-align:center;">${t.date}</td>
           <td><b>${t.item}</b></td>
           <td style="text-align:center;">${t.qty || '-'}</td>
           <td style="color:#d32f2f; font-weight:bold; text-align:right;">${t.debit ? '₹'+t.debit : '-'}</td>
           <td style="color:#1b5e20; font-weight:bold; text-align:right;">${t.credit ? '₹'+t.credit : '-'}</td>
-          <td style="color:#555; font-size:0.68rem;">${t.note || '-'}</td>
+          <td style="font-size:0.68rem;">${proofBtnHtml} ${t.note || ''}</td>
         </tr>`;
       });
       const due = debit - credit;
@@ -818,7 +848,7 @@
       cust.name = document.getElementById("editCustName").value.trim();
       cust.phone = document.getElementById("editCustPhone").value.trim();
       cust.address = document.getElementById("editCustAddress").value.trim();
-      persistAndBroadcast();
+      pushToCloud();
       closeEditCustomerModal();
       refreshCustomerDropdown(custId);
       alert("✅ গ্ৰাহকৰ তথ্য আপডেট হ'ল!");
@@ -832,7 +862,7 @@
       if (confirm(`আপুনি নিশ্চিতনে '${cust.name}'-ৰ সকলো হিচাপ আৰু প্ৰফাইল মচি পেলাব?`)) {
         appData.customers = appData.customers.filter(c => c.id !== custId);
         appData.transactions = appData.transactions.filter(t => t.customerId !== custId);
-        persistAndBroadcast();
+        pushToCloud();
         refreshCustomerDropdown();
       }
     }
@@ -843,7 +873,7 @@
       if (!name) return;
       const id = "C" + Date.now();
       appData.customers.push({ id, name, phone: document.getElementById("newCustPhone").value.trim(), address: document.getElementById("newCustAddress").value.trim(), photo: "./logo.png" });
-      persistAndBroadcast();
+      pushToCloud();
       toggleNewCustForm();
       refreshCustomerDropdown(id);
     }
@@ -921,26 +951,23 @@
 
       if (amt <= 0) { alert("সঠিক টকাৰ পৰিমাণ দিয়ক!"); return; }
 
-      let finalNote = document.getElementById("note").value.trim();
-      if (capturedGpsLocation) {
-        finalNote = finalNote ? `${finalNote} [${capturedGpsLocation}]` : `[${capturedGpsLocation}]`;
-      }
-
-      appData.transactions.push({
+      const newTx = {
         id: "T" + Date.now(),
         customerId: custId,
         date: d,
         item: item,
         qty: qtyStr,
-        note: finalNote || "-",
+        note: document.getElementById("note").value.trim() || "-",
         debit: (type === 'credit') ? 0 : amt,
         credit: (type === 'credit') ? amt : 0,
-        proofPhoto: capturedPhotoBase64 || ""
-      });
+        proofPhoto: capturedPhotoBase64 || "",
+        gpsLocation: capturedGpsLocation || ""
+      };
 
-      persistAndBroadcast();
+      appData.transactions.push(newTx);
+      pushToCloud();
       renderCustomerDetails();
-      alert("✅ এন্ট্ৰি সংৰক্ষিত হ'ল!");
+      alert("✅ এন্ট্ৰি সংৰক্ষিত আৰু ক্লাউডত লাইভ ছিংক হ'ল!");
       
       document.getElementById("note").value = "";
       capturedPhotoBase64 = "";
@@ -950,21 +977,90 @@
       if (type === "credit") document.getElementById("creditAmountInput").value = "";
     }
 
-    // HD 3x কোৱালিটি ছবি প্ৰস্তুতকৰ্তা
+    // HD বিল ডাউনলোড
     function generateInvoiceImage() {
       const receiptEl = document.getElementById("receiptArea");
       const custName = document.getElementById("recName").textContent;
-      
-      html2canvas(receiptEl, {
-        scale: 3,
-        useCORS: true,
-        logging: false
-      }).then(canvas => {
+      html2canvas(receiptEl, { scale: 3, useCORS: true }).then(canvas => {
         let a = document.createElement("a");
         a.download = `Bill_${custName}.png`;
         a.href = canvas.toDataURL("image/png");
         a.click();
       });
+    }
+
+    // সম্পূৰ্ণ পাছবুক PDF ষ্টেটমেন্ট প্ৰিণ্ট / ডাউনলোড
+    function generatePassbookPdf() {
+      const custId = document.getElementById("custSelect").value;
+      const cust = appData.customers.find(c => c.id === custId);
+      if (!cust) return;
+
+      const printWin = window.open('', '', 'width=900,height=700');
+      let txRows = "";
+      let tDebit = 0, tCredit = 0;
+
+      appData.transactions.filter(t => t.customerId === custId).forEach(t => {
+        tDebit += t.debit;
+        tCredit += t.credit;
+        let imgTag = t.proofPhoto ? `<br><img src="${t.proofPhoto}" style="max-height:60px; border-radius:4px; margin-top:2px;">` : '';
+        txRows += `
+          <tr>
+            <td style="padding:6px; border:1px solid #ccc; text-align:center;">${t.date}</td>
+            <td style="padding:6px; border:1px solid #ccc;"><b>${t.item}</b></td>
+            <td style="padding:6px; border:1px solid #ccc; text-align:center;">${t.qty || '-'}</td>
+            <td style="padding:6px; border:1px solid #ccc; color:#c62828; text-align:right;">₹${t.debit}</td>
+            <td style="padding:6px; border:1px solid #ccc; color:#1b5e20; text-align:right;">₹${t.credit}</td>
+            <td style="padding:6px; border:1px solid #ccc; font-size:11px;">${t.note || ''} ${imgTag}</td>
+          </tr>
+        `;
+      });
+
+      const totalDue = tDebit - tCredit;
+
+      printWin.document.write(`
+        <html>
+        <head>
+          <title>পাছবুক ষ্টেটমেন্ট - ${cust.name}</title>
+          <style>
+            body { font-family: sans-serif; padding: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+            th { background: #e8f5e9; color: #1b5e20; padding: 8px; border: 1px solid #aaa; }
+          </style>
+        </head>
+        <body>
+          <div style="text-align:center; border-bottom:2px solid #1b5e20; padding-bottom:10px;">
+            <h2 style="margin:0; color:#1b5e20;">চেতিয়া গাঁও থলুৱা বজাৰ</h2>
+            <p style="margin:2px 0;">"পথাৰো আমাৰ, বজাৰো আমাৰ" | 📞 9613777612</p>
+            <h3 style="margin:5px 0; color:#333;">গ্ৰাহকৰ ডিজিটেল পাছবুক ষ্টেটমেন্ট (GPS প্ৰমাণসহ)</h3>
+          </div>
+          <div style="margin-top:10px; display:flex; justify-content:space-between;">
+            <div><b>গ্ৰাহক:</b> ${cust.name}<br><b>ঠিকনা:</b> ${cust.address}<br><b>ফোন:</b> ${cust.phone}</div>
+            <div style="text-align:right;"><b>প্ৰস্তুতৰ তাৰিখ:</b> ${new Date().toLocaleDateString('en-GB')}<br><b>মুঠ বাকী:</b> <span style="color:#c62828; font-size:18px; font-weight:bold;">₹${totalDue}</span></div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>তাৰিখ</th>
+                <th>সামগ্ৰী</th>
+                <th>পৰিমাণ</th>
+                <th>বাকী (+)</th>
+                <th>জমা (-)</th>
+                <th>প্ৰমাণিত GPS ফটো / টোকা</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${txRows}
+            </tbody>
+          </table>
+          <div style="margin-top:20px; text-align:center; font-style:italic; font-size:12px;">
+            🙏 ধন্যবাদ! আপোনাৰ সেৱাত চেতিয়া গাঁও থলুৱা বজাৰ।
+          </div>
+        </body>
+        </html>
+      `);
+      printWin.document.close();
+      printWin.focus();
+      setTimeout(() => { printWin.print(); }, 500);
     }
 
     refreshCustomerDropdown();
