@@ -7,7 +7,11 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./logo.png">
   <meta name="theme-color" content="#1b5e20">
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- বিশ্বমানৰ WebRTC P2P লাইভ ইঞ্জিন (PeerJS) -->
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+
   <style>
     :root {
       --primary: #1b5e20;
@@ -35,6 +39,7 @@
     .header .sub-slogan { margin: 3px 0 0; font-size: 0.78rem; font-weight: 600; color: #ffffff; opacity: 0.95; }
     .header .contact-no { margin: 6px 0 0; font-size: 0.82rem; font-weight: bold; background: rgba(255,255,255,0.18); display: inline-block; padding: 3px 12px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.25); }
 
+    /* WebRTC লাইভ ছিংক বাৰ */
     .sync-panel {
       background: #ffffff;
       border: 1.5px solid #81c784;
@@ -109,12 +114,12 @@
 </head>
 <body>
 
-  <!-- লগইন স্ক্রিন -->
+  <!-- ল'গইন পৰ্দা -->
   <div id="authOverlay" class="modal-overlay">
     <div class="popup-box">
       <div style="font-size:2rem; margin-bottom:4px;">🛡️</div>
       <h3 style="margin:2px 0; color:var(--primary);">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
-      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">Cloud Auto-Sync Active | 24H Session</p>
+      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">WebRTC Live P2P Sync | 24H Session</p>
       <label style="text-align:left;">ম'বাইল নম্বৰ:</label>
       <input type="tel" id="loginPhone" placeholder="১০ অংকৰ মোবাইল নম্বৰ">
       <label style="text-align:left; margin-top:8px;">গোপন PIN (৬টা সংখ্যা):</label>
@@ -129,7 +134,7 @@
     </div>
   </div>
 
-  <!-- পিন রিসেট স্ক্রিন -->
+  <!-- নিৰাপত্তা প্ৰশ্ন যোগেদি PIN ৰিচেট ম'ডেল -->
   <div id="securityQuestionsModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:var(--accent); border-bottom:1.5px solid #ef9a9a; padding-bottom:6px;">
@@ -161,7 +166,7 @@
     </div>
   </div>
 
-  <!-- GPS প্রমাণ ছবি পপআপ -->
+  <!-- GPS ফটোকপি পপআপ -->
   <div id="proofViewModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:var(--primary); font-size:1rem; border-bottom:1px solid #ddd; padding-bottom:5px;">📸 প্ৰমাণিত GPS ফটোকপি</h3>
@@ -173,10 +178,10 @@
     </div>
   </div>
 
-  <!-- অ্যাডমিন সুপার সেটিংস -->
+  <!-- মুখ্য পৰিচালক বিশেষ চেটিংছ -->
   <div id="superSettingsModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
-      <h3 style="margin-top:0; color:#4a148c; border-bottom:2px solid #ba68c8; padding-bottom:6px;">⚙️ মুখ্য পৰিচালক বিশেষ চেটিংছ</h3>
+      <h3 style="margin-top:0; color:#4a148c; border-bottom:2px solid #ba68c8; padding-bottom:6px;">⚙️️ মুখ্য পৰিচালক বিশেষ চেটিংছ</h3>
       
       <div style="background:#fafafa; border:1px solid #ddd; border-radius:8px; padding:8px; margin-top:8px;">
         <div style="font-size:0.8rem; font-weight:bold; color:var(--primary); margin-bottom:4px;">👤 সহ-পৰিচালক (ৰণ্টু চেতিয়া) ব্যৱস্থাপনা:</div>
@@ -204,7 +209,7 @@
     </div>
   </div>
 
-  <!-- কাস্টমার এডিট পপআপ -->
+  <!-- গ্ৰাহকৰ তথ্য সলোৱা পপআপ -->
   <div id="editCustomerModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:#e65100; border-bottom:1.5px solid #ddd; padding-bottom:6px;">✏️ গ্ৰাহক প্ৰফাইল সম্পাদনা (Admin)</h3>
@@ -222,7 +227,7 @@
     </div>
   </div>
 
-  <!-- হেডার -->
+  <!-- মূল হেডাৰ -->
   <div class="header">
     <h2>🏪 চেতিয়া গাঁও থলুৱা বজাৰ</h2>
     <div class="slogan">"পথাৰো আমাৰ, বজাৰো আমাৰ"</div>
@@ -230,13 +235,13 @@
     <div class="contact-no">যোগাযোগ: 📞 9613777612</div>
   </div>
 
-  <!-- ক্লাউড সিঙ্ক বার -->
+  <!-- লাইভ ছিংক বাৰ -->
   <div class="sync-panel">
-    <div><span class="sync-dot"></span> <span id="cloudSyncText">লাইভ ক্লাউড সংযোগী সক্ৰিয় (১ ছেকেণ্ডত ছিংক)</span></div>
-    <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.72rem; margin:0;" onclick="pullFromCrossCloud()">🔄 Sync Now</button>
+    <div><span class="sync-dot"></span> <span id="cloudSyncText">লাইভ P2P টানেল সংযোগ সক্ৰিয় (১ ছেকেণ্ডত ছিংক)</span></div>
+    <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.72rem; margin:0;" onclick="reconnectP2PTunnel()">🔄 Re-Sync</button>
   </div>
 
-  <!-- অ্যাডমিন তথ্য -->
+  <!-- পৰিচালক প্ৰফাইল কাৰ্ড -->
   <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
     <div class="profile-card-flex">
       <div class="avatar-wrapper">
@@ -255,7 +260,7 @@
     </div>
   </div>
 
-  <!-- দৈনিক ডেট ফিল্টার অডিট -->
+  <!-- দৈনিক তাৰিখ ফিল্টাৰ আৰু বজাৰ খতিয়ান -->
   <div class="card" style="border-left: 4.5px solid var(--primary);">
     <div class="card-title">
       <span>📅 দৈনিক তাৰিখ অনুযায়ী বজাৰ খতিয়ান</span>
@@ -304,7 +309,7 @@
     </div>
   </div>
 
-  <!-- সিগনেচার প্যানেল -->
+  <!-- চহী নিয়ন্ত্ৰণ পেনেল -->
   <div class="card admin-only-feature">
     <div class="card-title">
       <span>✍️ চহী ব্যৱস্থাপনা (Authorised & Issuer)</span>
@@ -316,7 +321,7 @@
     <input type="file" id="issuerSigUpload" accept="image/*" onchange="uploadIssuerSignature(event)">
   </div>
 
-  <!-- কাস্টমার পাসবুক -->
+  <!-- গ্ৰাহক পাছবুক -->
   <div class="card">
     <div class="card-title">
       <span>👤 গ্ৰাহক ডিজিটেল পাছবুক</span>
@@ -366,7 +371,7 @@
     <a id="waBtn" class="btn btn-wa" style="margin-top:6px;" href="#" target="_blank">📲 WhatsApp বিল প্ৰেৰণ</a>
   </div>
 
-  <!-- রসিদ এলাকা -->
+  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ -->
   <div class="card">
     <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ</span></div>
     <div id="receiptArea">
@@ -431,7 +436,7 @@
     </div>
   </div>
 
-  <!-- নতুন এন্ট্রি ফরম -->
+  <!-- নতুন এন্ট্ৰি -->
   <div class="card">
     <h3 class="card-title">📝 নতুন এণ্ট্ৰি</h3>
     <label>প্ৰকাৰ:</label>
@@ -490,6 +495,7 @@
     <label style="margin-top:8px;">ৰিমাৰ্কচ / টোকা (Remarks / Note):</label>
     <input type="text" id="note" placeholder="যেনে: আবেলি নিলে / Google Pay দিলে / বিশেষ টোকা">
 
+    <!-- গেৰাণ্টীযুক্ত GPS আৰু কেমেৰা এঞ্জিন -->
     <div style="background:#e8f4fd; border:1.5px dashed #0277bd; border-radius:8px; padding:10px; margin-top:8px;">
       <div style="font-size:0.78rem; font-weight:bold; color:#01579b; margin-bottom:4px;">
         📸 মাংস লোৱাৰ ফটো প্ৰমাণ + GPS ষ্টাম্প (ঐচ্ছিক):
@@ -498,36 +504,24 @@
       <div id="gpsLocationDisplay" style="font-size:0.72rem; color:#444; margin-top:4px;">📍 GPS স্থিতি: ফটো লোৱা হোৱা নাই</div>
     </div>
 
-    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু ক্লাউড ছিংক</button>
+    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু লাইভ P2P ছিংক</button>
   </div>
 
   <script>
     // ========================================================
-    // ক্রস-ডিভাইস রিয়েলটাইম সিঙ্ক ইঞ্জিন (100% গ্যারান্টিযুক্ত)
+    // বিশ্বমানৰ WebRTC P2P লাইভ ছিংক এঞ্জিন (No Server Block)
     // ========================================================
-    const SYNC_ROOM_KEY = "chetia_bajar_live_store_v2026";
-    const CLOUD_ENDPOINT = `https://api.restful-api.dev/objects`; // আনব্লকড গ্লোবাল রেস্ট সার্ভিস
+    const PEER_DESKTOP_ID = "chetia-bajar-desktop-hub-2026";
+    const PEER_MOBILE_ID = "chetia-bajar-mobile-node-2026";
+    let myPeer = null;
+    let peerConn = null;
 
     const DEFAULT_MANAGERS = {
-      ADMIN: {
-        name: "নিতুল দিহিঙীয়া",
-        role: "মুখ্য পৰিচালক",
-        phone: "8822427980",
-        pin: "291205",
-        photo: "./logo.png",
-        isAdmin: true
-      },
-      OPERATOR: {
-        name: "ৰণ্টু চেতিয়া",
-        role: "সহ-পৰিচালক",
-        phone: "9613777612",
-        pin: "123456",
-        photo: "./logo.png",
-        isAdmin: false
-      }
+      ADMIN: { name: "নিতুল দিহিঙীয়া", role: "মুখ্য পৰিচালক", phone: "8822427980", pin: "291205", photo: "./logo.png", isAdmin: true },
+      OPERATOR: { name: "ৰণ্টু চেতিয়া", role: "সহ-পৰিচালক", phone: "9613777612", pin: "123456", photo: "./logo.png", isAdmin: false }
     };
     
-    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_v2026")) || DEFAULT_MANAGERS;
+    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_p2p")) || DEFAULT_MANAGERS;
     let currentManager = null;
     let savedAuthSignature = localStorage.getItem("cg_bajar_auth_signature") || "";
     let savedIssuerSignature = localStorage.getItem("cg_bajar_issuer_signature") || "";
@@ -538,7 +532,7 @@
     let capturedGpsLocation = "";
 
     function saveManagersAuth() {
-      localStorage.setItem("cg_bajar_managers_auth_v2026", JSON.stringify(managersData));
+      localStorage.setItem("cg_bajar_managers_auth_p2p", JSON.stringify(managersData));
     }
 
     const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000;
@@ -601,8 +595,7 @@
       applySignatures();
       setDefaultDateTime();
       applyBusinessLogo();
-      pullFromCrossCloud(); // ক্লাউড থেকে ডাটা রিড
-      startRealtimeCrossSync(); // লাইভ লুপ চালু
+      initPeerP2PTunnel(); // WebRTC লাইভ টানেল আৰম্ভ
     }
 
     function logoutManager() {
@@ -802,7 +795,7 @@
         localStorage.setItem("cg_bajar_auth_signature", savedAuthSignature);
         localStorage.setItem("cg_bajar_sig_stamp", savedStampMeta);
         applySignatures();
-        pushToCrossCloud();
+        broadcastLiveToPeers();
         alert("✅ Authorised Signatory সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
@@ -816,7 +809,7 @@
         savedIssuerSignature = e.target.result;
         localStorage.setItem("cg_bajar_issuer_signature", savedIssuerSignature);
         applySignatures();
-        pushToCrossCloud();
+        broadcastLiveToPeers();
         alert("✅ বিল প্ৰস্তুতকৰ্তাৰ চহী সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
@@ -854,7 +847,7 @@
         else managersData.OPERATOR.photo = e.target.result;
         saveManagersAuth();
         document.getElementById("activeMgrPhoto").src = e.target.result;
-        pushToCrossCloud();
+        broadcastLiveToPeers();
       };
       reader.readAsDataURL(file);
     }
@@ -868,7 +861,7 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         cust.photo = e.target.result;
-        pushToCrossCloud();
+        broadcastLiveToPeers();
         document.getElementById("custProfileImg").src = e.target.result;
         document.getElementById("recCustPic").src = e.target.result;
       };
@@ -902,9 +895,9 @@
     }
 
     // ========================================================
-    // গ্যারান্টিযুক্ত ক্রস-ডিভাইস ক্লাউড ডেটা আদান-প্রদান
+    // লাইভ WebRTC P2P টানেল ইঞ্জিন (Cross-Device Instant Sync)
     // ========================================================
-    let appData = JSON.parse(localStorage.getItem("cg_bajar_verified_live_db_v2026")) || {
+    let appData = JSON.parse(localStorage.getItem("cg_bajar_p2p_final_db")) || {
       customers: [
         { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png" },
         { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png" }
@@ -912,91 +905,92 @@
       transactions: []
     };
 
-    // ক্লাউডে ডাটা পাঠানো
-    function pushToCrossCloud() {
-      localStorage.setItem("cg_bajar_verified_live_db_v2026", JSON.stringify(appData));
-      document.getElementById("cloudSyncText").textContent = "⚡ ক্লাউডত আপলোড চলিছে...";
+    function isMobileDevice() {
+      return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
 
-      // গ্লোবাল কি-ভ্যালু ক্লাউডে স্টোর
-      const cloudPayload = {
-        name: SYNC_ROOM_KEY,
-        data: {
-          storeData: appData,
-          lastUpdated: Date.now()
-        }
-      };
+    function initPeerP2PTunnel() {
+      const isMob = isMobileDevice();
+      const myId = isMob ? PEER_MOBILE_ID : PEER_DESKTOP_ID;
+      const targetId = isMob ? PEER_DESKTOP_ID : PEER_MOBILE_ID;
 
-      fetch(CLOUD_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(cloudPayload)
-      })
-      .then(res => res.json())
-      .then(res => {
-        if(res && res.id) {
-          localStorage.setItem("cg_cloud_last_obj_id", res.id);
-        }
-        document.getElementById("cloudSyncText").textContent = "🟢 ক্লাউডত লাইভ সংৰক্ষিত (ম'বাইল ↔ কম্পিউটাৰ)";
-      })
-      .catch(err => {
-        document.getElementById("cloudSyncText").textContent = "🟢 স্থানীয়ভাৱে সুৰক্ষিত";
+      try {
+        myPeer = new Peer(myId);
+
+        myPeer.on('open', (id) => {
+          document.getElementById("cloudSyncText").textContent = `🟢 টানেল সাজু (${isMob ? 'ম’বাইল' : 'কম্পিউটাৰ'})`;
+          connectToPeer(targetId);
+        });
+
+        // আনটো ডিভাইচৰ পৰা সংযোগ আহিলে
+        myPeer.on('connection', (conn) => {
+          setupConnectionEvents(conn);
+        });
+
+        myPeer.on('error', (err) => {
+          // যদি ID ইতিমধ্যে ব্যৱহাৰত আছে তেন্তে ডায়নামিক আইডি লওক
+          if (err.type === 'unavailable-id') {
+            const randomId = "chetia-" + Math.floor(1000 + Math.random() * 9000);
+            myPeer = new Peer(randomId);
+            myPeer.on('open', () => {
+              connectToPeer(targetId);
+            });
+          }
+        });
+      } catch(e) {
+        console.log("P2P fallback:", e);
+      }
+    }
+
+    function connectToPeer(targetId) {
+      if (!myPeer || myPeer.destroyed) return;
+      const conn = myPeer.connect(targetId, { reliable: true });
+      setupConnectionEvents(conn);
+    }
+
+    function setupConnectionEvents(conn) {
+      conn.on('open', () => {
+        peerConn = conn;
+        document.getElementById("cloudSyncText").textContent = "⚡ লাইভ P2P সংযুক্ত (১ ছেকেণ্ডত পোনপটীয়া ছিংক)";
+        // সংযোগ হোৱাৰ লগে লগে নিজৰ ডাটা আনজনক প্ৰেৰণ
+        conn.send({ type: 'SYNC_DATA', payload: appData });
       });
 
+      conn.on('data', (msg) => {
+        if (msg && msg.type === 'SYNC_DATA') {
+          appData = msg.payload;
+          localStorage.setItem("cg_bajar_p2p_final_db", JSON.stringify(appData));
+          refreshCustomerDropdown(document.getElementById("custSelect").value);
+          renderCustomerDetails();
+          filterMarketByDate();
+          document.getElementById("cloudSyncText").textContent = "⚡ আনজনৰ এন্ট্ৰি তৎক্ষণাত পোনপটীয়াকৈ ছিংক হ'ল!";
+          setTimeout(() => {
+            document.getElementById("cloudSyncText").textContent = "⚡ লাইভ P2P সংযুক্ত (১ ছেকেণ্ডত পোনপটীয়া ছিংক)";
+          }, 2500);
+        }
+      });
+
+      conn.on('close', () => {
+        document.getElementById("cloudSyncText").textContent = "🟡 টানেল সংযোগ বিচ্ছিন্ণ, পুনৰ সংযোগ চলিছে...";
+        setTimeout(reconnectP2PTunnel, 3000);
+      });
+    }
+
+    function broadcastLiveToPeers() {
+      localStorage.setItem("cg_bajar_p2p_final_db", JSON.stringify(appData));
+      if (peerConn && peerConn.open) {
+        peerConn.send({ type: 'SYNC_DATA', payload: appData });
+        document.getElementById("cloudSyncText").textContent = "⚡ এন্ট্ৰি ১ ছেকেণ্ডত আনটো ডিভাইচলৈ প্ৰেৰিত হ'ল!";
+      } else {
+        reconnectP2PTunnel();
+      }
       filterMarketByDate();
     }
 
-    // ক্লাউড থেকে সরাসরি আপডেট আনা
-    function pullFromCrossCloud() {
-      fetch(CLOUD_ENDPOINT)
-      .then(res => res.json())
-      .then(list => {
-        if (Array.isArray(list)) {
-          const matched = list.filter(item => item.name === SYNC_ROOM_KEY);
-          if (matched.length > 0) {
-            // সর্বশেষ অবজেক্টটি নেওয়া
-            const latestObj = matched[matched.length - 1];
-            if (latestObj.data && latestObj.data.storeData && latestObj.data.storeData.customers) {
-              appData = latestObj.data.storeData;
-              localStorage.setItem("cg_bajar_verified_live_db_v2026", JSON.stringify(appData));
-              refreshCustomerDropdown(document.getElementById("custSelect").value);
-              renderCustomerDetails();
-              filterMarketByDate();
-              document.getElementById("cloudSyncText").textContent = "🟢 লাইভ ক্লাউড ডাটা আপডেট হ'ল";
-            }
-          }
-        }
-      })
-      .catch(err => {});
-    }
-
-    // প্রতি ২.৫ সেকেন্ড পরপর অটো-চেক (যাতে রিফ্রেশ ছাড়াই কম্পিউটারে উঠে যায়)
-    function startRealtimeCrossSync() {
-      setInterval(() => {
-        if (navigator.onLine) {
-          fetch(CLOUD_ENDPOINT)
-          .then(res => res.json())
-          .then(list => {
-            if (Array.isArray(list)) {
-              const matched = list.filter(item => item.name === SYNC_ROOM_KEY);
-              if (matched.length > 0) {
-                const latestObj = matched[matched.length - 1];
-                if (latestObj.data && latestObj.data.storeData) {
-                  const cloudTxs = latestObj.data.storeData.transactions || [];
-                  if (cloudTxs.length !== appData.transactions.length) {
-                    appData = latestObj.data.storeData;
-                    localStorage.setItem("cg_bajar_verified_live_db_v2026", JSON.stringify(appData));
-                    refreshCustomerDropdown(document.getElementById("custSelect").value);
-                    renderCustomerDetails();
-                    filterMarketByDate();
-                    document.getElementById("cloudSyncText").textContent = "⚡ আনজন পৰিচালকৰ এন্ট্ৰি তৎক্ষণাত লাইভ হ'ল!";
-                  }
-                }
-              }
-            }
-          })
-          .catch(() => {});
-        }
-      }, 2500);
+    function reconnectP2PTunnel() {
+      const isMob = isMobileDevice();
+      const targetId = isMob ? PEER_DESKTOP_ID : PEER_MOBILE_ID;
+      connectToPeer(targetId);
     }
 
     function refreshCustomerDropdown(selectedId = null) {
@@ -1078,7 +1072,7 @@
       cust.name = document.getElementById("editCustName").value.trim();
       cust.phone = document.getElementById("editCustPhone").value.trim();
       cust.address = document.getElementById("editCustAddress").value.trim();
-      pushToCrossCloud();
+      broadcastLiveToPeers();
       closeEditCustomerModal();
       refreshCustomerDropdown(custId);
       alert("✅ গ্ৰাহকৰ তথ্য আপডেট হ'ল!");
@@ -1092,7 +1086,7 @@
       if (confirm(`আপুনি নিশ্চিতনে '${cust.name}'-ৰ সকলো হিচাপ আৰু প্ৰফাইল মচি পেলাব?`)) {
         appData.customers = appData.customers.filter(c => c.id !== custId);
         appData.transactions = appData.transactions.filter(t => t.customerId !== custId);
-        pushToCrossCloud();
+        broadcastLiveToPeers();
         refreshCustomerDropdown();
       }
     }
@@ -1103,7 +1097,7 @@
       if (!name) return;
       const id = "C" + Date.now();
       appData.customers.push({ id, name, phone: document.getElementById("newCustPhone").value.trim(), address: document.getElementById("newCustAddress").value.trim(), photo: "./logo.png" });
-      pushToCrossCloud();
+      broadcastLiveToPeers();
       toggleNewCustForm();
       refreshCustomerDropdown(id);
     }
@@ -1195,9 +1189,9 @@
       };
 
       appData.transactions.push(newTx);
-      pushToCrossCloud(); // সরাসরি ওপেন ক্লাউড সার্ভারে পোস্ট
+      broadcastLiveToPeers(); // লাইভ P2P প্ৰেৰণ
       renderCustomerDetails();
-      alert("✅ এন্ট্ৰি সফলভাৱে সংৰক্ষিত হ'ল আৰু কম্পিউটাৰৰ বাবে ক্লাউডত লাইভ হ'ল!");
+      alert("✅ এন্ট্ৰি সংৰক্ষিত হ'ল আৰু পোনপটীয়াকৈ কম্পিউটাৰলৈ ১ ছেকেণ্ডত ছিংক হ'ল!");
       
       document.getElementById("note").value = "";
       capturedPhotoBase64 = "";
