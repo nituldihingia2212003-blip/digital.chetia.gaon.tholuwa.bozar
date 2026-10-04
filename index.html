@@ -30,7 +30,7 @@
       box-shadow: 0 6px 15px rgba(0,0,0,0.15);
       border-bottom: 3.5px solid var(--gold);
     }
-    .header h2 { margin: 0; font-size: 1.35rem; letter-spacing: 0.5px; }
+    .header h2 { margin: 0; font-size: 1.35rem; }
     .header .slogan { margin: 4px 0 0; font-size: 0.88rem; font-weight: 700; color: var(--gold); }
     .header .sub-slogan { margin: 3px 0 0; font-size: 0.78rem; font-weight: 600; color: #ffffff; opacity: 0.95; }
     .header .contact-no { margin: 6px 0 0; font-size: 0.82rem; font-weight: bold; background: rgba(255,255,255,0.18); display: inline-block; padding: 3px 12px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.25); }
@@ -46,7 +46,6 @@
       align-items: center;
       font-size: 0.78rem;
       font-weight: 700;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
     }
     .sync-dot { height: 10px; width: 10px; background-color: #2e7d32; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
     @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.7; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.7; } }
@@ -101,7 +100,9 @@
     .stamp-text { font-size: 0.62rem; color: #0d47a1; font-weight: 700; line-height: 1.2; margin-bottom: 2px; }
     .sign-line { border-top: 1.5px solid #222; font-size: 0.7rem; font-weight: 700; color: #111; padding-top: 2px; }
     
-    .gps-thumb-btn { background: #e3f2fd; color: #0277bd; border: 1px solid #90caf9; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; font-weight: bold; cursor: pointer; }
+    /* ক্লিকেবল হাইপাৰলিংক ষ্টাইল */
+    .proof-link { color: #0277bd; font-weight: bold; text-decoration: underline; cursor: pointer; display: inline-flex; align-items: center; gap: 3px; }
+    .proof-link:hover { color: #01579b; }
 
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 15px; }
     .popup-box { background: white; border-radius: 12px; padding: 18px; width: 100%; max-width: 400px; text-align: center; max-height: 90vh; overflow-y: auto; }
@@ -122,7 +123,6 @@
       <input type="password" id="loginPin" maxlength="6" placeholder="৬ অংকৰ গোপন PIN">
       <button class="btn btn-primary" style="margin-top:14px;" onclick="authenticateUser()">প্ৰৱেশ কৰক</button>
       
-      <!-- PIN পাহৰিলে সুৰক্ষা প্ৰশ্নৰ লিংক -->
       <div style="margin-top:12px; text-align:right;">
         <a href="javascript:void(0)" style="font-size:0.75rem; color:#c62828; text-decoration:none; font-weight:700;" onclick="openSecurityQuestionsModal()">
           🔑 PIN পাহৰিলে? (Security Questions)
@@ -146,10 +146,10 @@
 
       <div style="background:#f9fbe7; border:1px solid #dce775; border-radius:8px; padding:10px; margin-top:10px;">
         <label style="color:#33691e; margin-top:0;">Question 1: What is your favourite place?</label>
-        <input type="text" id="secAns1" placeholder="উত্তৰ দিয়ক">
+        <input type="text" id="secAns1" placeholder="উত্তৰ দিয়ক (যেনে: Dhakuakhana)">
 
         <label style="color:#33691e; margin-top:8px;">Question 2: What is Your Code?</label>
-        <input type="text" id="secAns2" placeholder="উত্তৰ দিয়ক">
+        <input type="text" id="secAns2" placeholder="উত্তৰ দিয়ক (যেনে: 22KN)">
       </div>
 
       <div style="margin-top:10px;">
@@ -165,14 +165,14 @@
     </div>
   </div>
 
-  <!-- GPS ফটো প্ৰমাণ পৰীক্ষা পপআপ -->
+  <!-- GPS ফটো প্ৰমাণ পৰীক্ষা পপআপ (ক্লিক কৰিলে খোল খোৱা ফটো) -->
   <div id="proofViewModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
-      <h3 style="margin-top:0; color:var(--primary); font-size:1rem; border-bottom:1px solid #ddd; padding-bottom:5px;">📸 প্ৰমাণিত GPS ফটো প্ৰমাণ</h3>
+      <h3 style="margin-top:0; color:var(--primary); font-size:1rem; border-bottom:1px solid #ddd; padding-bottom:5px;">📸 প্ৰমাণিত GPS ফটোকপি</h3>
       <div style="text-align:center; margin:8px 0;">
-        <img id="proofModalImg" src="" style="width:100%; max-height:260px; object-fit:contain; border-radius:8px; border:1px solid #ccc;">
+        <img id="proofModalImg" src="" style="width:100%; max-height:270px; object-fit:contain; border-radius:8px; border:1.5px solid #2e7d32;">
       </div>
-      <div id="proofModalMeta" style="font-size:0.75rem; color:#333; background:#f5f5f5; padding:8px; border-radius:6px; line-height:1.4;"></div>
+      <div id="proofModalMeta" style="font-size:0.75rem; color:#222; background:#f1f8e9; padding:8px; border-radius:6px; line-height:1.45; border:1px solid #c8e6c9;"></div>
       <button class="btn btn-secondary" style="margin-top:10px;" onclick="closeProofModal()">বন্ধ কৰক</button>
     </div>
   </div>
@@ -184,7 +184,6 @@
       
       <div style="background:#fafafa; border:1px solid #ddd; border-radius:8px; padding:8px; margin-top:8px;">
         <div style="font-size:0.8rem; font-weight:bold; color:var(--primary); margin-bottom:4px;">👤 সহ-পৰিচালক (ৰণ্টু চেতিয়া) ব্যৱস্থাপনা:</div>
-        
         <label>মুখ্য পৰিচালকৰ দ্বাৰা পোনপটীয়াকৈ নতুন PIN প্ৰদান:</label>
         <input type="password" id="resetOperatorPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN">
         <button class="btn btn-primary" style="margin-top:4px; padding:6px; font-size:0.78rem;" onclick="adminResetOperatorPin()">
@@ -260,10 +259,61 @@
     </div>
   </div>
 
-  <!-- চহী ব্যৱস্থাপনা -->
+  <!-- ১. দৈনিক তাৰিখ ফিল্টাৰ আৰু বজাৰ খতিয়ান পেনেল (NEW DAILY AUDIT) -->
+  <div class="card" style="border-left: 4.5px solid var(--primary);">
+    <div class="card-title">
+      <span>📅 দৈনিক তাৰিখ অনুযায়ী বজাৰ খতিয়ান</span>
+      <span style="font-size:0.72rem; color:#555;">Daily Market Audit</span>
+    </div>
+    
+    <div class="row" style="align-items:flex-end;">
+      <div>
+        <label>তাৰিখ বাছক (Date Filter):</label>
+        <input type="date" id="dailyAuditDateInput" onchange="filterMarketByDate()">
+      </div>
+      <div style="flex:0 0 85px;">
+        <button class="btn btn-primary" style="margin-top:0; padding:8px 5px;" onclick="resetToTodayAudit()">আজিৰ দিন</button>
+      </div>
+    </div>
+
+    <!-- নিৰ্বাচিত দিনৰ অডিট সামৰণি -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;">
+      <div style="background:#ffebee; border-radius:8px; padding:8px; border-left:3.5px solid var(--accent);">
+        <div style="font-size:0.72rem; color:#555; font-weight:bold;">সেইদিনা মুঠ বাকী:</div>
+        <div style="font-size:1.15rem; font-weight:800; color:var(--accent);">₹<span id="dailyAuditDebit">0</span></div>
+      </div>
+      <div style="background:#e8f5e9; border-radius:8px; padding:8px; border-left:3.5px solid var(--primary);">
+        <div style="font-size:0.72rem; color:#555; font-weight:bold;">সেইদিনা মুঠ জমা:</div>
+        <div style="font-size:1.15rem; font-weight:800; color:var(--primary);">₹<span id="dailyAuditCredit">0</span></div>
+      </div>
+    </div>
+
+    <!-- সেইদিনাখন কোনে কোনে কিমান বাকী নিলে তাৰ তালিকা -->
+    <div style="margin-top:10px; font-size:0.75rem;">
+      <b>সেইদিনাৰ গ্ৰাহকৰ লেনদেন তালিকা:</b>
+      <div style="max-height:140px; overflow-y:auto; border:1px solid #e0e0e0; border-radius:6px; margin-top:4px;">
+        <table class="bill-table" style="margin-top:0;">
+          <thead>
+            <tr>
+              <th>গ্ৰাহকৰ নাম</th>
+              <th>সামগ্ৰী / ওজন</th>
+              <th>বাকী (+)</th>
+              <th>জমা (-)</th>
+              <th>ৰিমাৰ্কচ</th>
+            </tr>
+          </thead>
+          <tbody id="dailyAuditTableBody">
+            <tr><td colspan="5" style="text-align:center; color:#888;">কোনো লেনদেন হোৱা নাই</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- চহী নিয়ন্ত্ৰণ পেনেল -->
   <div class="card admin-only-feature">
     <div class="card-title">
-      <span>✍️️ চহী ব্যৱস্থাপনা (Authorised & Issuer)</span>
+      <span>✍️ চহী ব্যৱস্থাপনা (Authorised & Issuer)</span>
       <span style="font-size:0.75rem; color:var(--accent);">Admin Only</span>
     </div>
     <label>১. Authorised Signatory (ৰণ্টু চেতিয়া):</label>
@@ -275,7 +325,7 @@
   <!-- গ্ৰাহক পাছবুক ব্যৱস্থাপনা -->
   <div class="card">
     <div class="card-title">
-      <span>👤 গ্ৰাহক পাছবুক</span>
+      <span>👤 গ্ৰাহক ডিজিটেল পাছবুক</span>
       <button class="btn btn-outline" style="width:auto; padding:4px 8px; font-size:0.75rem;" onclick="toggleNewCustForm()">+ নতুন গ্ৰাহক</button>
     </div>
 
@@ -305,7 +355,7 @@
         </div>
       </div>
       <div class="due-highlight">
-        <span>বৰ্তমান বকেয়া বাকী:</span>
+        <span>বৰ্তমান মুঠ বকেয়া বাকী:</span>
         <span class="due-amount">₹<span id="dispDue">0</span></span>
       </div>
     </div>
@@ -322,9 +372,9 @@
     <a id="waBtn" class="btn btn-wa" style="margin-top:6px;" href="#" target="_blank">📲 WhatsApp বিল প্ৰেৰণ</a>
   </div>
 
-  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ -->
+  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ (ক্লিকেবল হাইপাৰলিংক ফটোকপি সহ) -->
   <div class="card">
-    <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ</span></div>
+    <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ (প্ৰিভিউ)</span></div>
     <div id="receiptArea">
       <img id="billWatermarkLogo" class="receipt-watermark hidden" src="./logo.png" alt="Watermark">
       <div class="receipt-content">
@@ -461,7 +511,6 @@
   <script>
     const CLOUD_STORAGE_KEY = "cg_bajar_shared_cloud_v1";
 
-    // প্ৰাৰম্ভিক পৰিচালক তথ্য
     const DEFAULT_MANAGERS = {
       ADMIN: {
         name: "নিতুল দিহিঙীয়া",
@@ -515,7 +564,9 @@
 
     function setDefaultDateTime() {
       const now = new Date();
-      document.getElementById("entryDateInput").value = now.toISOString().slice(0, 10);
+      const isoDate = now.toISOString().slice(0, 10);
+      document.getElementById("entryDateInput").value = isoDate;
+      document.getElementById("dailyAuditDateInput").value = isoDate;
       document.getElementById("entryTimeInput").value = now.toTimeString().slice(0, 5);
     }
 
@@ -554,6 +605,7 @@
       setDefaultDateTime();
       applyBusinessLogo();
       pullLatestCloudData();
+      filterMarketByDate(); // অডিট আপডেট
     }
 
     function logoutManager() {
@@ -562,11 +614,7 @@
       document.getElementById("authOverlay").classList.remove("hidden");
     }
 
-    // ==========================================
-    // নিৰাপত্তা প্ৰশ্নৰ দ্বাৰা PIN ৰিচেট লজিক
-    // Question 1: What is your favourite place? -> Ans: Dhakuakhana
-    // Question 2: What is Your Code? -> Ans: 22KN
-    // ==========================================
+    // নিৰাপত্তা প্ৰশ্নৰ দ্বাৰা PIN ৰিচেট
     function openSecurityQuestionsModal() {
       document.getElementById("secAns1").value = "";
       document.getElementById("secAns2").value = "";
@@ -584,7 +632,6 @@
       const ans2 = document.getElementById("secAns2").value.trim().toUpperCase();
       const newPin = document.getElementById("newSecPin").value.trim();
 
-      // শুদ্ধ উত্তৰ পৰীক্ষণ
       const isAns1Correct = (ans1 === "dhakuakhana");
       const isAns2Correct = (ans2 === "22KN" || ans2 === "22kn");
 
@@ -603,7 +650,6 @@
         return;
       }
 
-      // সঠিক হ'লে নতুন PIN সংৰক্ষণ
       managersData[targetRole].pin = newPin;
       saveManagersAuth();
       closeSecurityQuestionsModal();
@@ -681,6 +727,7 @@
       reader.readAsDataURL(file);
     }
 
+    // ক্লিকেবল ফটোকপি পপআপ
     function viewProofPhoto(txId) {
       const tx = appData.transactions.find(t => t.id === txId);
       if (!tx || !tx.proofPhoto) {
@@ -692,13 +739,65 @@
         <b>তাৰিখ:</b> ${tx.date} | <b>সময়:</b> ${tx.time || '-'}<br>
         <b>সামগ্ৰী:</b> ${tx.item} (${tx.qty})<br>
         <b>ৰিমাৰ্কচ:</b> ${tx.note || '-'}<br>
-        <b>GPS অৱস্থান:</b> ${tx.gpsLocation || 'সংলগ্ন আছে'}
+        <b>প্ৰমাণিত GPS অৱস্থান:</b> ${tx.gpsLocation || 'সংলগ্ন আছে'}
       `;
       document.getElementById("proofViewModal").classList.remove("hidden");
     }
 
     function closeProofModal() {
       document.getElementById("proofViewModal").classList.add("hidden");
+    }
+
+    // ==========================================
+    // দৈনিক তাৰিখ অনুসৰি ফিল্টাৰ আৰু অডিট লজিক
+    // ==========================================
+    function filterMarketByDate() {
+      const rawDate = document.getElementById("dailyAuditDateInput").value;
+      if (!rawDate) return;
+
+      const parts = rawDate.split("-");
+      const filterDateStr = `${parts[2]}/${parts[1]}/${parts[0]}`; // DD/MM/YYYY
+
+      let totalDayDebit = 0;
+      let totalDayCredit = 0;
+      const matchingTxs = appData.transactions.filter(t => t.date === filterDateStr);
+
+      const auditTbody = document.getElementById("dailyAuditTableBody");
+      auditTbody.innerHTML = "";
+
+      if (matchingTxs.length === 0) {
+        auditTbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#888;">এই তাৰিখত (${filterDateStr}) কোনো লেনদেন নাই</td></tr>`;
+      } else {
+        matchingTxs.forEach(t => {
+          totalDayDebit += t.debit;
+          totalDayCredit += t.credit;
+
+          const cust = appData.customers.find(c => c.id === t.customerId);
+          const custName = cust ? cust.name : "অজ্ঞাত";
+
+          let proofLinkHtml = "";
+          if (t.proofPhoto) {
+            proofLinkHtml = `<span class="proof-link" onclick="viewProofPhoto('${t.id}')">📷 [প্ৰমাণ]</span> `;
+          }
+
+          auditTbody.innerHTML += `<tr>
+            <td><b>${custName}</b></td>
+            <td>${t.item} <small>(${t.qty || '-'})</small></td>
+            <td style="color:#d32f2f; font-weight:bold; text-align:right;">${t.debit ? '₹'+t.debit : '-'}</td>
+            <td style="color:#1b5e20; font-weight:bold; text-align:right;">${t.credit ? '₹'+t.credit : '-'}</td>
+            <td style="font-size:0.68rem;">${proofLinkHtml}${t.note || '-'}</td>
+          </tr>`;
+        });
+      }
+
+      document.getElementById("dailyAuditDebit").textContent = totalDayDebit;
+      document.getElementById("dailyAuditCredit").textContent = totalDayCredit;
+    }
+
+    function resetToTodayAudit() {
+      const now = new Date();
+      document.getElementById("dailyAuditDateInput").value = now.toISOString().slice(0, 10);
+      filterMarketByDate();
     }
 
     function uploadAuthSignature(event) {
@@ -834,6 +933,7 @@
       setTimeout(() => {
         document.getElementById("cloudSyncText").textContent = "ক্লাউড ছিংক সক্ৰিয় (ম'বাইল ↔ ৱেবচাইট সংযুক্ত)";
       }, 2500);
+      filterMarketByDate(); // অডিট আপডেট
     }
 
     function pullLatestCloudData() {
@@ -842,6 +942,7 @@
         appData = latest;
         refreshCustomerDropdown(document.getElementById("custSelect").value);
         renderCustomerDetails();
+        filterMarketByDate();
       }
     }
 
@@ -858,6 +959,7 @@
           appData = ev.data.data;
           refreshCustomerDropdown(document.getElementById("custSelect").value);
           renderCustomerDetails();
+          filterMarketByDate();
         }
       };
     }
@@ -900,9 +1002,9 @@
       appData.transactions.filter(t => t.customerId === custId).forEach(t => {
         debit += t.debit; credit += t.credit;
         
-        let proofBtnHtml = "";
+        let proofLinkHtml = "";
         if (t.proofPhoto) {
-          proofBtnHtml = `<button class="gps-thumb-btn" onclick="viewProofPhoto('${t.id}')">📷 ফটো</button> `;
+          proofLinkHtml = `<span class="proof-link" onclick="viewProofPhoto('${t.id}')">📷 [প্ৰমাণ চাওক]</span> `;
         }
 
         tbody.innerHTML += `<tr>
@@ -911,7 +1013,7 @@
           <td style="text-align:center;">${t.qty || '-'}</td>
           <td style="color:#d32f2f; font-weight:bold; text-align:right;">${t.debit ? '₹'+t.debit : '-'}</td>
           <td style="color:#1b5e20; font-weight:bold; text-align:right;">${t.credit ? '₹'+t.credit : '-'}</td>
-          <td style="font-size:0.68rem;">${proofBtnHtml}${t.note || '-'}</td>
+          <td style="font-size:0.68rem;">${proofLinkHtml}${t.note || '-'}</td>
         </tr>`;
       });
       const due = debit - credit;
