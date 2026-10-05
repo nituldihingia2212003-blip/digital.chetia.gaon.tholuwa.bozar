@@ -8,7 +8,6 @@
   <link rel="apple-touch-icon" href="./logo.png">
   <meta name="theme-color" content="#0d3810">
   
-  <!-- HD ক্যানভাছ আৰু QR Code লাইব্ৰেৰী -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -131,7 +130,6 @@
     .bill-table td { border: 1px solid #e0e0e0; padding: 7px 4px; text-align: left; }
     .bill-table tr:nth-child(even) { background: #fafdfa; }
 
-    /* লাইভ UPI QR ক'ড ব্ল'ক */
     .bill-qr-box {
       margin-top: 12px; background: #fdfefe; border: 1.5px dashed #2e7d32;
       border-radius: 10px; padding: 10px; display: flex; align-items: center;
@@ -150,7 +148,12 @@
     .stamp-text { font-size: 0.64rem; color: #0d47a1; font-weight: 800; line-height: 1.25; margin-bottom: 3px; }
     .sign-line { border-top: 1.5px solid #222; font-size: 0.72rem; font-weight: 800; color: #111; padding-top: 3px; }
 
-    .proof-link { color: #0277bd; font-weight: 800; text-decoration: underline; cursor: pointer; display: inline-flex; align-items: center; gap: 3px; }
+    .proof-icon-btn {
+      color: #0277bd; font-size: 1rem; cursor: pointer; text-decoration: none;
+      display: inline-block; padding: 2px 4px; border-radius: 4px;
+      transition: transform 0.1s;
+    }
+    .proof-icon-btn:hover { transform: scale(1.2); }
 
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -163,7 +166,6 @@
     }
     .hidden { display: none !important; }
 
-    /* থাৰ্মেল প্ৰিণ্ট লুক (Thermal Receipt Preview) */
     @media print {
       body * { visibility: hidden; }
       #thermalPrintArea, #thermalPrintArea * { visibility: visible; }
@@ -196,7 +198,7 @@
     </div>
   </div>
 
-  <!-- AI Voice Entry চূড়ান্ত সিদ্ধান্ত গ্ৰহণ পৰ্দা (Review Modal) -->
+  <!-- AI Voice Entry চূড়ান্ত সিদ্ধান্ত গ্ৰহণ পৰ্দা -->
   <div id="voiceReviewModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:#8e24aa; border-bottom:2px solid #ce93d8; padding-bottom:6px; font-weight:800;">
@@ -278,11 +280,11 @@
     </div>
   </div>
 
-  <!-- GPS ফটোকপি প্ৰমাণ পপআপ -->
+  <!-- ফটোকপি প্ৰদৰ্শন পপআপ (প্ৰমাণ শব্দবিহীন) -->
   <div id="proofViewModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:var(--primary); font-size:1.05rem; border-bottom:2px solid var(--border-color); padding-bottom:6px; font-weight:800;">
-        📸 প্ৰমাণিত GPS ফটোকপি
+        📸 সংৰক্ষিত ফটোকপি
       </h3>
       <div style="text-align:center; margin:10px 0;">
         <img id="proofModalImg" src="" style="width:100%; max-height:280px; object-fit:contain; border-radius:10px; border:2px solid var(--primary); box-shadow:var(--shadow-sm);">
@@ -299,10 +301,9 @@
         ⚙️ মুখ্য পৰিচালক বিশেষ চেটিংছ (Admin)
       </h3>
 
-      <!-- ব্যৱসায়িক UPI ID চেটিংছ -->
       <div style="background:#e8f5e9; border:1px solid #a5d6a7; border-radius:10px; padding:10px; margin-top:10px;">
         <div style="font-size:0.82rem; font-weight:800; color:var(--primary); margin-bottom:4px;">💳 ব্যৱসায়িক UPI ID (QR Code পৰিশোধ):</div>
-        <input type="text" id="businessUpiInput" placeholder="যেনে: 9613777612@okaxis বা upi@bank">
+        <input type="text" id="businessUpiInput" placeholder="যেনে: 9613777612@okaxis">
         <button class="btn btn-primary" style="margin-top:6px; padding:7px; font-size:0.8rem;" onclick="saveBusinessUpiId()">
           💾 UPI ID সংৰক্ষণ কৰক
         </button>
@@ -514,11 +515,11 @@
     
     <div class="row" style="margin-top:6px;">
       <button class="btn btn-pdf" onclick="generatePassbookPdf()">📄 পাছবুক PDF</button>
-      <a id="waBtn" class="btn btn-wa" href="#" target="_blank">📲 WhatsApp বিল</a>
+      <a id="waBtn" class="btn btn-wa" href="#" target="_blank">📲 WhatsApp বিল ও লিংক</a>
     </div>
   </div>
 
-  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ (Live Dynamic UPI QR Code সহ) -->
+  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ (কেৱল 📷 আইকন সহ) -->
   <div class="card">
     <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ (প্ৰিভিউ)</span></div>
     <div id="receiptArea">
@@ -665,10 +666,10 @@
 
     <div style="background:#e8f4fd; border:1.5px dashed #0277bd; border-radius:10px; padding:10px; margin-top:8px;">
       <div style="font-size:0.8rem; font-weight:800; color:#01579b; margin-bottom:4px;">
-        📸 মাংস লোৱাৰ ফটোকপি প্ৰমাণ + GPS ষ্টাম্প (ঐচ্ছিক):
+        📸 মাংস লোৱাৰ ফটোকপি (ঐচ্ছিক):
       </div>
       <input type="file" id="gpsCamInput" accept="image/*" capture="environment" onchange="captureGuaranteedGpsPhoto(event)">
-      <div id="gpsLocationDisplay" style="font-size:0.72rem; color:#444; margin-top:4px; font-weight:600;">📍 GPS স্থিতি: ফটো লোৱা হোৱা নাই</div>
+      <div id="gpsLocationDisplay" style="font-size:0.72rem; color:#444; margin-top:4px; font-weight:600;">📍 স্থিতি: ফটো লোৱা হোৱা নাই</div>
     </div>
 
     <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু ক্লাউড ছিংক</button>
@@ -696,7 +697,6 @@
     let capturedPhotoBase64 = "";
     let capturedGpsLocation = "";
     let isFetchingFromSheet = false;
-    let qrCodeInstance = null;
 
     function saveManagersAuth() {
       localStorage.setItem("cg_bajar_managers_enterprise", JSON.stringify(managersData));
@@ -829,9 +829,7 @@
       document.getElementById("adminSelfNewPin").value = "";
     }
 
-    // ========================================================
-    // AI ভইচ এন্ট্ৰি এঞ্জিন (Assamese & English Natural Voice Parsing)
-    // ========================================================
+    // AI ভইচ এন্ট্ৰি এঞ্জিন
     function startVoiceRecognition(langCode) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
@@ -845,10 +843,6 @@
       recognition.interimResults = false;
 
       document.getElementById("cloudSyncText").textContent = `🎙️ কথা কওক (${langCode === 'as-IN' ? 'অসমীয়াত' : 'English'})...`;
-
-      recognition.onstart = function() {
-        // Voice listening feedback
-      };
 
       recognition.onresult = function(event) {
         const spokenText = event.results[0][0].transcript;
@@ -873,7 +867,6 @@
       let matchedAmount = 300;
       let matchedNote = rawText;
 
-      // ১. গ্ৰাহক চিনাক্তকৰণ
       appData.customers.forEach(c => {
         let cName = c.name.toLowerCase();
         if (text.includes(cName) || text.includes(cName.split(" ")[0])) {
@@ -881,18 +874,15 @@
         }
       });
 
-      // ২. বাকী নে জমা চিনাক্তকৰণ
       if (text.includes("জমা") || text.includes("দিলে") || text.includes("পৰিশোধ") || text.includes("paid") || text.includes("credit")) {
         matchedType = "credit";
       }
 
-      // ৩. সামগ্ৰী চিনাক্তকৰণ
       if (text.includes("মাছ") || text.includes("fish")) {
         matchedItem = "সতেজ মাছ";
         matchedRate = 250;
       }
 
-      // ৪. ওজন বা পৰিমাণ চিনাক্তকৰণ (অসমীয়া আৰু সংখ্যা)
       if (text.includes("আধা কেজি") || text.includes("half kg") || text.includes("0.5")) matchedQty = 0.5;
       else if (text.includes("দেৰ কেজি") || text.includes("দেড় কেজি") || text.includes("1.5")) matchedQty = 1.5;
       else if (text.includes("দুগুণ") || text.includes("দুই কেজি") || text.includes("2 kg") || text.includes("2 কেজি")) matchedQty = 2.0;
@@ -900,7 +890,6 @@
       else if (text.includes("তিনি কেজি") || text.includes("3 kg") || text.includes("3 কেজি")) matchedQty = 3.0;
       else if (text.includes("পাঁচ কেজি") || text.includes("5 kg") || text.includes("5 কেজি")) matchedQty = 5.0;
       else {
-        // স্বাভাৱিক সংখ্যাৰ পৰীক্ষা
         let numMatch = text.match(/\d+(\.\d+)?/);
         if (numMatch) {
           let parsedNum = parseFloat(numMatch[0]);
@@ -913,7 +902,6 @@
         matchedAmount = Math.round(matchedQty * matchedRate);
       }
 
-      // Voice Review Modal-ত তথ্য সজোৱা
       document.getElementById("voiceRecognizedRawText").textContent = `"${rawText}"`;
       
       const vCustSel = document.getElementById("vParsedCustSelect");
@@ -983,9 +971,7 @@
       alert("✅ পৰিচালকৰ অনুমোদন ক্ৰমে ভইচ এন্ট্ৰি সফলতাৰে সংৰক্ষিত হ'ল!");
     }
 
-    // ========================================================
     // লাইভ ডাইনামিক UPI QR Code এঞ্জিন
-    // ========================================================
     function updateReceiptDynamicQr(dueAmt, custName) {
       const qrEl = document.getElementById("receiptDynamicQr");
       if (!qrEl) return;
@@ -998,7 +984,6 @@
         return;
       }
 
-      // প্ৰকৃত UPI পেমেণ্ট লিংক
       const upiUrl = `upi://pay?pa=${encodeURIComponent(businessUpiId)}&pn=${encodeURIComponent("Chetia Gaon Tholuwa Bazar")}&am=${dueAmt}&cu=INR&tn=${encodeURIComponent("Due Payment - " + custName)}`;
 
       new QRCode(qrEl, {
@@ -1011,9 +996,7 @@
       });
     }
 
-    // ========================================================
-    // Bluetooth Mini Thermal Receipt Printer (58mm/80mm POS)
-    // ========================================================
+    // Bluetooth Mini Thermal POS Printer
     function printThermalReceipt() {
       const custId = document.getElementById("custSelect").value;
       const cust = appData.customers.find(c => c.id === custId);
@@ -1073,12 +1056,12 @@
       setTimeout(() => { printContainer.classList.add("hidden"); }, 1000);
     }
 
-    // কম্প্রেশন আৰু ফটো প্রসেসিং
+    // ফটো প্ৰচেছিং
     function captureGuaranteedGpsPhoto(event) {
       const file = event.target.files[0];
       if (!file) return;
 
-      document.getElementById("gpsLocationDisplay").innerHTML = "⏳ কেমেৰা প্ৰক্ৰিয়াকৰণ আৰু GPS সংগ্ৰহ চলিছে...";
+      document.getElementById("gpsLocationDisplay").innerHTML = "⏳ ফটো সংগ্ৰহ চলিছে...";
 
       let latStr = "27.4885° N", lonStr = "94.9120° E";
 
@@ -1119,7 +1102,7 @@
 
           capturedPhotoBase64 = canvas.toDataURL("image/jpeg", 0.5);
           capturedGpsLocation = `${lat}, ${lon}`;
-          document.getElementById("gpsLocationDisplay").innerHTML = `✅ ফটোকপি আৰু GPS প্ৰমাণ সংৰক্ষিত (${capturedGpsLocation})`;
+          document.getElementById("gpsLocationDisplay").innerHTML = `✅ ফটোকপি সংৰক্ষিত (${capturedGpsLocation})`;
         };
         img.src = e.target.result;
       };
@@ -1129,7 +1112,7 @@
     function viewProofPhoto(txId) {
       const tx = appData.transactions.find(t => t.id === txId);
       if (!tx || !tx.proofPhoto) {
-        alert("এই এন্ট্ৰিৰ কোনো GPS ফটো নাই।");
+        alert("এই এন্ট্ৰিৰ কোনো ফটোকপি নাই।");
         return;
       }
       document.getElementById("proofModalImg").src = tx.proofPhoto;
@@ -1137,7 +1120,7 @@
         <b>তাৰিখ:</b> ${tx.date} | <b>সময়:</b> ${tx.time || '-'}<br>
         <b>সামগ্ৰী:</b> ${tx.item} (${tx.qty})<br>
         <b>ৰিমাৰ্কচ:</b> ${tx.note || '-'}<br>
-        <b>প্ৰমাণিত GPS অৱস্থান:</b> ${tx.gpsLocation || 'সংলগ্ন আছে'}
+        <b>অৱস্থান:</b> ${tx.gpsLocation || 'সংলগ্ন আছে'}
       `;
       document.getElementById("proofViewModal").classList.remove("hidden");
     }
@@ -1170,9 +1153,9 @@
           const cust = appData.customers.find(c => c.id === t.customerId);
           const custName = cust ? cust.name : "অজ্ঞাত";
 
-          let proofLinkHtml = "";
+          let iconHtml = "";
           if (t.proofPhoto) {
-            proofLinkHtml = `<span class="proof-link" onclick="viewProofPhoto('${t.id}')">📷 [প্ৰমাণ]</span> `;
+            iconHtml = `<span class="proof-icon-btn" onclick="viewProofPhoto('${t.id}')" title="ফটো চাওক">📷</span> `;
           }
 
           auditTbody.innerHTML += `<tr>
@@ -1180,7 +1163,7 @@
             <td>${t.item} <small>(${t.qty || '-'})</small></td>
             <td style="color:#d32f2f; font-weight:bold; text-align:right;">${t.debit ? '₹'+t.debit : '-'}</td>
             <td style="color:#1b5e20; font-weight:bold; text-align:right;">${t.credit ? '₹'+t.credit : '-'}</td>
-            <td style="font-size:0.68rem;">${proofLinkHtml}${t.note || '-'}</td>
+            <td style="font-size:0.72rem;">${iconHtml}${t.note || '-'}</td>
           </tr>`;
         });
       }
@@ -1305,9 +1288,7 @@
       watermarkEl.classList.remove("hidden");
     }
 
-    // ========================================================
-    // পুৰণি সকলো ডাটা অক্ষুণ্ণ ৰখা ব্যৱস্থা (Zero Data Loss)
-    // ========================================================
+    // পুৰণি ডাটা সংৰক্ষণ ব্যৱস্থা
     function loadAndMergeAllLegacyData() {
       let baseData = {
         customers: [
@@ -1431,9 +1412,9 @@
       appData.transactions.filter(t => t.customerId === custId).forEach(t => {
         debit += t.debit; credit += t.credit;
         
-        let proofLinkHtml = "";
+        let iconHtml = "";
         if (t.proofPhoto) {
-          proofLinkHtml = `<span class="proof-link" onclick="viewProofPhoto('${t.id}')">📷 [প্ৰমাণ]</span> `;
+          iconHtml = `<span class="proof-icon-btn" onclick="viewProofPhoto('${t.id}')" title="ফটো চাওক">📷</span> `;
         }
 
         tbody.innerHTML += `<tr>
@@ -1442,13 +1423,17 @@
           <td style="text-align:center;">${t.qty || '-'}</td>
           <td style="color:#d32f2f; font-weight:bold; text-align:right;">${t.debit ? '₹'+t.debit : '-'}</td>
           <td style="color:#1b5e20; font-weight:bold; text-align:right;">${t.credit ? '₹'+t.credit : '-'}</td>
-          <td style="font-size:0.68rem;">${proofLinkHtml}${t.note || '-'}</td>
+          <td style="font-size:0.74rem;">${iconHtml}${t.note || '-'}</td>
         </tr>`;
       });
       const due = debit - credit;
       document.getElementById("dispDue").textContent = due;
       document.getElementById("recTotalDue").textContent = due;
-      document.getElementById("waBtn").href = `https://wa.me/91${cust.phone}?text=${encodeURIComponent(`চেতিয়া গাঁও থলুৱা বজাৰ\nপ্ৰতি, ${cust.name}\nবৰ্তমান মুঠ বকেয়া বাকী: ₹${due}\nযোগাযোগ: 9613777612\nধন্যবাদ! পুনৰ আহিব।`)}`;
+
+      // WhatsApp বাৰ্তাত লাইভ ডিজিটেল বিলৰ লিংক সংযোগ (যাতে গ্ৰাহকে ফটোত স্পৰ্শ কৰিব পাৰে)
+      const currentWebLink = window.location.href.split("?")[0];
+      const waMsg = `চেতিয়া গাঁও থলুৱা বজাৰ\nপ্ৰতি, ${cust.name}\nবৰ্তমান মুঠ বকেয়া বাকী: ₹${due}\nযোগাযোগ: 9613777612\n\nআপোনাৰ ডিজিটেল বিল ও সংৰক্ষিত ফটোকপি চাবলৈ লিংক:\n${currentWebLink}\n\nধন্যবাদ! পুনৰ আহিব।`;
+      document.getElementById("waBtn").href = `https://wa.me/91${cust.phone}?text=${encodeURIComponent(waMsg)}`;
 
       // লাইভ UPI QR ক'ড আপডেট
       updateReceiptDynamicQr(due, cust.name);
@@ -1601,7 +1586,7 @@
       document.getElementById("note").value = "";
       capturedPhotoBase64 = "";
       capturedGpsLocation = "";
-      document.getElementById("gpsLocationDisplay").innerHTML = "📍 GPS স্থিতি: ফটো লোৱা হোৱা নাই";
+      document.getElementById("gpsLocationDisplay").innerHTML = "📍 স্থিতি: ফটো লোৱা হোৱা নাই";
       document.getElementById("gpsCamInput").value = "";
       if (type === "credit") document.getElementById("creditAmountInput").value = "";
     }
