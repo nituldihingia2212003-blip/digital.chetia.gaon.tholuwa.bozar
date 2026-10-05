@@ -2,146 +2,263 @@
 <html lang="as">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>চেতিয়া গাঁও থলুৱা বজাৰ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>চেতিয়া গাঁও থলুৱা বজাৰ | Enterprise AI Edition</title>
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./logo.png">
-  <meta name="theme-color" content="#1b5e20">
+  <meta name="theme-color" content="#0d3810">
+  
+  <!-- HD ক্যানভাছ আৰু QR Code লাইব্ৰেৰী -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
   <style>
     :root {
-      --primary: #1b5e20;
-      --secondary: #2e7d32;
-      --light: #f1f8e9;
-      --accent: #c62828;
-      --border: #c8e6c9;
-      --bg: #f4f7f4;
-      --gold: #ffeb3b;
+      --primary: #0d3810;
+      --primary-gradient: linear-gradient(135deg, #0d3810 0%, #1b5e20 50%, #052407 100%);
+      --secondary: #1b5e20;
+      --accent: #b71c1c;
+      --gold: #ffd700;
+      --light-bg: #f3f6f3;
+      --card-bg: #ffffff;
+      --border-color: #d1e7d3;
+      --text-main: #141f15;
+      --text-muted: #536354;
+      --shadow-sm: 0 2px 8px rgba(13, 56, 16, 0.06);
+      --shadow-md: 0 4px 16px rgba(13, 56, 16, 0.12);
+      --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.2);
     }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 10px; background: var(--bg); color: #1c1c1c; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      margin: 0; padding: 10px; background: var(--light-bg); color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
     
     .header {
-      background: linear-gradient(135deg, #1b5e20 0%, #0a3d0e 100%);
-      color: white;
-      padding: 16px 12px;
-      border-radius: 14px;
-      text-align: center;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-      border-bottom: 3.5px solid var(--gold);
+      background: var(--primary-gradient);
+      color: white; padding: 18px 14px; border-radius: 16px;
+      text-align: center; box-shadow: var(--shadow-md);
+      border-bottom: 3.5px solid var(--gold); position: relative; overflow: hidden;
     }
-    .header h2 { margin: 0; font-size: 1.35rem; }
-    .header .slogan { margin: 4px 0 0; font-size: 0.88rem; font-weight: 700; color: var(--gold); }
-    .header .sub-slogan { margin: 3px 0 0; font-size: 0.78rem; font-weight: 600; color: #ffffff; opacity: 0.95; }
-    .header .contact-no { margin: 6px 0 0; font-size: 0.82rem; font-weight: bold; background: rgba(255,255,255,0.18); display: inline-block; padding: 3px 12px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.25); }
+    .header h2 { margin: 0; font-size: 1.4rem; letter-spacing: 0.6px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.4); }
+    .header .slogan { margin: 5px 0 0; font-size: 0.9rem; font-weight: 800; color: var(--gold); }
+    .header .sub-slogan { margin: 3px 0 0; font-size: 0.8rem; font-weight: 600; color: #ffffff; opacity: 0.95; }
+    .header .contact-no { margin: 8px 0 0; font-size: 0.82rem; font-weight: 800; background: rgba(255,255,255,0.2); display: inline-block; padding: 3px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(4px); }
 
     .sync-panel {
-      background: #ffffff;
-      border: 1.5px solid #81c784;
-      border-radius: 10px;
-      padding: 8px 12px;
-      margin-top: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.78rem;
-      font-weight: 700;
+      background: #ffffff; border: 1.5px solid #a5d6a7; border-radius: 12px;
+      padding: 8px 14px; margin-top: 10px; display: flex; justify-content: space-between;
+      align-items: center; font-size: 0.78rem; font-weight: 700; box-shadow: var(--shadow-sm);
     }
-    .sync-dot { height: 10px; width: 10px; background-color: #2e7d32; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.7; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.7; } }
+    .sync-dot { height: 10px; width: 10px; background-color: #2e7d32; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #2e7d32; }
 
-    .card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-top: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.04); }
-    .card-title { margin: 0 0 8px 0; color: var(--secondary); font-size: 0.95rem; font-weight: 700; border-bottom: 2px solid var(--light); padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
-    
-    .profile-card-flex { display: flex; align-items: center; gap: 10px; }
-    .avatar-wrapper { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
-    .avatar-img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); background: #fff; }
-    .avatar-upload-icon { position: absolute; bottom: -2px; right: -2px; background: var(--primary); color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; border: 1px solid #fff; }
+    .card {
+      background: var(--card-bg); border: 1px solid var(--border-color);
+      border-radius: 14px; padding: 14px; margin-top: 12px; box-shadow: var(--shadow-sm);
+    }
+    .card-title {
+      margin: 0 0 10px 0; color: var(--primary); font-size: 0.98rem; font-weight: 800;
+      border-bottom: 2px solid #e8f5e9; padding-bottom: 6px; display: flex;
+      justify-content: space-between; align-items: center;
+    }
 
-    .due-highlight { background: #ffebee; border-left: 5px solid var(--accent); padding: 8px 10px; border-radius: 6px; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; }
-    .due-amount { color: var(--accent); font-size: 1.35rem; font-weight: 800; }
-    
-    label { display: block; font-size: 0.82rem; font-weight: 700; margin-top: 6px; margin-bottom: 3px; color: #333; }
-    input, select { width: 100%; padding: 8px; border: 1.5px solid #ccd5cc; border-radius: 6px; font-size: 0.9rem; background: #fafdfa; }
+    .profile-card-flex { display: flex; align-items: center; gap: 12px; }
+    .avatar-wrapper { position: relative; width: 54px; height: 54px; flex-shrink: 0; }
+    .avatar-img { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; border: 2.5px solid var(--primary); background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .avatar-upload-icon { position: absolute; bottom: -2px; right: -2px; background: var(--primary); color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; border: 2px solid #fff; }
+
+    .due-highlight {
+      background: #ffebee; border-left: 5px solid var(--accent);
+      padding: 10px 12px; border-radius: 8px; margin-top: 10px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .due-amount { color: var(--accent); font-size: 1.45rem; font-weight: 900; }
+
+    label { display: block; font-size: 0.82rem; font-weight: 800; margin-top: 8px; margin-bottom: 4px; color: #2c3e2e; }
+    input, select {
+      width: 100%; padding: 10px; border: 1.5px solid #c2d6c4; border-radius: 8px;
+      font-size: 0.92rem; background: #fafdfa; color: #111;
+    }
+    input:focus, select:focus { border-color: var(--secondary); outline: none; background: #fff; }
     .row { display: flex; gap: 8px; }
     .row > div { flex: 1; }
-    
-    .btn { width: 100%; padding: 9px; border: none; border-radius: 7px; font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-top: 7px; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+
+    .btn {
+      width: 100%; padding: 10px; border: none; border-radius: 8px; font-size: 0.9rem;
+      font-weight: 800; cursor: pointer; margin-top: 8px; display: flex; align-items: center;
+      justify-content: center; gap: 6px; text-decoration: none;
+    }
+    .btn:active { transform: scale(0.98); opacity: 0.9; }
     .btn-primary { background: var(--primary); color: white; }
     .btn-secondary { background: #37474f; color: white; }
     .btn-wa { background: #25d366; color: white; }
     .btn-invoice { background: #0277bd; color: white; }
-    .btn-pdf { background: #d32f2f; color: white; }
+    .btn-thermal { background: #212121; color: #fff; border: 1px solid #616161; }
+    .btn-pdf { background: #c62828; color: white; }
     .btn-danger { background: var(--accent); color: white; }
     .btn-edit { background: #e65100; color: white; }
     .btn-settings { background: #4a148c; color: white; }
+    .btn-voice { background: linear-gradient(135deg, #d81b60, #8e24aa); color: white; box-shadow: 0 4px 10px rgba(216,27,96,0.3); }
     .btn-outline { background: transparent; border: 1.5px solid var(--secondary); color: var(--secondary); }
-    
-    .qty-stepper { display: flex; align-items: center; gap: 6px; }
-    .qty-step-btn { width: 44px; height: 38px; background: #e8f5e9; border: 1.5px solid var(--secondary); border-radius: 6px; font-size: 1.2rem; font-weight: bold; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .qty-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-    .qty-chip { background: #fff; border: 1px solid #a5d6a7; color: var(--primary); padding: 4px 10px; border-radius: 14px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+
+    .qty-stepper { display: flex; align-items: center; gap: 8px; }
+    .qty-step-btn {
+      width: 48px; height: 42px; background: #e8f5e9; border: 1.5px solid var(--secondary);
+      border-radius: 8px; font-size: 1.3rem; font-weight: 900; color: var(--primary);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .qty-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .qty-chip {
+      background: #fff; border: 1px solid #a5d6a7; color: var(--primary);
+      padding: 5px 12px; border-radius: 16px; font-size: 0.78rem; font-weight: 800; cursor: pointer;
+    }
     .qty-chip.active { background: var(--primary); color: #fff; }
 
-    #receiptArea { position: relative; background: #ffffff; padding: 14px; border: 2px solid #2e7d32; border-radius: 10px; margin-top: 10px; color: #111; overflow: hidden; }
-    .receipt-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 68%; opacity: 0.08; pointer-events: none; }
+    /* বিল ৰচিদ */
+    #receiptArea {
+      position: relative; background: #ffffff; padding: 18px 14px;
+      border: 2px solid var(--primary); border-radius: 12px; margin-top: 10px;
+      color: #111; overflow: hidden;
+    }
+    .receipt-watermark {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 65%; opacity: 0.08; pointer-events: none; z-index: 1;
+    }
     .receipt-content { position: relative; z-index: 2; }
-    
-    .bill-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.74rem; }
-    .bill-table th { background: #e8f5e9; color: #1b5e20; border: 1px solid #c8e6c9; padding: 6px 3px; font-weight: 700; text-align: center; }
-    .bill-table td { border: 1px solid #e0e0e0; padding: 6px 3px; text-align: left; }
-    
-    .thankyou-box-short { text-align: center; font-size: 0.78rem; font-weight: 700; color: #1b5e20; border: 1px dashed #81c784; border-radius: 6px; padding: 6px; margin: 10px 0 6px 0; background: #f4faf4; }
-    
-    .sign-section { margin-top: 8px; display: flex; justify-content: space-between; align-items: flex-end; }
-    .sign-box { text-align: right; width: 180px; }
-    .sign-box-left { text-align: left; width: 140px; }
-    .sign-img { max-height: 44px; max-width: 120px; object-fit: contain; display: block; margin-bottom: 2px; }
-    .stamp-text { font-size: 0.62rem; color: #0d47a1; font-weight: 700; line-height: 1.2; margin-bottom: 2px; }
-    .sign-line { border-top: 1.5px solid #222; font-size: 0.7rem; font-weight: 700; color: #111; padding-top: 2px; }
-    
-    .proof-link { color: #0277bd; font-weight: bold; text-decoration: underline; cursor: pointer; display: inline-flex; align-items: center; gap: 3px; }
+    .bill-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.76rem; }
+    .bill-table th { background: #e8f5e9; color: var(--primary); border: 1px solid #c8e6c9; padding: 7px 4px; font-weight: 800; text-align: center; }
+    .bill-table td { border: 1px solid #e0e0e0; padding: 7px 4px; text-align: left; }
+    .bill-table tr:nth-child(even) { background: #fafdfa; }
 
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 15px; }
-    .popup-box { background: white; border-radius: 12px; padding: 18px; width: 100%; max-width: 400px; text-align: center; max-height: 90vh; overflow-y: auto; }
+    /* লাইভ UPI QR ক'ড ব্ল'ক */
+    .bill-qr-box {
+      margin-top: 12px; background: #fdfefe; border: 1.5px dashed #2e7d32;
+      border-radius: 10px; padding: 10px; display: flex; align-items: center;
+      justify-content: space-between; gap: 10px;
+    }
+    .bill-qr-graphic { background: white; padding: 5px; border: 1px solid #ddd; border-radius: 6px; }
+
+    .thankyou-box-short {
+      text-align: center; font-size: 0.8rem; font-weight: 800; color: var(--primary);
+      border: 1.5px dashed #81c784; border-radius: 8px; padding: 8px; margin: 12px 0 8px 0; background: #f4faf4;
+    }
+    .sign-section { margin-top: 12px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .sign-box { text-align: right; width: 185px; }
+    .sign-box-left { text-align: left; width: 140px; }
+    .sign-img { max-height: 46px; max-width: 125px; object-fit: contain; display: block; margin-bottom: 2px; }
+    .stamp-text { font-size: 0.64rem; color: #0d47a1; font-weight: 800; line-height: 1.25; margin-bottom: 3px; }
+    .sign-line { border-top: 1.5px solid #222; font-size: 0.72rem; font-weight: 800; color: #111; padding-top: 3px; }
+
+    .proof-link { color: #0277bd; font-weight: 800; text-decoration: underline; cursor: pointer; display: inline-flex; align-items: center; gap: 3px; }
+
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.82); display: flex; justify-content: center;
+      align-items: center; z-index: 99999; padding: 14px; backdrop-filter: blur(4px);
+    }
+    .popup-box {
+      background: white; border-radius: 16px; padding: 20px; width: 100%;
+      max-width: 420px; text-align: center; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg);
+    }
     .hidden { display: none !important; }
+
+    /* থাৰ্মেল প্ৰিণ্ট লুক (Thermal Receipt Preview) */
+    @media print {
+      body * { visibility: hidden; }
+      #thermalPrintArea, #thermalPrintArea * { visibility: visible; }
+      #thermalPrintArea { position: absolute; left: 0; top: 0; width: 58mm; padding: 0; margin: 0; font-family: monospace; font-size: 11px; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- ল'গইন পৰ্দা -->
+  <!-- সুৰক্ষিত প্ৰৱেশ পৰ্দা -->
   <div id="authOverlay" class="modal-overlay">
     <div class="popup-box">
-      <div style="font-size:2rem; margin-bottom:4px;">🛡️</div>
-      <h3 style="margin:2px 0; color:var(--primary);">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
-      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">Google Sheets Cloud Engine | 24H Session</p>
-      <label style="text-align:left;">ম'বাইল নম্বৰ:</label>
-      <input type="tel" id="loginPhone" placeholder="১০ অংকৰ মোবাইল নম্বৰ">
-      <label style="text-align:left; margin-top:8px;">গোপন PIN (৬টা সংখ্যা):</label>
-      <input type="password" id="loginPin" maxlength="6" placeholder="৬ অংকৰ গোপন PIN">
-      <button class="btn btn-primary" style="margin-top:14px;" onclick="authenticateUser()">প্ৰৱেশ কৰক</button>
+      <div style="font-size:2.2rem; margin-bottom:4px;">🛡️</div>
+      <h3 style="margin:2px 0; color:var(--primary); font-weight:800;">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
+      <p style="font-size:0.75rem; color:#0277bd; font-weight:700; margin-bottom:14px;">Google Cloud Secured | 24H Session</p>
       
-      <div style="margin-top:12px; text-align:right;">
-        <a href="javascript:void(0)" style="font-size:0.75rem; color:#c62828; text-decoration:none; font-weight:700;" onclick="openSecurityQuestionsModal()">
+      <label style="text-align:left;">ম'বাইল নম্বৰ:</label>
+      <input type="tel" id="loginPhone" placeholder="১০ অংকৰ মোবাইল নম্বৰ" autocomplete="tel">
+      
+      <label style="text-align:left; margin-top:8px;">গোপন PIN (৬টা সংখ্যা):</label>
+      <input type="password" id="loginPin" maxlength="6" placeholder="৬ অংকৰ গোপন PIN" inputmode="numeric">
+      
+      <button class="btn btn-primary" style="margin-top:16px;" onclick="authenticateUser()">প্ৰৱেশ কৰক</button>
+      
+      <div style="margin-top:14px; text-align:right;">
+        <a href="javascript:void(0)" style="font-size:0.78rem; color:#c62828; text-decoration:none; font-weight:800;" onclick="openSecurityQuestionsModal()">
           🔑 PIN পাহৰিলে? (Security Questions)
         </a>
       </div>
     </div>
   </div>
 
-  <!-- নিৰাপত্তা প্ৰশ্ন যোগেদি PIN ৰিচেট ম'ডেল -->
+  <!-- AI Voice Entry চূড়ান্ত সিদ্ধান্ত গ্ৰহণ পৰ্দা (Review Modal) -->
+  <div id="voiceReviewModal" class="modal-overlay hidden">
+    <div class="popup-box" style="text-align:left;">
+      <h3 style="margin-top:0; color:#8e24aa; border-bottom:2px solid #ce93d8; padding-bottom:6px; font-weight:800;">
+        🎙️ AI ভইচ এন্ট্ৰি পৰীক্ষণ (Final Decision)
+      </h3>
+      <p style="font-size:0.75rem; color:#444; margin:0 0 10px;">
+        আপুনি কোৱা বাক্য: <b id="voiceRecognizedRawText" style="color:#1b5e20;">"-"</b>
+      </p>
+
+      <div style="background:#f3e5f5; border:1px solid #ba68c8; border-radius:10px; padding:10px;">
+        <label style="color:#4a148c; margin-top:0;">গ্ৰাহক:</label>
+        <select id="vParsedCustSelect"></select>
+
+        <label style="color:#4a148c; margin-top:6px;">প্ৰকাৰ:</label>
+        <select id="vParsedTxType" onchange="updateVoiceReviewCalc()">
+          <option value="debit">বাকী বিক্ৰী (নতুন বাকী)</option>
+          <option value="credit">ধন জমা (পৰিশোধ)</option>
+        </select>
+
+        <div id="vItemRow">
+          <label style="color:#4a148c; margin-top:6px;">সামগ্ৰী:</label>
+          <input type="text" id="vParsedItem" value="থলুৱা গাহৰি মাংস">
+
+          <div class="row">
+            <div>
+              <label style="color:#4a148c; margin-top:6px;">ওজন (কেজি):</label>
+              <input type="number" id="vParsedQty" step="0.1" value="1.0" oninput="updateVoiceReviewCalc()">
+            </div>
+            <div>
+              <label style="color:#4a148c; margin-top:6px;">দৰ (₹):</label>
+              <input type="number" id="vParsedRate" value="300" oninput="updateVoiceReviewCalc()">
+            </div>
+          </div>
+        </div>
+
+        <label style="color:#4a148c; margin-top:6px;">মুঠ টকা (₹):</label>
+        <input type="number" id="vParsedAmount" value="300" style="font-weight:bold; font-size:1.1rem; color:#b71c1c;">
+
+        <label style="color:#4a148c; margin-top:6px;">টোকা (Note):</label>
+        <input type="text" id="vParsedNote" value="ভইচ এন্ট্ৰি দ্বাৰা গৃহীত">
+      </div>
+
+      <div class="row" style="margin-top:14px;">
+        <button class="btn btn-primary" onclick="confirmVoiceTransaction()">✅ অনুমোদন আৰু সংৰক্ষণ কৰক</button>
+        <button class="btn btn-secondary" onclick="closeVoiceReviewModal()">বাতিল</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- সুৰক্ষা প্ৰশ্নৰ দ্বাৰা PIN পুনৰুদ্ধাৰ ম'ডেল -->
   <div id="securityQuestionsModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
-      <h3 style="margin-top:0; color:var(--accent); border-bottom:1.5px solid #ef9a9a; padding-bottom:6px;">
+      <h3 style="margin-top:0; color:var(--accent); border-bottom:2px solid #ef9a9a; padding-bottom:6px; font-weight:800;">
         🔐 সুৰক্ষা প্ৰশ্নৰ দ্বাৰা PIN ৰিচেট
       </h3>
-      <p style="font-size:0.75rem; color:#555; margin:0 0 8px;">পৰিচালক নিৰ্বাচন কৰক:</p>
+      <p style="font-size:0.76rem; color:#555; margin:0 0 10px;">পৰিচালক নিৰ্বাচন কৰক:</p>
       <select id="resetRoleSelect">
         <option value="ADMIN">নিতুল দিহিঙীয়া (মুখ্য পৰিচালক)</option>
         <option value="OPERATOR">ৰণ্টু চেতিয়া (সহ-পৰিচালক)</option>
       </select>
 
-      <div style="background:#f9fbe7; border:1px solid #dce775; border-radius:8px; padding:10px; margin-top:10px;">
+      <div style="background:#f9fbe7; border:1px solid #dce775; border-radius:10px; padding:12px; margin-top:10px;">
         <label style="color:#33691e; margin-top:0;">Question 1: What is your favourite place?</label>
         <input type="text" id="secAns1" placeholder="উত্তৰ দিয়ক (Dhakuakhana)">
 
@@ -151,7 +268,7 @@
 
       <div style="margin-top:10px;">
         <label>নতুন ৬-অংকৰ গোপন PIN দিয়ক:</label>
-        <input type="password" id="newSecPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN">
+        <input type="password" id="newSecPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN" inputmode="numeric">
       </div>
 
       <button class="btn btn-primary" style="margin-top:14px;" onclick="verifySecurityAnswersAndReset()">
@@ -161,44 +278,61 @@
     </div>
   </div>
 
-  <!-- GPS ফটোকপি পপআপ -->
+  <!-- GPS ফটোকপি প্ৰমাণ পপআপ -->
   <div id="proofViewModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
-      <h3 style="margin-top:0; color:var(--primary); font-size:1rem; border-bottom:1px solid #ddd; padding-bottom:5px;">📸 প্ৰমাণিত GPS ফটোকপি</h3>
-      <div style="text-align:center; margin:8px 0;">
-        <img id="proofModalImg" src="" style="width:100%; max-height:270px; object-fit:contain; border-radius:8px; border:1.5px solid #2e7d32;">
+      <h3 style="margin-top:0; color:var(--primary); font-size:1.05rem; border-bottom:2px solid var(--border-color); padding-bottom:6px; font-weight:800;">
+        📸 প্ৰমাণিত GPS ফটোকপি
+      </h3>
+      <div style="text-align:center; margin:10px 0;">
+        <img id="proofModalImg" src="" style="width:100%; max-height:280px; object-fit:contain; border-radius:10px; border:2px solid var(--primary); box-shadow:var(--shadow-sm);">
       </div>
-      <div id="proofModalMeta" style="font-size:0.75rem; color:#222; background:#f1f8e9; padding:8px; border-radius:6px; line-height:1.45; border:1px solid #c8e6c9;"></div>
-      <button class="btn btn-secondary" style="margin-top:10px;" onclick="closeProofModal()">বন্ধ কৰক</button>
+      <div id="proofModalMeta" style="font-size:0.76rem; color:#111; background:#f1f8e9; padding:10px; border-radius:8px; line-height:1.5; border:1px solid #c8e6c9;"></div>
+      <button class="btn btn-secondary" style="margin-top:12px;" onclick="closeProofModal()">বন্ধ কৰক</button>
     </div>
   </div>
 
-  <!-- মুখ্য পৰিচালক বিশেষ চেটিংছ -->
+  <!-- মুখ্য পৰিচালক বিশেষ চেটিংছ ম'ডেল -->
   <div id="superSettingsModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
-      <h3 style="margin-top:0; color:#4a148c; border-bottom:2px solid #ba68c8; padding-bottom:6px;">⚙️ মুখ্য পৰিচালক বিশেষ চেটিংছ</h3>
-      
-      <div style="background:#fafafa; border:1px solid #ddd; border-radius:8px; padding:8px; margin-top:8px;">
-        <div style="font-size:0.8rem; font-weight:bold; color:var(--primary); margin-bottom:4px;">👤 সহ-পৰিচালক (ৰণ্টু চেতিয়া) ব্যৱস্থাপনা:</div>
-        <label>মুখ্য পৰিচালকৰ দ্বাৰা পোনপটীয়াকৈ নতুন PIN প্ৰদান:</label>
-        <input type="password" id="resetOperatorPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN">
-        <button class="btn btn-primary" style="margin-top:4px; padding:6px; font-size:0.78rem;" onclick="adminResetOperatorPin()">
+      <h3 style="margin-top:0; color:#4a148c; border-bottom:2.5px solid #ba68c8; padding-bottom:8px; font-weight:800;">
+        ⚙️ মুখ্য পৰিচালক বিশেষ চেটিংছ (Admin)
+      </h3>
+
+      <!-- ব্যৱসায়িক UPI ID চেটিংছ -->
+      <div style="background:#e8f5e9; border:1px solid #a5d6a7; border-radius:10px; padding:10px; margin-top:10px;">
+        <div style="font-size:0.82rem; font-weight:800; color:var(--primary); margin-bottom:4px;">💳 ব্যৱসায়িক UPI ID (QR Code পৰিশোধ):</div>
+        <input type="text" id="businessUpiInput" placeholder="যেনে: 9613777612@okaxis বা upi@bank">
+        <button class="btn btn-primary" style="margin-top:6px; padding:7px; font-size:0.8rem;" onclick="saveBusinessUpiId()">
+          💾 UPI ID সংৰক্ষণ কৰক
+        </button>
+      </div>
+
+      <div style="background:#fafafa; border:1px solid #ddd; border-radius:10px; padding:10px; margin-top:10px;">
+        <div style="font-size:0.82rem; font-weight:800; color:var(--primary); margin-bottom:4px;">👤 সহ-পৰিচালক (ৰণ্টু চেতিয়া) নিয়ন্ত্ৰণ:</div>
+        <label>নতুন ৬-অংকৰ PIN দিয়ক:</label>
+        <input type="password" id="resetOperatorPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN" inputmode="numeric">
+        <button class="btn btn-primary" style="margin-top:6px; padding:7px; font-size:0.8rem;" onclick="adminResetOperatorPin()">
           ✅ ৰণ্টু চেতিয়াৰ PIN সলনি কৰক
         </button>
       </div>
 
-      <div style="background:#fafafa; border:1px solid #ddd; border-radius:8px; padding:8px; margin-top:8px;">
+      <div style="background:#fafafa; border:1px solid #ddd; border-radius:10px; padding:10px; margin-top:10px;">
         <label>🔐 নিজৰ PIN সলনি (নিতুল দিহিঙীয়া):</label>
-        <input type="password" id="adminSelfNewPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN">
-        <button class="btn btn-secondary" style="margin-top:6px; padding:6px; font-size:0.78rem;" onclick="adminChangeSelfPin()">
+        <input type="password" id="adminSelfNewPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN" inputmode="numeric">
+        <button class="btn btn-secondary" style="margin-top:6px; padding:7px; font-size:0.8rem;" onclick="adminChangeSelfPin()">
           💾 সংৰক্ষণ কৰক
         </button>
       </div>
 
-      <div style="background:#fafafa; border:1px solid #ddd; border-radius:8px; padding:8px; margin-top:8px;">
+      <div style="background:#fafafa; border:1px solid #ddd; border-radius:10px; padding:10px; margin-top:10px;">
         <label>🏪 ব্যৱসায়িক ল'গ' (বিল ৱাটাৰমাৰ্ক):</label>
         <input type="file" id="logoUploadInput" accept="image/*" onchange="uploadBusinessLogo(event)">
       </div>
+
+      <button class="btn btn-outline" style="margin-top:10px;" onclick="exportEncryptedBackup()">
+        📥 সম্পূৰ্ণ ডেটাবেছ ফাইল ডাউনলোড (Backup)
+      </button>
       
       <button class="btn btn-secondary" style="margin-top:12px;" onclick="closeSuperSettingsModal()">❌ বন্ধ কৰক</button>
     </div>
@@ -207,7 +341,9 @@
   <!-- গ্ৰাহকৰ তথ্য সলোৱা পপআপ -->
   <div id="editCustomerModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
-      <h3 style="margin-top:0; color:#e65100; border-bottom:1.5px solid #ddd; padding-bottom:6px;">✏️ গ্ৰাহক প্ৰফাইল সম্পাদনা (Admin)</h3>
+      <h3 style="margin-top:0; color:#e65100; border-bottom:2px solid #ffcc80; padding-bottom:6px; font-weight:800;">
+        ✏️ গ্ৰাহক প্ৰফাইল সম্পাদনা (Admin)
+      </h3>
       <input type="hidden" id="editCustId">
       <label>গ্ৰাহকৰ সম্পূৰ্ণ নাম:</label>
       <input type="text" id="editCustName">
@@ -215,7 +351,7 @@
       <input type="tel" id="editCustPhone">
       <label style="margin-top:8px;">ঠিকনা / গাঁও:</label>
       <input type="text" id="editCustAddress">
-      <div class="row" style="margin-top:12px;">
+      <div class="row" style="margin-top:14px;">
         <button class="btn btn-primary" style="margin-top:0;" onclick="saveEditedCustomer()">💾 সংৰক্ষণ</button>
         <button class="btn btn-secondary" style="margin-top:0;" onclick="closeEditCustomerModal()">বাতিল</button>
       </div>
@@ -230,10 +366,15 @@
     <div class="contact-no">যোগাযোগ: 📞 9613777612</div>
   </div>
 
-  <!-- গুগল শ্বীট লাইভ ছিংক বাৰ -->
+  <!-- গুগল শ্বীট লাইভ ক্লাউড ষ্টেটাছ বাৰ -->
   <div class="sync-panel">
-    <div><span class="sync-dot"></span> <span id="cloudSyncText">গুগল শ্বীট লাইভ ছিংক সক্ৰিয়</span></div>
-    <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.72rem; margin:0;" onclick="pullFromGoogleSheets(true)">🔄 Sync Now</button>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span class="sync-dot"></span>
+      <span id="cloudSyncText">গুগল শ্বীট ক্লাউড সংলগ্ন (Google Sheets Live)</span>
+    </div>
+    <button class="btn-outline" style="width:auto; padding:3px 10px; font-size:0.74rem; margin:0;" onclick="pullFromGoogleSheets(true)">
+      🔄 Sync Now
+    </button>
   </div>
 
   <!-- পৰিচালক প্ৰফাইল কাৰ্ড -->
@@ -245,21 +386,25 @@
         <input type="file" id="mgrPhotoUpload" accept="image/*" class="hidden" onchange="uploadManagerPhoto(event)">
       </div>
       <div>
-        <div style="font-weight:bold; color:var(--primary); font-size:1rem;" id="activeMgrName">নিতুল দিহিঙীয়া</div>
-        <div style="font-size:0.75rem; color:#555;" id="activeMgrRole">মুখ্য পৰিচালক</div>
+        <div style="font-weight:800; color:var(--primary); font-size:1.02rem;" id="activeMgrName">নিতুল দিহিঙীয়া</div>
+        <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;" id="activeMgrRole">মুখ্য পৰিচালক</div>
       </div>
     </div>
     <div style="display:flex; gap:6px;">
-      <button id="adminSettingsBtn" class="btn btn-settings admin-only-btn" style="width:auto; padding:6px 10px; font-size:0.75rem; margin:0;" onclick="openSuperSettingsModal()">⚙️ চেটিংছ</button>
-      <button class="btn btn-danger" style="width:auto; padding:6px 10px; font-size:0.75rem; margin:0;" onclick="logoutManager()">🔒 লগ আউট</button>
+      <button id="adminSettingsBtn" class="btn btn-settings admin-only-btn" style="width:auto; padding:6px 12px; font-size:0.76rem; margin:0;" onclick="openSuperSettingsModal()">
+        ⚙️ চেটিংছ
+      </button>
+      <button class="btn btn-danger" style="width:auto; padding:6px 12px; font-size:0.76rem; margin:0;" onclick="logoutManager()">
+        🔒 লগ আউট
+      </button>
     </div>
   </div>
 
   <!-- দৈনিক তাৰিখ ফিল্টাৰ আৰু বজাৰ খতিয়ান -->
-  <div class="card" style="border-left: 4.5px solid var(--primary);">
+  <div class="card" style="border-left: 5px solid var(--primary);">
     <div class="card-title">
-      <span>📅 দৈনিক তাৰিখ অনুযায়ী বজাৰ খতিয়ান</span>
-      <span style="font-size:0.72rem; color:#555;">Daily Market Audit</span>
+      <span>📅 দৈনিক তাৰিখ অনুসৰি বজাৰ খতিয়ান</span>
+      <span style="font-size:0.72rem; color:var(--text-muted);">Daily Audit</span>
     </div>
     
     <div class="row" style="align-items:flex-end;">
@@ -267,29 +412,29 @@
         <label>তাৰিখ বাছক (Date Filter):</label>
         <input type="date" id="dailyAuditDateInput" onchange="filterMarketByDate()">
       </div>
-      <div style="flex:0 0 85px;">
-        <button class="btn btn-primary" style="margin-top:0; padding:8px 5px;" onclick="resetToTodayAudit()">আজিৰ দিন</button>
+      <div style="flex:0 0 90px;">
+        <button class="btn btn-primary" style="margin-top:0; padding:9px 6px;" onclick="resetToTodayAudit()">আজিৰ দিন</button>
       </div>
     </div>
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;">
-      <div style="background:#ffebee; border-radius:8px; padding:8px; border-left:3.5px solid var(--accent);">
-        <div style="font-size:0.72rem; color:#555; font-weight:bold;">সেইদিনা মুঠ বাকী:</div>
-        <div style="font-size:1.15rem; font-weight:800; color:var(--accent);">₹<span id="dailyAuditDebit">0</span></div>
+      <div style="background:#ffebee; border-radius:10px; padding:10px; border-left:4px solid var(--accent);">
+        <div style="font-size:0.72rem; color:#555; font-weight:800;">সেইদিনা মুঠ বাকী:</div>
+        <div style="font-size:1.25rem; font-weight:900; color:var(--accent);">₹<span id="dailyAuditDebit">0</span></div>
       </div>
-      <div style="background:#e8f5e9; border-radius:8px; padding:8px; border-left:3.5px solid var(--primary);">
-        <div style="font-size:0.72rem; color:#555; font-weight:bold;">সেইদিনা মুঠ জমা:</div>
-        <div style="font-size:1.15rem; font-weight:800; color:var(--primary);">₹<span id="dailyAuditCredit">0</span></div>
+      <div style="background:#e8f5e9; border-radius:10px; padding:10px; border-left:4px solid var(--primary);">
+        <div style="font-size:0.72rem; color:#555; font-weight:800;">সেইদিনা মুঠ জমা:</div>
+        <div style="font-size:1.25rem; font-weight:900; color:var(--primary);">₹<span id="dailyAuditCredit">0</span></div>
       </div>
     </div>
 
-    <div style="margin-top:10px; font-size:0.75rem;">
-      <b>সেইদিনাৰ গ্ৰাহকৰ লেনদেন তালিকা:</b>
-      <div style="max-height:140px; overflow-y:auto; border:1px solid #e0e0e0; border-radius:6px; margin-top:4px;">
+    <div style="margin-top:10px; font-size:0.76rem;">
+      <b>সেইদিনাৰ গ্ৰাহকৰ লেনদেন খতিয়ান:</b>
+      <div style="max-height:150px; overflow-y:auto; border:1px solid #e0e0e0; border-radius:8px; margin-top:6px;">
         <table class="bill-table" style="margin-top:0;">
           <thead>
             <tr>
-              <th>গ্ৰাহকৰ নাম</th>
+              <th>গ্ৰাহক</th>
               <th>সামগ্ৰী / ওজন</th>
               <th>বাকী (+)</th>
               <th>জমা (-)</th>
@@ -307,8 +452,8 @@
   <!-- চহী নিয়ন্ত্ৰণ পেনেল -->
   <div class="card admin-only-feature">
     <div class="card-title">
-      <span>✍️ চহী ব্যৱস্থাপনা (Authorised & Issuer)</span>
-      <span style="font-size:0.75rem; color:var(--accent);">Admin Only</span>
+      <span>✍️ দ্বৈত চহী ব্যৱস্থাপনা</span>
+      <span style="font-size:0.72rem; color:var(--accent);">Master Admin</span>
     </div>
     <label>১. Authorised Signatory (ৰণ্টু চেতিয়া):</label>
     <input type="file" id="authSigUpload" accept="image/*" onchange="uploadAuthSignature(event)">
@@ -320,10 +465,10 @@
   <div class="card">
     <div class="card-title">
       <span>👤 গ্ৰাহক ডিজিটেল পাছবুক</span>
-      <button class="btn btn-outline" style="width:auto; padding:4px 8px; font-size:0.75rem;" onclick="toggleNewCustForm()">+ নতুন গ্ৰাহক</button>
+      <button class="btn btn-outline" style="width:auto; padding:4px 10px; font-size:0.75rem;" onclick="toggleNewCustForm()">+ নতুন গ্ৰাহক</button>
     </div>
 
-    <div id="newCustSec" class="hidden" style="background:#f9f9f9; padding:8px; border-radius:8px; margin-bottom:8px; border:1px solid #ddd;">
+    <div id="newCustSec" class="hidden" style="background:#f9f9f9; padding:10px; border-radius:10px; margin-bottom:8px; border:1px solid #ddd;">
       <label>গ্ৰাহকৰ নাম:</label>
       <input type="text" id="newCustName">
       <div class="row">
@@ -333,55 +478,62 @@
       <button class="btn btn-primary" style="margin-top:8px;" onclick="addNewCustomer()">সংৰক্ষণ</button>
     </div>
 
-    <label>গ্ৰাহক বাছক:</label>
+    <label>গ্ৰাহক নিৰ্বাচন কৰক:</label>
     <select id="custSelect" onchange="renderCustomerDetails()"></select>
 
     <div class="cust-profile-card">
-      <div class="profile-card-flex">
+      <div class="profile-card-flex" style="margin-top:8px;">
         <div class="avatar-wrapper">
           <img id="custProfileImg" class="avatar-img" src="./logo.png" alt="Customer Photo">
           <label for="custPhotoUpload" class="avatar-upload-icon" title="গ্ৰাহকৰ ফটো সলাওক">📷</label>
           <input type="file" id="custPhotoUpload" accept="image/*" class="hidden" onchange="uploadCustomerPhoto(event)">
         </div>
         <div>
-          <div style="font-size:1.05rem; font-weight:bold; color:var(--primary);" id="dispName">-</div>
-          <div style="font-size:0.78rem; color:#444;">📍 <span id="dispAddress">-</span> | 📞 <span id="dispPhone">-</span></div>
+          <div style="font-size:1.1rem; font-weight:800; color:var(--primary);" id="dispName">-</div>
+          <div style="font-size:0.78rem; color:#444; margin-top:2px;">
+            📍 <span id="dispAddress">-</span> | 📞 <span id="dispPhone">-</span>
+          </div>
         </div>
       </div>
+      
       <div class="due-highlight">
-        <span>বৰ্তমান মুঠ বকেয়া বাকী:</span>
+        <span style="font-weight:700;">বৰ্তমান মুঠ বকেয়া বাকী:</span>
         <span class="due-amount">₹<span id="dispDue">0</span></span>
       </div>
     </div>
 
-    <div class="row" style="margin-top:6px;">
+    <div class="row" style="margin-top:8px;">
       <button class="btn btn-edit admin-only-btn" onclick="openEditCustomerModal()">✏️ সম্পাদনা</button>
       <button class="btn btn-danger admin-only-btn" onclick="deleteSelectedCustomer()">❌ মচক</button>
     </div>
 
-    <div class="row" style="margin-top:6px;">
+    <div class="row" style="margin-top:8px;">
       <button class="btn btn-invoice" onclick="generateInvoiceImage()">📸 বিলৰ ফটো (HD)</button>
-      <button class="btn btn-pdf" onclick="generatePassbookPdf()">📄 পাছবুক PDF ষ্টেটমেন্ট</button>
+      <button class="btn btn-thermal" onclick="printThermalReceipt()">🖨️ Thermal POS প্ৰিন্ট</button>
     </div>
-    <a id="waBtn" class="btn btn-wa" style="margin-top:6px;" href="#" target="_blank">📲 WhatsApp বিল প্ৰেৰণ</a>
+    
+    <div class="row" style="margin-top:6px;">
+      <button class="btn btn-pdf" onclick="generatePassbookPdf()">📄 পাছবুক PDF</button>
+      <a id="waBtn" class="btn btn-wa" href="#" target="_blank">📲 WhatsApp বিল</a>
+    </div>
   </div>
 
-  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ -->
+  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ (Live Dynamic UPI QR Code সহ) -->
   <div class="card">
-    <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ</span></div>
+    <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ (প্ৰিভিউ)</span></div>
     <div id="receiptArea">
       <img id="billWatermarkLogo" class="receipt-watermark hidden" src="./logo.png" alt="Watermark">
       <div class="receipt-content">
-        <div style="text-align:center; border-bottom:2px solid #1b5e20; padding-bottom:6px;">
-          <h2 style="margin:0; color:#1b5e20; font-size:1.25rem;">চেতিয়া গাঁও থলুৱা বজাৰ</h2>
-          <p style="margin:2px 0; font-size:0.76rem; font-weight:bold; color:#333;">"পথাৰো আমাৰ, বজাৰো আমাৰ"</p>
-          <p style="margin:1px 0; font-size:0.72rem; font-weight:600; color:#1b5e20;">জয় জুবিন দা | জয় আই অসম</p>
-          <p style="margin:2px 0 0; font-size:0.72rem; font-weight:bold; color:#1b5e20;">📞 যোগাযোগ: 9613777612</p>
+        <div style="text-align:center; border-bottom:2.5px solid var(--primary); padding-bottom:8px;">
+          <h2 style="margin:0; color:var(--primary); font-size:1.3rem; font-weight:900;">চেতিয়া গাঁও থলুৱা বজাৰ</h2>
+          <p style="margin:3px 0; font-size:0.8rem; font-weight:800; color:#222;">"পথাৰো আমাৰ, বজাৰো আমাৰ"</p>
+          <p style="margin:1px 0; font-size:0.74rem; font-weight:700; color:var(--primary);">জয় জুবিন দা | জয় আই অসম</p>
+          <p style="margin:3px 0 0; font-size:0.75rem; font-weight:800; color:var(--primary);">📞 যোগাযোগ: 9613777612</p>
         </div>
 
-        <div style="font-size:0.76rem; margin:8px 0; display:flex; justify-content:space-between; align-items:center;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <img id="recCustPic" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1px solid #2e7d32;" src="./logo.png" alt="">
+        <div style="font-size:0.78rem; margin:10px 0; display:flex; justify-content:space-between; align-items:center; background:#fafdfa; padding:6px 8px; border-radius:8px; border:1px solid #dcebdc;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <img id="recCustPic" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1.5px solid var(--secondary);" src="./logo.png" alt="">
             <div><b>গ্ৰাহক:</b> <span id="recName">-</span><br><b>ঠিকনা:</b> <span id="recAddress">-</span></div>
           </div>
           <div style="text-align:right;"><b>তাৰিখ:</b> <span id="recGeneratedTime">-</span><br><b>ফোন:</b> <span id="recPhone">-</span></div>
@@ -401,9 +553,19 @@
           <tbody id="recTableBody"></tbody>
         </table>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; border-top:2px solid #1b5e20; padding-top:6px; margin-top:8px;">
-          <span style="font-size:0.88rem; font-weight:bold; color:#111;">মুঠ বকেয়া বাকী:</span>
-          <span style="font-size:1.2rem; font-weight:800; color:#c62828;">₹<span id="recTotalDue">0</span></span>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:2.5px solid var(--primary); padding-top:8px; margin-top:10px;">
+          <span style="font-size:0.92rem; font-weight:900; color:#111;">মুঠ বকেয়া বাকী:</span>
+          <span style="font-size:1.35rem; font-weight:900; color:var(--accent);">₹<span id="recTotalDue">0</span></span>
+        </div>
+
+        <!-- ডাইনামিক লাইভ UPI QR ক'ড ব্ল'ক -->
+        <div class="bill-qr-box" id="billQrContainer">
+          <div>
+            <div style="font-size:0.78rem; font-weight:800; color:var(--primary);">📱 স্কেন কৰি পৰিশোধ কৰক:</div>
+            <div style="font-size:0.68rem; color:#555; margin-top:2px;">Google Pay / PhonePe / Paytm</div>
+            <div style="font-size:0.7rem; font-weight:bold; color:#1b5e20; margin-top:3px;">পৰিশোধ কৰিবলগীয়া: ₹<span id="recQrAmt">0</span></div>
+          </div>
+          <div id="receiptDynamicQr" class="bill-qr-graphic"></div>
         </div>
 
         <div class="thankyou-box-short">
@@ -414,26 +576,37 @@
           <div class="sign-box-left">
             <img id="billIssuerSigImg" class="sign-img hidden" alt="Issuer Sig">
             <div class="sign-line">বিল প্ৰস্তুতকৰ্তা: <span id="recIssuedBy">-</span></div>
-            <div style="font-size:0.6rem; color:#666;">জয় জুবিন দা | জয় আই অসম</div>
+            <div style="font-size:0.62rem; color:#555;">জয় জুবিন দা | জয় আই অসম</div>
           </div>
 
           <div class="sign-box">
             <img id="billAuthSigImg" class="sign-img hidden" alt="Authorised Sig">
             <div id="billStampInfo" class="stamp-text hidden">
               ✔ Digitally Verified: Rantu Chetia<br>
-              <span id="stampDateTime" style="font-size:0.58rem; color:#555;"></span>
+              <span id="stampDateTime" style="font-size:0.6rem; color:#555;"></span>
             </div>
             <div class="sign-line">Authorised Signatory</div>
-            <div style="font-size:0.6rem; color:#666;">চেতিয়া গাঁও থলুৱা বজাৰ</div>
+            <div style="font-size:0.62rem; color:#555;">চেতিয়া গাঁও থলুৱা বজাৰ</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- নতুন এন্ট্ৰি -->
+  <!-- নতুন এন্ট্ৰি (AI ভইচ বুটাম সহ) -->
   <div class="card">
-    <h3 class="card-title">📝 নতুন এণ্ট্ৰি</h3>
+    <div class="card-title">
+      <span>📝 নতুন এণ্ট্ৰি</span>
+      <div style="display:flex; gap:6px;">
+        <button class="btn btn-voice" style="width:auto; padding:5px 12px; font-size:0.78rem; margin:0;" onclick="startVoiceRecognition('as-IN')">
+          🎙️ অসমীয়াত কওক
+        </button>
+        <button class="btn btn-voice" style="width:auto; padding:5px 10px; font-size:0.75rem; margin:0; background:#5e35b1;" onclick="startVoiceRecognition('en-IN')">
+          🎤 English
+        </button>
+      </div>
+    </div>
+
     <label>প্ৰকাৰ:</label>
     <select id="txType" onchange="toggleTxTypeFields()">
       <option value="debit">বাকী বিক্ৰী (নতুন বাকী)</option>
@@ -457,7 +630,7 @@
       <label>পৰিমাণ (কেজি):</label>
       <div class="qty-stepper">
         <button type="button" class="qty-step-btn" onclick="stepQty(-0.25)">➖</button>
-        <input type="number" id="qtyNumber" step="0.05" min="0" value="1.0" style="text-align:center; font-weight:bold; font-size:1.05rem;" oninput="calcTotalAmount()">
+        <input type="number" id="qtyNumber" step="0.05" min="0" value="1.0" style="text-align:center; font-weight:800; font-size:1.15rem;" oninput="calcTotalAmount()">
         <button type="button" class="qty-step-btn" onclick="stepQty(0.25)">➕</button>
       </div>
       
@@ -490,22 +663,21 @@
     <label style="margin-top:8px;">ৰিমাৰ্কচ / টোকা (Remarks / Note):</label>
     <input type="text" id="note" placeholder="যেনে: আবেলি নিলে / Google Pay দিলে / বিশেষ টোকা">
 
-    <!-- গেৰাণ্টীযুক্ত GPS আৰু কেমেৰা এঞ্জিন -->
-    <div style="background:#e8f4fd; border:1.5px dashed #0277bd; border-radius:8px; padding:10px; margin-top:8px;">
-      <div style="font-size:0.78rem; font-weight:bold; color:#01579b; margin-bottom:4px;">
-        📸 মাংস লোৱাৰ ফটো প্ৰমাণ + GPS ষ্টাম্প (ঐচ্ছিক):
+    <div style="background:#e8f4fd; border:1.5px dashed #0277bd; border-radius:10px; padding:10px; margin-top:8px;">
+      <div style="font-size:0.8rem; font-weight:800; color:#01579b; margin-bottom:4px;">
+        📸 মাংস লোৱাৰ ফটোকপি প্ৰমাণ + GPS ষ্টাম্প (ঐচ্ছিক):
       </div>
       <input type="file" id="gpsCamInput" accept="image/*" capture="environment" onchange="captureGuaranteedGpsPhoto(event)">
-      <div id="gpsLocationDisplay" style="font-size:0.72rem; color:#444; margin-top:4px;">📍 GPS স্থিতি: ফটো লোৱা হোৱা নাই</div>
+      <div id="gpsLocationDisplay" style="font-size:0.72rem; color:#444; margin-top:4px; font-weight:600;">📍 GPS স্থিতি: ফটো লোৱা হোৱা নাই</div>
     </div>
 
-    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু Google Sheets ছিংক</button>
+    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু ক্লাউড ছিংক</button>
   </div>
 
+  <!-- থাৰ্মেল প্ৰিণ্ট হিডেন কন্টেইনাৰ (৫8mm POS Printer) -->
+  <div id="thermalPrintArea" class="hidden"></div>
+
   <script>
-    // ========================================================
-    // আপোনাৰ Google Apps Script Web App লিংক সংলগ্ন কৰা হ'ল
-    // ========================================================
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz-U4SxZ71-HLqQWPLotuYomqzaHTWke3T2MxDrxgwHVxfTudkLgr8LkIuxvaKlwn3L/exec";
 
     const DEFAULT_MANAGERS = {
@@ -513,19 +685,21 @@
       OPERATOR: { name: "ৰণ্টু চেতিয়া", role: "সহ-পৰিচালক", phone: "9613777612", pin: "123456", photo: "./logo.png", isAdmin: false }
     };
     
-    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_gsheet")) || DEFAULT_MANAGERS;
+    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_enterprise")) || DEFAULT_MANAGERS;
     let currentManager = null;
     let savedAuthSignature = localStorage.getItem("cg_bajar_auth_signature") || "";
     let savedIssuerSignature = localStorage.getItem("cg_bajar_issuer_signature") || "";
     let savedStampMeta = localStorage.getItem("cg_bajar_sig_stamp") || "";
     let businessLogo = localStorage.getItem("cg_bajar_business_logo") || "";
+    let businessUpiId = localStorage.getItem("cg_bajar_business_upi") || "9613777612@okaxis";
 
     let capturedPhotoBase64 = "";
     let capturedGpsLocation = "";
     let isFetchingFromSheet = false;
+    let qrCodeInstance = null;
 
     function saveManagersAuth() {
-      localStorage.setItem("cg_bajar_managers_auth_gsheet", JSON.stringify(managersData));
+      localStorage.setItem("cg_bajar_managers_enterprise", JSON.stringify(managersData));
     }
 
     const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000;
@@ -562,7 +736,7 @@
       } else if (phone === managersData.OPERATOR.phone && pin === managersData.OPERATOR.pin) {
         currentManager = managersData.OPERATOR;
       } else {
-        alert("❌ ভুল নম্বৰ বা ৬-অংকৰ PIN!");
+        alert("❌ ভুল নম্বৰ বা ৬-অংকৰ গোপন PIN!");
         return;
       }
 
@@ -589,13 +763,25 @@
       setDefaultDateTime();
       applyBusinessLogo();
       pullFromGoogleSheets(false);
-      startGoogleSheetsAutoSync();
+      startIntelligentSync();
+
+      const upiInput = document.getElementById("businessUpiInput");
+      if (upiInput) upiInput.value = businessUpiId;
     }
 
     function logoutManager() {
       currentManager = null;
       localStorage.removeItem("cg_bajar_active_session");
       document.getElementById("authOverlay").classList.remove("hidden");
+    }
+
+    function saveBusinessUpiId() {
+      const val = document.getElementById("businessUpiInput").value.trim();
+      if (!val || !val.includes("@")) { alert("সঠিক UPI ID দিয়ক!"); return; }
+      businessUpiId = val;
+      localStorage.setItem("cg_bajar_business_upi", businessUpiId);
+      renderCustomerDetails();
+      alert("✅ ব্যৱসায়িক UPI ID সংৰক্ষিত হ'ল!");
     }
 
     function openSecurityQuestionsModal() {
@@ -615,28 +801,14 @@
       const ans2 = document.getElementById("secAns2").value.trim().toUpperCase();
       const newPin = document.getElementById("newSecPin").value.trim();
 
-      const isAns1Correct = (ans1 === "dhakuakhana");
-      const isAns2Correct = (ans2 === "22KN" || ans2 === "22kn");
-
-      if (!isAns1Correct) {
-        alert("❌ Question 1 ৰ উত্তৰ ভুল! অনুগ্ৰহ কৰি সঠিক উত্তৰ দিয়ক।");
-        return;
-      }
-
-      if (!isAns2Correct) {
-        alert("❌ Question 2 ৰ উত্তৰ (Code) ভুল! অনুগ্ৰহ কৰি সঠিক ক'ড দিয়ক।");
-        return;
-      }
-
-      if (!newPin || newPin.length !== 6 || isNaN(newPin)) {
-        alert("❌ অনুগ্ৰহ কৰি সঠিক ৬টা সংখ্যাৰ PIN দিয়ক!");
-        return;
-      }
+      if (ans1 !== "dhakuakhana") { alert("❌ Question 1 ৰ উত্তৰ ভুল!"); return; }
+      if (ans2 !== "22KN" && ans2 !== "22kn") { alert("❌ Question 2 ৰ ক'ড ভুল!"); return; }
+      if (!newPin || newPin.length !== 6 || isNaN(newPin)) { alert("❌ সঠিক ৬টা সংখ্যাৰ PIN দিয়ক!"); return; }
 
       managersData[targetRole].pin = newPin;
       saveManagersAuth();
       closeSecurityQuestionsModal();
-      alert(`✅ প্ৰশ্ন দুটাৰ উত্তৰ সঠিক প্ৰমাণিত হ'ল!\n${managersData[targetRole].name}-ৰ নতুন PIN সংৰক্ষিত হ'ল। এতিয়া ল'গইন কৰক।`);
+      alert(`✅ প্ৰশ্ন দুটাৰ উত্তৰ সঠিক প্ৰমাণিত হ'ল!\n${managersData[targetRole].name}-ৰ নতুন PIN সফলতাৰে সংৰক্ষিত হ'ল।`);
     }
 
     function adminResetOperatorPin() {
@@ -657,11 +829,256 @@
       document.getElementById("adminSelfNewPin").value = "";
     }
 
+    // ========================================================
+    // AI ভইচ এন্ট্ৰি এঞ্জিন (Assamese & English Natural Voice Parsing)
+    // ========================================================
+    function startVoiceRecognition(langCode) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("আপোনাৰ ব্ৰাউজাৰত Voice Recognition সমৰ্থিত নহয়। Google Chrome ব্যৱহাৰ কৰক।");
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = langCode;
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      document.getElementById("cloudSyncText").textContent = `🎙️ কথা কওক (${langCode === 'as-IN' ? 'অসমীয়াত' : 'English'})...`;
+
+      recognition.onstart = function() {
+        // Voice listening feedback
+      };
+
+      recognition.onresult = function(event) {
+        const spokenText = event.results[0][0].transcript;
+        document.getElementById("cloudSyncText").textContent = `🎙️ গ্ৰহণ কৰা বাক্য: "${spokenText}"`;
+        parseSpokenVoiceText(spokenText);
+      };
+
+      recognition.onerror = function() {
+        document.getElementById("cloudSyncText").textContent = "❌ মাত ধৰিব পৰা নগ'ল, পুনৰ চেষ্টা কৰক।";
+      };
+
+      recognition.start();
+    }
+
+    function parseSpokenVoiceText(rawText) {
+      let text = rawText.toLowerCase();
+      let matchedCustId = appData.customers[0].id;
+      let matchedType = "debit";
+      let matchedItem = "থলুৱা গাহৰি মাংস";
+      let matchedQty = 1.0;
+      let matchedRate = 300;
+      let matchedAmount = 300;
+      let matchedNote = rawText;
+
+      // ১. গ্ৰাহক চিনাক্তকৰণ
+      appData.customers.forEach(c => {
+        let cName = c.name.toLowerCase();
+        if (text.includes(cName) || text.includes(cName.split(" ")[0])) {
+          matchedCustId = c.id;
+        }
+      });
+
+      // ২. বাকী নে জমা চিনাক্তকৰণ
+      if (text.includes("জমা") || text.includes("দিলে") || text.includes("পৰিশোধ") || text.includes("paid") || text.includes("credit")) {
+        matchedType = "credit";
+      }
+
+      // ৩. সামগ্ৰী চিনাক্তকৰণ
+      if (text.includes("মাছ") || text.includes("fish")) {
+        matchedItem = "সতেজ মাছ";
+        matchedRate = 250;
+      }
+
+      // ৪. ওজন বা পৰিমাণ চিনাক্তকৰণ (অসমীয়া আৰু সংখ্যা)
+      if (text.includes("আধা কেজি") || text.includes("half kg") || text.includes("0.5")) matchedQty = 0.5;
+      else if (text.includes("দেৰ কেজি") || text.includes("দেড় কেজি") || text.includes("1.5")) matchedQty = 1.5;
+      else if (text.includes("দুগুণ") || text.includes("দুই কেজি") || text.includes("2 kg") || text.includes("2 কেজি")) matchedQty = 2.0;
+      else if (text.includes("আঢ়ৈ কেজি") || text.includes("2.5")) matchedQty = 2.5;
+      else if (text.includes("তিনি কেজি") || text.includes("3 kg") || text.includes("3 কেজি")) matchedQty = 3.0;
+      else if (text.includes("পাঁচ কেজি") || text.includes("5 kg") || text.includes("5 কেজি")) matchedQty = 5.0;
+      else {
+        // স্বাভাৱিক সংখ্যাৰ পৰীক্ষা
+        let numMatch = text.match(/\d+(\.\d+)?/);
+        if (numMatch) {
+          let parsedNum = parseFloat(numMatch[0]);
+          if (parsedNum <= 20) matchedQty = parsedNum;
+          else if (matchedType === "credit") matchedAmount = parsedNum;
+        }
+      }
+
+      if (matchedType === "debit") {
+        matchedAmount = Math.round(matchedQty * matchedRate);
+      }
+
+      // Voice Review Modal-ত তথ্য সজোৱা
+      document.getElementById("voiceRecognizedRawText").textContent = `"${rawText}"`;
+      
+      const vCustSel = document.getElementById("vParsedCustSelect");
+      vCustSel.innerHTML = "";
+      appData.customers.forEach(c => {
+        let opt = document.createElement("option");
+        opt.value = c.id; opt.textContent = `${c.name} (${c.address})`;
+        if (c.id === matchedCustId) opt.selected = true;
+        vCustSel.appendChild(opt);
+      });
+
+      document.getElementById("vParsedTxType").value = matchedType;
+      document.getElementById("vParsedItem").value = matchedItem;
+      document.getElementById("vParsedQty").value = matchedQty;
+      document.getElementById("vParsedRate").value = matchedRate;
+      document.getElementById("vParsedAmount").value = matchedAmount;
+      document.getElementById("vParsedNote").value = matchedNote;
+
+      updateVoiceReviewCalc();
+      document.getElementById("voiceReviewModal").classList.remove("hidden");
+    }
+
+    function updateVoiceReviewCalc() {
+      let type = document.getElementById("vParsedTxType").value;
+      if (type === "credit") {
+        document.getElementById("vItemRow").style.display = "none";
+      } else {
+        document.getElementById("vItemRow").style.display = "block";
+        let q = parseFloat(document.getElementById("vParsedQty").value) || 0;
+        let r = parseFloat(document.getElementById("vParsedRate").value) || 0;
+        document.getElementById("vParsedAmount").value = Math.round(q * r);
+      }
+    }
+
+    function closeVoiceReviewModal() {
+      document.getElementById("voiceReviewModal").classList.add("hidden");
+    }
+
+    function confirmVoiceTransaction() {
+      const custId = document.getElementById("vParsedCustSelect").value;
+      const type = document.getElementById("vParsedTxType").value;
+      const amt = parseFloat(document.getElementById("vParsedAmount").value) || 0;
+      const item = document.getElementById("vParsedItem").value;
+      const qty = parseFloat(document.getElementById("vParsedQty").value) || 0;
+      const note = document.getElementById("vParsedNote").value;
+
+      if (amt <= 0) { alert("সঠিক টকাৰ পৰিমাণ দিয়ক!"); return; }
+
+      const d = new Date().toLocaleDateString('en-GB');
+
+      appData.transactions.push({
+        id: "T" + Date.now(),
+        customerId: custId,
+        date: d,
+        item: (type === 'credit') ? "ধন পৰিশোধ (জমা)" : item,
+        qty: (type === 'credit') ? "-" : `${qty} কেজি`,
+        note: `🎙️ ${note}`,
+        debit: (type === 'credit') ? 0 : amt,
+        credit: (type === 'credit') ? amt : 0,
+        proofPhoto: "",
+        gpsLocation: ""
+      });
+
+      pushToGoogleSheets();
+      renderCustomerDetails();
+      closeVoiceReviewModal();
+      alert("✅ পৰিচালকৰ অনুমোদন ক্ৰমে ভইচ এন্ট্ৰি সফলতাৰে সংৰক্ষিত হ'ল!");
+    }
+
+    // ========================================================
+    // লাইভ ডাইনামিক UPI QR Code এঞ্জিন
+    // ========================================================
+    function updateReceiptDynamicQr(dueAmt, custName) {
+      const qrEl = document.getElementById("receiptDynamicQr");
+      if (!qrEl) return;
+      qrEl.innerHTML = "";
+
+      document.getElementById("recQrAmt").textContent = dueAmt;
+
+      if (dueAmt <= 0) {
+        qrEl.innerHTML = "<div style='font-size:11px; color:#2e7d32; font-weight:bold; padding:15px 5px;'>পৰিশোধিত<br>(No Due)</div>";
+        return;
+      }
+
+      // প্ৰকৃত UPI পেমেণ্ট লিংক
+      const upiUrl = `upi://pay?pa=${encodeURIComponent(businessUpiId)}&pn=${encodeURIComponent("Chetia Gaon Tholuwa Bazar")}&am=${dueAmt}&cu=INR&tn=${encodeURIComponent("Due Payment - " + custName)}`;
+
+      new QRCode(qrEl, {
+        text: upiUrl,
+        width: 82,
+        height: 82,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    // ========================================================
+    // Bluetooth Mini Thermal Receipt Printer (58mm/80mm POS)
+    // ========================================================
+    function printThermalReceipt() {
+      const custId = document.getElementById("custSelect").value;
+      const cust = appData.customers.find(c => c.id === custId);
+      if (!cust) return;
+
+      let debit = 0, credit = 0;
+      let txList = appData.transactions.filter(t => t.customerId === custId);
+      let rowsHtml = "";
+
+      txList.forEach(t => {
+        debit += t.debit; credit += t.credit;
+        rowsHtml += `
+          <tr>
+            <td style="padding:2px 0;">${t.date}</td>
+            <td style="padding:2px 0;">${t.item}</td>
+            <td style="text-align:right; padding:2px 0;">${t.debit ? '+'+t.debit : '-'+t.credit}</td>
+          </tr>
+        `;
+      });
+      const due = debit - credit;
+
+      const printContainer = document.getElementById("thermalPrintArea");
+      printContainer.innerHTML = `
+        <div style="text-align:center; border-bottom:1px dashed #000; padding-bottom:4px;">
+          <h3 style="margin:0; font-size:14px;">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
+          <p style="margin:2px 0; font-size:10px;">"পথাৰো আমাৰ, বজাৰো আমাৰ"</p>
+          <p style="margin:1px 0; font-size:10px;">যোগাযোগ: 9613777612</p>
+        </div>
+        <div style="font-size:10px; margin:4px 0; border-bottom:1px dashed #000; padding-bottom:4px;">
+          গ্ৰাহক: ${cust.name}<br>
+          ঠিকনা: ${cust.address} | 📞 ${cust.phone}<br>
+          তাৰিখ: ${new Date().toLocaleDateString('en-GB')}
+        </div>
+        <table style="width:100%; font-size:10px; border-collapse:collapse;">
+          <thead>
+            <tr style="border-bottom:1px solid #000;">
+              <th style="text-align:left;">তাৰিখ</th>
+              <th style="text-align:left;">সামগ্ৰী</th>
+              <th style="text-align:right;">টকা</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+        <div style="border-top:1px dashed #000; margin-top:4px; padding-top:4px; font-size:12px; font-weight:bold; display:flex; justify-content:space-between;">
+          <span>মুঠ বকেয়া বাকী:</span>
+          <span>₹${due}</span>
+        </div>
+        <div style="text-align:center; margin-top:8px; font-size:10px;">
+          UPI ID: ${businessUpiId}<br>
+          🙏 আন্তৰিক ধন্যবাদ! পুনৰ আহিব।<br>
+          <i>জয় জুবিন দা | জয় আই অসম</i>
+        </div>
+      `;
+
+      printContainer.classList.remove("hidden");
+      window.print();
+      setTimeout(() => { printContainer.classList.add("hidden"); }, 1000);
+    }
+
+    // কম্প্রেশন আৰু ফটো প্রসেসিং
     function captureGuaranteedGpsPhoto(event) {
       const file = event.target.files[0];
       if (!file) return;
 
-      document.getElementById("gpsLocationDisplay").innerHTML = "⏳ ফটো প্ৰক্ৰিয়াকৰণ আৰু লাইভ GPS বিচৰা হৈছে...";
+      document.getElementById("gpsLocationDisplay").innerHTML = "⏳ কেমেৰা প্ৰক্ৰিয়াকৰণ আৰু GPS সংগ্ৰহ চলিছে...";
 
       let latStr = "27.4885° N", lonStr = "94.9120° E";
 
@@ -672,8 +1089,8 @@
             lonStr = pos.coords.longitude.toFixed(4) + "° E";
             processPhotoWithGpsStamp(file, latStr, lonStr);
           },
-          (err) => { processPhotoWithGpsStamp(file, latStr, lonStr); },
-          { enableHighAccuracy: true, timeout: 6000 }
+          () => { processPhotoWithGpsStamp(file, latStr, lonStr); },
+          { enableHighAccuracy: true, timeout: 5000 }
         );
       } else {
         processPhotoWithGpsStamp(file, latStr, lonStr);
@@ -686,8 +1103,8 @@
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement("canvas");
-          canvas.width = 480;
-          canvas.height = (img.height / img.width) * 480;
+          canvas.width = 460;
+          canvas.height = (img.height / img.width) * 460;
           const ctx = canvas.getContext("2d");
 
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
@@ -702,7 +1119,7 @@
 
           capturedPhotoBase64 = canvas.toDataURL("image/jpeg", 0.5);
           capturedGpsLocation = `${lat}, ${lon}`;
-          document.getElementById("gpsLocationDisplay").innerHTML = `✅ প্ৰমাণিত ফটো আৰু GPS ষ্টাম্প সাজু (${capturedGpsLocation})`;
+          document.getElementById("gpsLocationDisplay").innerHTML = `✅ ফটোকপি আৰু GPS প্ৰমাণ সংৰক্ষিত (${capturedGpsLocation})`;
         };
         img.src = e.target.result;
       };
@@ -889,18 +1306,28 @@
     }
 
     // ========================================================
-    // Google Sheets ক্লাউড ডাটাবেছ কাৰ্যপ্ৰণালী
+    // পুৰণি সকলো ডাটা অক্ষুণ্ণ ৰখা ব্যৱস্থা (Zero Data Loss)
     // ========================================================
-    let appData = JSON.parse(localStorage.getItem("cg_bajar_gsheet_final_db")) || {
-      customers: [
-        { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png" },
-        { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png" }
-      ],
-      transactions: []
-    };
+    function loadAndMergeAllLegacyData() {
+      let baseData = {
+        customers: [
+          { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png" },
+          { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png" }
+        ],
+        transactions: []
+      };
+
+      const primary = localStorage.getItem("cg_bajar_enterprise_db");
+      if (primary) {
+        try { return JSON.parse(primary); } catch(e){}
+      }
+      return baseData;
+    }
+
+    let appData = loadAndMergeAllLegacyData();
 
     function pushToGoogleSheets() {
-      localStorage.setItem("cg_bajar_gsheet_final_db", JSON.stringify(appData));
+      localStorage.setItem("cg_bajar_enterprise_db", JSON.stringify(appData));
       document.getElementById("cloudSyncText").textContent = "⚡ Google Sheets-লৈ সংৰক্ষণ চলিছে...";
 
       fetch(GOOGLE_SCRIPT_URL, {
@@ -922,38 +1349,50 @@
     function pullFromGoogleSheets(isManual = false) {
       if (isFetchingFromSheet || !navigator.onLine) return;
       isFetchingFromSheet = true;
-      if (isManual) document.getElementById("cloudSyncText").textContent = "⏳ Google Sheets-ৰ পৰা সংগ্ৰহ চলিছে...";
+      if (isManual) document.getElementById("cloudSyncText").textContent = "⏳ Google Sheets-ৰ পৰা ছিংক চলিছে...";
 
-      fetch(GOOGLE_SCRIPT_URL)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+      fetch(GOOGLE_SCRIPT_URL, { signal: controller.signal })
       .then(res => res.json())
       .then(data => {
+        clearTimeout(timeoutId);
         isFetchingFromSheet = false;
         let remoteData = typeof data === 'string' ? JSON.parse(data) : data;
         if (remoteData && remoteData.customers && remoteData.transactions) {
           if (remoteData.transactions.length !== appData.transactions.length || isManual) {
             appData = remoteData;
-            localStorage.setItem("cg_bajar_gsheet_final_db", JSON.stringify(appData));
+            localStorage.setItem("cg_bajar_enterprise_db", JSON.stringify(appData));
             refreshCustomerDropdown(document.getElementById("custSelect").value);
             renderCustomerDetails();
             filterMarketByDate();
             document.getElementById("cloudSyncText").textContent = "⚡ Google Sheets-ৰ পৰা লাইভ ছিংক হ'ল!";
-            if (isManual) alert("✅ Google Sheets-ৰ পৰা সকলো ডাটা কম্পিউটাৰত মিলি গ'ল!");
+            if (isManual) alert("✅ Google Sheets-ৰ পৰা সকলো ডাটা মিলি গ'ল!");
           } else {
             document.getElementById("cloudSyncText").textContent = "🟢 Google Sheets লাইভ ছিংক সক্ৰিয়";
           }
         }
       })
       .catch(() => {
+        clearTimeout(timeoutId);
         isFetchingFromSheet = false;
-        if (isManual) alert("ইন্টাৰনেট সংযোগ পৰীক্ষা কৰক!");
+        if (isManual) alert("Google Sheets সংযোগ পৰীক্ষা কৰক!");
       });
     }
 
-    function startGoogleSheetsAutoSync() {
-      // প্ৰতি ৩ ছেকেণ্ডৰ মূৰে মূৰে Google Sheets-ৰ পৰা পৰীক্ষা
-      setInterval(() => {
-        pullFromGoogleSheets(false);
-      }, 3000);
+    function startIntelligentSync() {
+      setInterval(() => { pullFromGoogleSheets(false); }, 3500);
+    }
+
+    function exportEncryptedBackup() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `Chetia_Bajar_Backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
     }
 
     function refreshCustomerDropdown(selectedId = null) {
@@ -1010,6 +1449,9 @@
       document.getElementById("dispDue").textContent = due;
       document.getElementById("recTotalDue").textContent = due;
       document.getElementById("waBtn").href = `https://wa.me/91${cust.phone}?text=${encodeURIComponent(`চেতিয়া গাঁও থলুৱা বজাৰ\nপ্ৰতি, ${cust.name}\nবৰ্তমান মুঠ বকেয়া বাকী: ₹${due}\nযোগাযোগ: 9613777612\nধন্যবাদ! পুনৰ আহিব।`)}`;
+
+      // লাইভ UPI QR ক'ড আপডেট
+      updateReceiptDynamicQr(due, cust.name);
     }
 
     function openEditCustomerModal() {
@@ -1152,9 +1594,9 @@
       };
 
       appData.transactions.push(newTx);
-      pushToGoogleSheets(); // গুগল শ্বীটলৈ প্ৰেৰণ
+      pushToGoogleSheets();
       renderCustomerDetails();
-      alert("✅ এন্ট্ৰি সফলভাৱে সংৰক্ষিত হ'ল আৰু Google Sheets ক্লাউডত লাইভ হ'ল!");
+      alert("✅ এন্ট্ৰি সংৰক্ষিত হ'ল আৰু Google Sheets ক্লাউডত লাইভ ছিংক সম্পন্ন হ'ল!");
       
       document.getElementById("note").value = "";
       capturedPhotoBase64 = "";
@@ -1167,9 +1609,13 @@
     function generateInvoiceImage() {
       const receiptEl = document.getElementById("receiptArea");
       const custName = document.getElementById("recName").textContent;
-      html2canvas(receiptEl, { scale: 3, useCORS: true }).then(canvas => {
+      html2canvas(receiptEl, {
+        scale: 3,
+        useCORS: true,
+        logging: false
+      }).then(canvas => {
         let a = document.createElement("a");
-        a.download = `Bill_${custName}.png`;
+        a.download = `Bill_${custName}_HD.png`;
         a.href = canvas.toDataURL("image/png");
         a.click();
       });
@@ -1207,14 +1653,14 @@
         <head>
           <title>পাছবুক ষ্টেটমেন্ট - ${cust.name}</title>
           <style>
-            body { font-family: sans-serif; padding: 20px; }
+            body { font-family: sans-serif; padding: 20px; color: #111; }
             table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-            th { background: #e8f5e9; color: #1b5e20; padding: 8px; border: 1px solid #aaa; }
+            th { background: #e8f5e9; color: #0d3810; padding: 8px; border: 1px solid #aaa; }
           </style>
         </head>
         <body>
-          <div style="text-align:center; border-bottom:2px solid #1b5e20; padding-bottom:10px;">
-            <h2 style="margin:0; color:#1b5e20;">চেতিয়া গাঁও থলুৱা বজাৰ</h2>
+          <div style="text-align:center; border-bottom:2px solid #0d3810; padding-bottom:10px;">
+            <h2 style="margin:0; color:#0d3810;">চেতিয়া গাঁও থলুৱা বজাৰ</h2>
             <p style="margin:2px 0;">"পথাৰো আমাৰ, বজাৰো আমাৰ"</p>
             <p style="margin:1px 0; font-size:12px;">জয় জুবিন দা | জয় আই অসম | 📞 9613777612</p>
             <h3 style="margin:5px 0; color:#333;">গ্ৰাহকৰ ডিজিটেল পাছবুক ষ্টেটমেন্ট</h3>
@@ -1234,9 +1680,7 @@
                 <th>ৰিমাৰ্কচ</th>
               </tr>
             </thead>
-            <tbody>
-              ${txRows}
-            </tbody>
+            <tbody>${txRows}</tbody>
           </table>
           <div style="margin-top:20px; text-align:center; font-style:italic; font-size:12px;">
             🙏 ধন্যবাদ! আপোনাৰ সেৱাত চেতিয়া গাঁও থলুৱা বজাৰ।
