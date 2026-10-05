@@ -47,7 +47,8 @@
       font-size: 0.78rem;
       font-weight: 700;
     }
-    .sync-dot { height: 10px; width: 10px; background-color: #2e7d32; border-radius: 50%; display: inline-block; }
+    .sync-dot { height: 10px; width: 10px; background-color: #2e7d32; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.7; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.7; } }
 
     .card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-top: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.04); }
     .card-title { margin: 0 0 8px 0; color: var(--secondary); font-size: 0.95rem; font-weight: 700; border-bottom: 2px solid var(--light); padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
@@ -113,7 +114,7 @@
     <div class="popup-box">
       <div style="font-size:2rem; margin-bottom:4px;">🛡️</div>
       <h3 style="margin:2px 0; color:var(--primary);">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
-      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">Ultra-Stable Light Engine | 24H Session</p>
+      <p style="font-size:0.75rem; color:#0277bd; font-weight:600; margin-bottom:12px;">Google Sheets Cloud Engine | 24H Session</p>
       <label style="text-align:left;">ম'বাইল নম্বৰ:</label>
       <input type="tel" id="loginPhone" placeholder="১০ অংকৰ মোবাইল নম্বৰ">
       <label style="text-align:left; margin-top:8px;">গোপন PIN (৬টা সংখ্যা):</label>
@@ -229,10 +230,10 @@
     <div class="contact-no">যোগাযোগ: 📞 9613777612</div>
   </div>
 
-  <!-- লাইভ ছিংক বাৰ -->
+  <!-- গুগল শ্বীট লাইভ ছিংক বাৰ -->
   <div class="sync-panel">
-    <div><span class="sync-dot"></span> <span id="cloudSyncText">লাইভ ছিংক ইঞ্জিন সক্ৰিয় (Ultra-Smooth)</span></div>
-    <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.72rem; margin:0;" onclick="manualSyncTrigger()">🔄 Sync Now</button>
+    <div><span class="sync-dot"></span> <span id="cloudSyncText">গুগল শ্বীট লাইভ ছিংক সক্ৰিয়</span></div>
+    <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.72rem; margin:0;" onclick="pullFromGoogleSheets(true)">🔄 Sync Now</button>
   </div>
 
   <!-- পৰিচালক প্ৰফাইল কাৰ্ড -->
@@ -498,22 +499,21 @@
       <div id="gpsLocationDisplay" style="font-size:0.72rem; color:#444; margin-top:4px;">📍 GPS স্থিতি: ফটো লোৱা হোৱা নাই</div>
     </div>
 
-    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু লাইভ ছিংক</button>
+    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু Google Sheets ছিংক</button>
   </div>
 
   <script>
     // ========================================================
-    // লাইটৱেইট ষ্ট্ৰীম এঞ্জিন (Zero Memory Leak, No Freeze)
+    // আপোনাৰ Google Apps Script Web App লিংক সংলগ্ন কৰা হ'ল
     // ========================================================
-    const SYNC_TOPIC = "chetia_tholuwa_bajar_live_2026";
-    const SYNC_ENDPOINT = `https://ntfy.sh/${SYNC_TOPIC}`;
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz-U4SxZ71-HLqQWPLotuYomqzaHTWke3T2MxDrxgwHVxfTudkLgr8LkIuxvaKlwn3L/exec";
 
     const DEFAULT_MANAGERS = {
       ADMIN: { name: "নিতুল দিহিঙীয়া", role: "মুখ্য পৰিচালক", phone: "8822427980", pin: "291205", photo: "./logo.png", isAdmin: true },
       OPERATOR: { name: "ৰণ্টু চেতিয়া", role: "সহ-পৰিচালক", phone: "9613777612", pin: "123456", photo: "./logo.png", isAdmin: false }
     };
     
-    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_smooth")) || DEFAULT_MANAGERS;
+    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_auth_gsheet")) || DEFAULT_MANAGERS;
     let currentManager = null;
     let savedAuthSignature = localStorage.getItem("cg_bajar_auth_signature") || "";
     let savedIssuerSignature = localStorage.getItem("cg_bajar_issuer_signature") || "";
@@ -522,10 +522,10 @@
 
     let capturedPhotoBase64 = "";
     let capturedGpsLocation = "";
-    let isSyncing = false;
+    let isFetchingFromSheet = false;
 
     function saveManagersAuth() {
-      localStorage.setItem("cg_bajar_managers_auth_smooth", JSON.stringify(managersData));
+      localStorage.setItem("cg_bajar_managers_auth_gsheet", JSON.stringify(managersData));
     }
 
     const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000;
@@ -588,7 +588,8 @@
       applySignatures();
       setDefaultDateTime();
       applyBusinessLogo();
-      startSmoothLiveSync(); // সুস্থিৰ ছিংক আৰম্ভ
+      pullFromGoogleSheets(false);
+      startGoogleSheetsAutoSync();
     }
 
     function logoutManager() {
@@ -788,7 +789,7 @@
         localStorage.setItem("cg_bajar_auth_signature", savedAuthSignature);
         localStorage.setItem("cg_bajar_sig_stamp", savedStampMeta);
         applySignatures();
-        pushDataToCloudPipeline();
+        pushToGoogleSheets();
         alert("✅ Authorised Signatory সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
@@ -802,7 +803,7 @@
         savedIssuerSignature = e.target.result;
         localStorage.setItem("cg_bajar_issuer_signature", savedIssuerSignature);
         applySignatures();
-        pushDataToCloudPipeline();
+        pushToGoogleSheets();
         alert("✅ বিল প্ৰস্তুতকৰ্তাৰ চহী সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
@@ -840,7 +841,7 @@
         else managersData.OPERATOR.photo = e.target.result;
         saveManagersAuth();
         document.getElementById("activeMgrPhoto").src = e.target.result;
-        pushDataToCloudPipeline();
+        pushToGoogleSheets();
       };
       reader.readAsDataURL(file);
     }
@@ -854,7 +855,7 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         cust.photo = e.target.result;
-        pushDataToCloudPipeline();
+        pushToGoogleSheets();
         document.getElementById("custProfileImg").src = e.target.result;
         document.getElementById("recCustPic").src = e.target.result;
       };
@@ -888,9 +889,9 @@
     }
 
     // ========================================================
-    // সুস্থিৰ আৰু লাইটৱেইট ক্লাউড ছিংক এঞ্জিন (No Memory Leak)
+    // Google Sheets ক্লাউড ডাটাবেছ কাৰ্যপ্ৰণালী
     // ========================================================
-    let appData = JSON.parse(localStorage.getItem("cg_bajar_clean_db_v2026")) || {
+    let appData = JSON.parse(localStorage.getItem("cg_bajar_gsheet_final_db")) || {
       customers: [
         { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png" },
         { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png" }
@@ -898,89 +899,61 @@
       transactions: []
     };
 
-    function pushDataToCloudPipeline() {
-      localStorage.setItem("cg_bajar_clean_db_v2026", JSON.stringify(appData));
-      
-      // ব্ৰাউজাৰ ব্লকিংবিহীন পোনপটীয়া ক্লাউড পুশ
-      fetch(SYNC_ENDPOINT, {
+    function pushToGoogleSheets() {
+      localStorage.setItem("cg_bajar_gsheet_final_db", JSON.stringify(appData));
+      document.getElementById("cloudSyncText").textContent = "⚡ Google Sheets-লৈ সংৰক্ষণ চলিছে...";
+
+      fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
-        body: JSON.stringify(appData),
-        headers: { "Title": "DATA_UPDATE" }
-      }).then(() => {
-        document.getElementById("cloudSyncText").textContent = "🟢 ক্লাউডত লাইভ সংৰক্ষিত (ম'বাইল ↔ কম্পিউটাৰ)";
-      }).catch(() => {
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(appData)
+      })
+      .then(() => {
+        document.getElementById("cloudSyncText").textContent = "🟢 Google Sheets-ত লাইভ সংৰক্ষিত";
+      })
+      .catch(() => {
         document.getElementById("cloudSyncText").textContent = "🟢 স্থানীয়ভাৱে সংৰক্ষিত";
       });
 
       filterMarketByDate();
     }
 
-    function startSmoothLiveSync() {
-      // প্ৰতি ৪ ছেকেণ্ডত কেৱল পাতলভাৱে পৰীক্ষা (মেম'ৰী লীক আৰু হেং ৰোধ)
-      setInterval(() => {
-        if (!isSyncing && navigator.onLine) {
-          isSyncing = true;
-          fetch(`${SYNC_ENDPOINT}/json?poll=1`)
-          .then(res => res.text())
-          .then(text => {
-            isSyncing = false;
-            if (!text) return;
-            const lines = text.trim().split("\n");
-            for (let i = lines.length - 1; i >= 0; i--) {
-              try {
-                const item = JSON.parse(lines[i]);
-                if (item && item.message) {
-                  const cloudPayload = JSON.parse(item.message);
-                  if (cloudPayload && cloudPayload.transactions) {
-                    if (cloudPayload.transactions.length !== appData.transactions.length) {
-                      appData = cloudPayload;
-                      localStorage.setItem("cg_bajar_clean_db_v2026", JSON.stringify(appData));
-                      refreshCustomerDropdown(document.getElementById("custSelect").value);
-                      renderCustomerDetails();
-                      filterMarketByDate();
-                      document.getElementById("cloudSyncText").textContent = "⚡ আনজনৰ এন্ট্ৰি তৎক্ষণাত লাইভ হ'ল!";
-                    }
-                    break;
-                  }
-                }
-              } catch(e) {}
-            }
-          })
-          .catch(() => { isSyncing = false; });
+    function pullFromGoogleSheets(isManual = false) {
+      if (isFetchingFromSheet || !navigator.onLine) return;
+      isFetchingFromSheet = true;
+      if (isManual) document.getElementById("cloudSyncText").textContent = "⏳ Google Sheets-ৰ পৰা সংগ্ৰহ চলিছে...";
+
+      fetch(GOOGLE_SCRIPT_URL)
+      .then(res => res.json())
+      .then(data => {
+        isFetchingFromSheet = false;
+        let remoteData = typeof data === 'string' ? JSON.parse(data) : data;
+        if (remoteData && remoteData.customers && remoteData.transactions) {
+          if (remoteData.transactions.length !== appData.transactions.length || isManual) {
+            appData = remoteData;
+            localStorage.setItem("cg_bajar_gsheet_final_db", JSON.stringify(appData));
+            refreshCustomerDropdown(document.getElementById("custSelect").value);
+            renderCustomerDetails();
+            filterMarketByDate();
+            document.getElementById("cloudSyncText").textContent = "⚡ Google Sheets-ৰ পৰা লাইভ ছিংক হ'ল!";
+            if (isManual) alert("✅ Google Sheets-ৰ পৰা সকলো ডাটা কম্পিউটাৰত মিলি গ'ল!");
+          } else {
+            document.getElementById("cloudSyncText").textContent = "🟢 Google Sheets লাইভ ছিংক সক্ৰিয়";
+          }
         }
-      }, 4000);
+      })
+      .catch(() => {
+        isFetchingFromSheet = false;
+        if (isManual) alert("ইন্টাৰনেট সংযোগ পৰীক্ষা কৰক!");
+      });
     }
 
-    function manualSyncTrigger() {
-      document.getElementById("cloudSyncText").textContent = "⏳ ছিংক চলিছে...";
-      fetch(`${SYNC_ENDPOINT}/json?poll=1`)
-      .then(res => res.text())
-      .then(text => {
-        if (!text) { alert("ক্লাউড ডাটা ইতিপূৰ্বেই আপডেট আছে।"); return; }
-        const lines = text.trim().split("\n");
-        let updated = false;
-        for (let i = lines.length - 1; i >= 0; i--) {
-          try {
-            const item = JSON.parse(lines[i]);
-            if (item && item.message) {
-              const cloudPayload = JSON.parse(item.message);
-              if (cloudPayload && cloudPayload.customers) {
-                appData = cloudPayload;
-                localStorage.setItem("cg_bajar_clean_db_v2026", JSON.stringify(appData));
-                refreshCustomerDropdown(document.getElementById("custSelect").value);
-                renderCustomerDetails();
-                filterMarketByDate();
-                document.getElementById("cloudSyncText").textContent = "🟢 ক্লাউড ছিংক সম্পন্ন";
-                alert("✅ কম্পিউটাৰ আৰু ম'বাইলৰ সকলো তথ্য মিলি গ'ল!");
-                updated = true;
-                break;
-              }
-            }
-          } catch(e) {}
-        }
-        if(!updated) alert("✅ কোনো নতুন এন্ট্ৰি নাই, সকলো ডাটা একেই আছে।");
-      })
-      .catch(() => alert("ইন্টাৰনেট সংযোগ পৰীক্ষা কৰক!"));
+    function startGoogleSheetsAutoSync() {
+      // প্ৰতি ৩ ছেকেণ্ডৰ মূৰে মূৰে Google Sheets-ৰ পৰা পৰীক্ষা
+      setInterval(() => {
+        pullFromGoogleSheets(false);
+      }, 3000);
     }
 
     function refreshCustomerDropdown(selectedId = null) {
@@ -1021,7 +994,7 @@
         
         let proofLinkHtml = "";
         if (t.proofPhoto) {
-          proofLinkHtml = `<span class="proof-link" onclick="viewProofPhoto('${t.id}')">📷 [প্ৰমাণ চাওক]</span> `;
+          proofLinkHtml = `<span class="proof-link" onclick="viewProofPhoto('${t.id}')">📷 [প্ৰমাণ]</span> `;
         }
 
         tbody.innerHTML += `<tr>
@@ -1062,7 +1035,7 @@
       cust.name = document.getElementById("editCustName").value.trim();
       cust.phone = document.getElementById("editCustPhone").value.trim();
       cust.address = document.getElementById("editCustAddress").value.trim();
-      pushDataToCloudPipeline();
+      pushToGoogleSheets();
       closeEditCustomerModal();
       refreshCustomerDropdown(custId);
       alert("✅ গ্ৰাহকৰ তথ্য আপডেট হ'ল!");
@@ -1076,7 +1049,7 @@
       if (confirm(`আপুনি নিশ্চিতনে '${cust.name}'-ৰ সকলো হিচাপ আৰু প্ৰফাইল মচি পেলাব?`)) {
         appData.customers = appData.customers.filter(c => c.id !== custId);
         appData.transactions = appData.transactions.filter(t => t.customerId !== custId);
-        pushDataToCloudPipeline();
+        pushToGoogleSheets();
         refreshCustomerDropdown();
       }
     }
@@ -1087,7 +1060,7 @@
       if (!name) return;
       const id = "C" + Date.now();
       appData.customers.push({ id, name, phone: document.getElementById("newCustPhone").value.trim(), address: document.getElementById("newCustAddress").value.trim(), photo: "./logo.png" });
-      pushDataToCloudPipeline();
+      pushToGoogleSheets();
       toggleNewCustForm();
       refreshCustomerDropdown(id);
     }
@@ -1179,9 +1152,9 @@
       };
 
       appData.transactions.push(newTx);
-      pushDataToCloudPipeline(); // ব্লকিংবিহীন ক্লাউড সংৰক্ষণ
+      pushToGoogleSheets(); // গুগল শ্বীটলৈ প্ৰেৰণ
       renderCustomerDetails();
-      alert("✅ এন্ট্ৰি সফলভাৱে সংৰক্ষিত হ'ল আৰু ক্লাউডত লাইভ হ'ল!");
+      alert("✅ এন্ট্ৰি সফলভাৱে সংৰক্ষিত হ'ল আৰু Google Sheets ক্লাউডত লাইভ হ'ল!");
       
       document.getElementById("note").value = "";
       capturedPhotoBase64 = "";
