@@ -149,11 +149,9 @@
     .sign-line { border-top: 1.5px solid #222; font-size: 0.72rem; font-weight: 800; color: #111; padding-top: 3px; }
 
     .proof-icon-btn {
-      color: #0277bd; font-size: 1rem; cursor: pointer; text-decoration: none;
+      color: #0277bd; font-size: 1.05rem; cursor: pointer; text-decoration: none;
       display: inline-block; padding: 2px 4px; border-radius: 4px;
-      transition: transform 0.1s;
     }
-    .proof-icon-btn:hover { transform: scale(1.2); }
 
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -166,6 +164,13 @@
     }
     .hidden { display: none !important; }
 
+    /* গ্ৰাহকৰ বাবে স্বতন্ত্ৰ ভিউ বাৰ */
+    .customer-portal-banner {
+      background: #e8f5e9; border: 1.5px solid #81c784; border-radius: 10px;
+      padding: 10px; margin-bottom: 10px; text-align: center; font-size: 0.85rem;
+      font-weight: 800; color: var(--primary);
+    }
+
     @media print {
       body * { visibility: hidden; }
       #thermalPrintArea, #thermalPrintArea * { visibility: visible; }
@@ -175,12 +180,17 @@
 </head>
 <body>
 
-  <!-- সুৰক্ষিত প্ৰৱেশ পৰ্দা -->
+  <!-- গ্ৰাহকৰ স্বতন্ত্ৰ ডিজিটেল বিল ব্যৱস্থা (WhatsApp-ৰ লিংকত ক্লিক কৰিলে ওলোৱা) -->
+  <div id="customerPortalBanner" class="customer-portal-banner hidden">
+    🏪 আপোনাৰ ডিজিটেল বিল ৰচিদ | চেতিয়া গাঁও থলুৱা বজাৰ
+  </div>
+
+  <!-- সুৰক্ষিত প্ৰৱেশ পৰ্দা (Admin Login Portal) -->
   <div id="authOverlay" class="modal-overlay">
     <div class="popup-box">
       <div style="font-size:2.2rem; margin-bottom:4px;">🛡️</div>
       <h3 style="margin:2px 0; color:var(--primary); font-weight:800;">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
-      <p style="font-size:0.75rem; color:#0277bd; font-weight:700; margin-bottom:14px;">Google Cloud Secured | 24H Session</p>
+      <p style="font-size:0.75rem; color:#0277bd; font-weight:700; margin-bottom:14px;">পৰিচালক সুৰক্ষিত প্ৰৱেশ | 24H Session</p>
       
       <label style="text-align:left;">ম'বাইল নম্বৰ:</label>
       <input type="tel" id="loginPhone" placeholder="১০ অংকৰ মোবাইল নম্বৰ" autocomplete="tel">
@@ -280,7 +290,7 @@
     </div>
   </div>
 
-  <!-- ফটোকপি প্ৰদৰ্শন পপআপ (প্ৰমাণ শব্দবিহীন) -->
+  <!-- ফটোকপি প্ৰদৰ্শন পপআপ -->
   <div id="proofViewModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:var(--primary); font-size:1.05rem; border-bottom:2px solid var(--border-color); padding-bottom:6px; font-weight:800;">
@@ -367,161 +377,164 @@
     <div class="contact-no">যোগাযোগ: 📞 9613777612</div>
   </div>
 
-  <!-- গুগল শ্বীট লাইভ ক্লাউড ষ্টেটাছ বাৰ -->
-  <div class="sync-panel">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span class="sync-dot"></span>
-      <span id="cloudSyncText">গুগল শ্বীট ক্লাউড সংলগ্ন (Google Sheets Live)</span>
-    </div>
-    <button class="btn-outline" style="width:auto; padding:3px 10px; font-size:0.74rem; margin:0;" onclick="pullFromGoogleSheets(true)">
-      🔄 Sync Now
-    </button>
-  </div>
-
-  <!-- পৰিচালক প্ৰফাইল কাৰ্ড -->
-  <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-    <div class="profile-card-flex">
-      <div class="avatar-wrapper">
-        <img id="activeMgrPhoto" class="avatar-img" src="./logo.png" alt="Manager Photo">
-        <label for="mgrPhotoUpload" class="avatar-upload-icon" title="ফটো সলাওক">📷</label>
-        <input type="file" id="mgrPhotoUpload" accept="image/*" class="hidden" onchange="uploadManagerPhoto(event)">
+  <!-- পৰিচালক নিয়ন্ত্ৰণ পেনেলসমূহ (গ্ৰাহকে দেখা নাপায়) -->
+  <div id="adminControlsArea">
+    <!-- গুগল শ্বীট লাইভ ক্লাউড ষ্টেটাছ বাৰ -->
+    <div class="sync-panel">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span class="sync-dot"></span>
+        <span id="cloudSyncText">গুগল শ্বীট ক্লাউড সংলগ্ন (Google Sheets Live)</span>
       </div>
-      <div>
-        <div style="font-weight:800; color:var(--primary); font-size:1.02rem;" id="activeMgrName">নিতুল দিহিঙীয়া</div>
-        <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;" id="activeMgrRole">মুখ্য পৰিচালক</div>
-      </div>
-    </div>
-    <div style="display:flex; gap:6px;">
-      <button id="adminSettingsBtn" class="btn btn-settings admin-only-btn" style="width:auto; padding:6px 12px; font-size:0.76rem; margin:0;" onclick="openSuperSettingsModal()">
-        ⚙️ চেটিংছ
-      </button>
-      <button class="btn btn-danger" style="width:auto; padding:6px 12px; font-size:0.76rem; margin:0;" onclick="logoutManager()">
-        🔒 লগ আউট
+      <button class="btn-outline" style="width:auto; padding:3px 10px; font-size:0.74rem; margin:0;" onclick="pullFromGoogleSheets(true)">
+        🔄 Sync Now
       </button>
     </div>
-  </div>
 
-  <!-- দৈনিক তাৰিখ ফিল্টাৰ আৰু বজাৰ খতিয়ান -->
-  <div class="card" style="border-left: 5px solid var(--primary);">
-    <div class="card-title">
-      <span>📅 দৈনিক তাৰিখ অনুসৰি বজাৰ খতিয়ান</span>
-      <span style="font-size:0.72rem; color:var(--text-muted);">Daily Audit</span>
-    </div>
-    
-    <div class="row" style="align-items:flex-end;">
-      <div>
-        <label>তাৰিখ বাছক (Date Filter):</label>
-        <input type="date" id="dailyAuditDateInput" onchange="filterMarketByDate()">
-      </div>
-      <div style="flex:0 0 90px;">
-        <button class="btn btn-primary" style="margin-top:0; padding:9px 6px;" onclick="resetToTodayAudit()">আজিৰ দিন</button>
-      </div>
-    </div>
-
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;">
-      <div style="background:#ffebee; border-radius:10px; padding:10px; border-left:4px solid var(--accent);">
-        <div style="font-size:0.72rem; color:#555; font-weight:800;">সেইদিনা মুঠ বাকী:</div>
-        <div style="font-size:1.25rem; font-weight:900; color:var(--accent);">₹<span id="dailyAuditDebit">0</span></div>
-      </div>
-      <div style="background:#e8f5e9; border-radius:10px; padding:10px; border-left:4px solid var(--primary);">
-        <div style="font-size:0.72rem; color:#555; font-weight:800;">সেইদিনা মুঠ জমা:</div>
-        <div style="font-size:1.25rem; font-weight:900; color:var(--primary);">₹<span id="dailyAuditCredit">0</span></div>
-      </div>
-    </div>
-
-    <div style="margin-top:10px; font-size:0.76rem;">
-      <b>সেইদিনাৰ গ্ৰাহকৰ লেনদেন খতিয়ান:</b>
-      <div style="max-height:150px; overflow-y:auto; border:1px solid #e0e0e0; border-radius:8px; margin-top:6px;">
-        <table class="bill-table" style="margin-top:0;">
-          <thead>
-            <tr>
-              <th>গ্ৰাহক</th>
-              <th>সামগ্ৰী / ওজন</th>
-              <th>বাকী (+)</th>
-              <th>জমা (-)</th>
-              <th>ৰিমাৰ্কচ</th>
-            </tr>
-          </thead>
-          <tbody id="dailyAuditTableBody">
-            <tr><td colspan="5" style="text-align:center; color:#888;">কোনো লেনদেন নাই</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- চহী নিয়ন্ত্ৰণ পেনেল -->
-  <div class="card admin-only-feature">
-    <div class="card-title">
-      <span>✍️ দ্বৈত চহী ব্যৱস্থাপনা</span>
-      <span style="font-size:0.72rem; color:var(--accent);">Master Admin</span>
-    </div>
-    <label>১. Authorised Signatory (ৰণ্টু চেতিয়া):</label>
-    <input type="file" id="authSigUpload" accept="image/*" onchange="uploadAuthSignature(event)">
-    <label style="margin-top:8px;">২. বিল প্ৰস্তুতকৰ্তাৰ চহী (Issuer Signature):</label>
-    <input type="file" id="issuerSigUpload" accept="image/*" onchange="uploadIssuerSignature(event)">
-  </div>
-
-  <!-- গ্ৰাহক পাছবুক -->
-  <div class="card">
-    <div class="card-title">
-      <span>👤 গ্ৰাহক ডিজিটেল পাছবুক</span>
-      <button class="btn btn-outline" style="width:auto; padding:4px 10px; font-size:0.75rem;" onclick="toggleNewCustForm()">+ নতুন গ্ৰাহক</button>
-    </div>
-
-    <div id="newCustSec" class="hidden" style="background:#f9f9f9; padding:10px; border-radius:10px; margin-bottom:8px; border:1px solid #ddd;">
-      <label>গ্ৰাহকৰ নাম:</label>
-      <input type="text" id="newCustName">
-      <div class="row">
-        <div><label>ফোন:</label><input type="tel" id="newCustPhone"></div>
-        <div><label>ঠিকনা:</label><input type="text" id="newCustAddress"></div>
-      </div>
-      <button class="btn btn-primary" style="margin-top:8px;" onclick="addNewCustomer()">সংৰক্ষণ</button>
-    </div>
-
-    <label>গ্ৰাহক নিৰ্বাচন কৰক:</label>
-    <select id="custSelect" onchange="renderCustomerDetails()"></select>
-
-    <div class="cust-profile-card">
-      <div class="profile-card-flex" style="margin-top:8px;">
+    <!-- পৰিচালক প্ৰফাইল কাৰ্ড -->
+    <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="profile-card-flex">
         <div class="avatar-wrapper">
-          <img id="custProfileImg" class="avatar-img" src="./logo.png" alt="Customer Photo">
-          <label for="custPhotoUpload" class="avatar-upload-icon" title="গ্ৰাহকৰ ফটো সলাওক">📷</label>
-          <input type="file" id="custPhotoUpload" accept="image/*" class="hidden" onchange="uploadCustomerPhoto(event)">
+          <img id="activeMgrPhoto" class="avatar-img" src="./logo.png" alt="Manager Photo">
+          <label for="mgrPhotoUpload" class="avatar-upload-icon" title="ফটো সলাওক">📷</label>
+          <input type="file" id="mgrPhotoUpload" accept="image/*" class="hidden" onchange="uploadManagerPhoto(event)">
         </div>
         <div>
-          <div style="font-size:1.1rem; font-weight:800; color:var(--primary);" id="dispName">-</div>
-          <div style="font-size:0.78rem; color:#444; margin-top:2px;">
-            📍 <span id="dispAddress">-</span> | 📞 <span id="dispPhone">-</span>
-          </div>
+          <div style="font-weight:800; color:var(--primary); font-size:1.02rem;" id="activeMgrName">নিতুল দিহিঙীয়া</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;" id="activeMgrRole">মুখ্য পৰিচালক</div>
         </div>
       </div>
-      
-      <div class="due-highlight">
-        <span style="font-weight:700;">বৰ্তমান মুঠ বকেয়া বাকী:</span>
-        <span class="due-amount">₹<span id="dispDue">0</span></span>
+      <div style="display:flex; gap:6px;">
+        <button id="adminSettingsBtn" class="btn btn-settings admin-only-btn" style="width:auto; padding:6px 12px; font-size:0.76rem; margin:0;" onclick="openSuperSettingsModal()">
+          ⚙️ চেটিংছ
+        </button>
+        <button class="btn btn-danger" style="width:auto; padding:6px 12px; font-size:0.76rem; margin:0;" onclick="logoutManager()">
+          🔒 লগ আউট
+        </button>
       </div>
     </div>
 
-    <div class="row" style="margin-top:8px;">
-      <button class="btn btn-edit admin-only-btn" onclick="openEditCustomerModal()">✏️ সম্পাদনা</button>
-      <button class="btn btn-danger admin-only-btn" onclick="deleteSelectedCustomer()">❌ মচক</button>
+    <!-- দৈনিক তাৰিখ ফিল্টাৰ আৰু বজাৰ খতিয়ান -->
+    <div class="card" style="border-left: 5px solid var(--primary);">
+      <div class="card-title">
+        <span>📅 দৈনিক তাৰিখ অনুসৰি বজাৰ খতিয়ান</span>
+        <span style="font-size:0.72rem; color:var(--text-muted);">Daily Audit</span>
+      </div>
+      
+      <div class="row" style="align-items:flex-end;">
+        <div>
+          <label>তাৰিখ বাছক (Date Filter):</label>
+          <input type="date" id="dailyAuditDateInput" onchange="filterMarketByDate()">
+        </div>
+        <div style="flex:0 0 90px;">
+          <button class="btn btn-primary" style="margin-top:0; padding:9px 6px;" onclick="resetToTodayAudit()">আজিৰ দিন</button>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;">
+        <div style="background:#ffebee; border-radius:10px; padding:10px; border-left:4px solid var(--accent);">
+          <div style="font-size:0.72rem; color:#555; font-weight:800;">সেইদিনা মুঠ বাকী:</div>
+          <div style="font-size:1.25rem; font-weight:900; color:var(--accent);">₹<span id="dailyAuditDebit">0</span></div>
+        </div>
+        <div style="background:#e8f5e9; border-radius:10px; padding:10px; border-left:4px solid var(--primary);">
+          <div style="font-size:0.72rem; color:#555; font-weight:800;">সেইদিনা মুঠ জমা:</div>
+          <div style="font-size:1.25rem; font-weight:900; color:var(--primary);">₹<span id="dailyAuditCredit">0</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px; font-size:0.76rem;">
+        <b>সেইদিনাৰ গ্ৰাহকৰ লেনদেন খতিয়ান:</b>
+        <div style="max-height:150px; overflow-y:auto; border:1px solid #e0e0e0; border-radius:8px; margin-top:6px;">
+          <table class="bill-table" style="margin-top:0;">
+            <thead>
+              <tr>
+                <th>গ্ৰাহক</th>
+                <th>সামগ্ৰী / ওজন</th>
+                <th>বাকী (+)</th>
+                <th>জমা (-)</th>
+                <th>ৰিমাৰ্কচ</th>
+              </tr>
+            </thead>
+            <tbody id="dailyAuditTableBody">
+              <tr><td colspan="5" style="text-align:center; color:#888;">কোনো লেনদেন নাই</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <div class="row" style="margin-top:8px;">
-      <button class="btn btn-invoice" onclick="generateInvoiceImage()">📸 বিলৰ ফটো (HD)</button>
-      <button class="btn btn-thermal" onclick="printThermalReceipt()">🖨️ Thermal POS প্ৰিন্ট</button>
+    <!-- চহী নিয়ন্ত্ৰণ পেনেল -->
+    <div class="card admin-only-feature">
+      <div class="card-title">
+        <span>✍️ দ্বৈত চহী ব্যৱস্থাপনা</span>
+        <span style="font-size:0.72rem; color:var(--accent);">Master Admin</span>
+      </div>
+      <label>১. Authorised Signatory (ৰণ্টু চেতিয়া):</label>
+      <input type="file" id="authSigUpload" accept="image/*" onchange="uploadAuthSignature(event)">
+      <label style="margin-top:8px;">২. বিল প্ৰস্তুতকৰ্তাৰ চহী (Issuer Signature):</label>
+      <input type="file" id="issuerSigUpload" accept="image/*" onchange="uploadIssuerSignature(event)">
     </div>
-    
-    <div class="row" style="margin-top:6px;">
-      <button class="btn btn-pdf" onclick="generatePassbookPdf()">📄 পাছবুক PDF</button>
-      <a id="waBtn" class="btn btn-wa" href="#" target="_blank">📲 WhatsApp বিল ও লিংক</a>
+
+    <!-- গ্ৰাহক পাছবুক ব্যৱস্থাপনা -->
+    <div class="card">
+      <div class="card-title">
+        <span>👤 গ্ৰাহক ডিজিটেল পাছবুক</span>
+        <button class="btn btn-outline" style="width:auto; padding:4px 10px; font-size:0.75rem;" onclick="toggleNewCustForm()">+ নতুন গ্ৰাহক</button>
+      </div>
+
+      <div id="newCustSec" class="hidden" style="background:#f9f9f9; padding:10px; border-radius:10px; margin-bottom:8px; border:1px solid #ddd;">
+        <label>গ্ৰাহকৰ নাম:</label>
+        <input type="text" id="newCustName">
+        <div class="row">
+          <div><label>ফোন:</label><input type="tel" id="newCustPhone"></div>
+          <div><label>ঠিকনা:</label><input type="text" id="newCustAddress"></div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:8px;" onclick="addNewCustomer()">সংৰক্ষণ</button>
+      </div>
+
+      <label>গ্ৰাহক নিৰ্বাচন কৰক:</label>
+      <select id="custSelect" onchange="renderCustomerDetails()"></select>
+
+      <div class="cust-profile-card">
+        <div class="profile-card-flex" style="margin-top:8px;">
+          <div class="avatar-wrapper">
+            <img id="custProfileImg" class="avatar-img" src="./logo.png" alt="Customer Photo">
+            <label for="custPhotoUpload" class="avatar-upload-icon" title="গ্ৰাহকৰ ফটো সলাওক">📷</label>
+            <input type="file" id="custPhotoUpload" accept="image/*" class="hidden" onchange="uploadCustomerPhoto(event)">
+          </div>
+          <div>
+            <div style="font-size:1.1rem; font-weight:800; color:var(--primary);" id="dispName">-</div>
+            <div style="font-size:0.78rem; color:#444; margin-top:2px;">
+              📍 <span id="dispAddress">-</span> | 📞 <span id="dispPhone">-</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="due-highlight">
+          <span style="font-weight:700;">বৰ্তমান মুঠ বকেয়া বাকী:</span>
+          <span class="due-amount">₹<span id="dispDue">0</span></span>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:8px;">
+        <button class="btn btn-edit admin-only-btn" onclick="openEditCustomerModal()">✏️ সম্পাদনা</button>
+        <button class="btn btn-danger admin-only-btn" onclick="deleteSelectedCustomer()">❌ মচক</button>
+      </div>
+
+      <div class="row" style="margin-top:8px;">
+        <button class="btn btn-invoice" onclick="generateInvoiceImage()">📸 বিলৰ ফটো (HD)</button>
+        <button class="btn btn-thermal" onclick="printThermalReceipt()">🖨️ Thermal POS প্ৰিন্ট</button>
+      </div>
+      
+      <div class="row" style="margin-top:6px;">
+        <button class="btn btn-pdf" onclick="generatePassbookPdf()">📄 পাছবুক PDF</button>
+        <a id="waBtn" class="btn btn-wa" href="#" target="_blank">📲 WhatsApp বিল ও লিংক</a>
+      </div>
     </div>
   </div>
 
-  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ (কেৱল 📷 আইকন সহ) -->
-  <div class="card">
-    <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ (প্ৰিভিউ)</span></div>
+  <!-- ডিজিটেল বিল ৰচিদ প্ৰিভিউ (Customer & Admin উভয়ে চাব পৰা অংশ) -->
+  <div class="card" id="billViewContainer">
+    <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ</span></div>
     <div id="receiptArea">
       <img id="billWatermarkLogo" class="receipt-watermark hidden" src="./logo.png" alt="Watermark">
       <div class="receipt-content">
@@ -594,8 +607,8 @@
     </div>
   </div>
 
-  <!-- নতুন এন্ট্ৰি (AI ভইচ বুটাম সহ) -->
-  <div class="card">
+  <!-- নতুন এন্ট্ৰি (কেৱল পৰিচালকৰ বাবে) -->
+  <div class="card" id="adminNewEntryCard">
     <div class="card-title">
       <span>📝 নতুন এণ্ট্ৰি</span>
       <div style="display:flex; gap:6px;">
@@ -675,7 +688,6 @@
     <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু ক্লাউড ছিংক</button>
   </div>
 
-  <!-- থাৰ্মেল প্ৰিণ্ট হিডেন কন্টেইনাৰ (৫8mm POS Printer) -->
   <div id="thermalPrintArea" class="hidden"></div>
 
   <script>
@@ -697,12 +709,39 @@
     let capturedPhotoBase64 = "";
     let capturedGpsLocation = "";
     let isFetchingFromSheet = false;
+    let isCustomerViewMode = false;
 
     function saveManagersAuth() {
       localStorage.setItem("cg_bajar_managers_enterprise", JSON.stringify(managersData));
     }
 
     const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000;
+
+    // পৰিদৰ্শন ধৰণ নিৰ্ধাৰণ (Customer Direct Link vs Admin App)
+    function checkUrlViewMode() {
+      const params = new URLSearchParams(window.location.search);
+      const custId = params.get('cid');
+
+      if (custId) {
+        // গ্ৰাহকে WhatsApp-ৰ লিংকত ক্লিক কৰিছে: ল'গইন পৰ্দা সম্পূৰ্ণ বন্ধ কৰক!
+        isCustomerViewMode = true;
+        document.getElementById("authOverlay").classList.add("hidden");
+        document.getElementById("customerPortalBanner").classList.remove("hidden");
+        document.getElementById("adminControlsArea").classList.add("hidden");
+        document.getElementById("adminNewEntryCard").classList.add("hidden");
+        
+        applySignatures();
+        applyBusinessLogo();
+        renderCustomerDetailsById(custId);
+        
+        // শেহতীয়া ডাটা ক্লাউডৰ পৰা লওক
+        pullFromGoogleSheets(false, () => {
+          renderCustomerDetailsById(custId);
+        });
+        return true;
+      }
+      return false;
+    }
 
     function checkExistingSession() {
       const sessionStr = localStorage.getItem("cg_bajar_active_session");
@@ -781,7 +820,7 @@
       businessUpiId = val;
       localStorage.setItem("cg_bajar_business_upi", businessUpiId);
       renderCustomerDetails();
-      alert("✅ ব্যৱসায়িক UPI ID সংৰক্ষিত হ'ল!");
+      alert("✅ ব্যৱসায়িক UPI ID সংৰক্ষণ হ'ল!");
     }
 
     function openSecurityQuestionsModal() {
@@ -968,10 +1007,9 @@
       pushToGoogleSheets();
       renderCustomerDetails();
       closeVoiceReviewModal();
-      alert("✅ পৰিচালকৰ অনুমোদন ক্ৰমে ভইচ এন্ট্ৰি সফলতাৰে সংৰক্ষিত হ'ল!");
+      alert("✅ ভইচ এন্ট্ৰি সংৰক্ষিত হ'ল!");
     }
 
-    // লাইভ ডাইনামিক UPI QR Code এঞ্জিন
     function updateReceiptDynamicQr(dueAmt, custName) {
       const qrEl = document.getElementById("receiptDynamicQr");
       if (!qrEl) return;
@@ -984,7 +1022,7 @@
         return;
       }
 
-      const upiUrl = `upi://pay?pa=${encodeURIComponent(businessUpiId)}&pn=${encodeURIComponent("Chetia Gaon Tholuwa Bazar")}&am=${dueAmt}&cu=INR&tn=${encodeURIComponent("Due Payment - " + custName)}`;
+      const upiUrl = `upi://pay?pa=${encodeURIComponent(businessUpiId)}&pn=${encodeURIComponent("Chetia Gaon Tholuwa Bazar")}&am=${dueAmt}&cu=INR&tn=${encodeURIComponent("Payment - " + custName)}`;
 
       new QRCode(qrEl, {
         text: upiUrl,
@@ -996,7 +1034,6 @@
       });
     }
 
-    // Bluetooth Mini Thermal POS Printer
     function printThermalReceipt() {
       const custId = document.getElementById("custSelect").value;
       const cust = appData.customers.find(c => c.id === custId);
@@ -1046,8 +1083,7 @@
         </div>
         <div style="text-align:center; margin-top:8px; font-size:10px;">
           UPI ID: ${businessUpiId}<br>
-          🙏 আন্তৰিক ধন্যবাদ! পুনৰ আহিব।<br>
-          <i>জয় জুবিন দা | জয় আই অসম</i>
+          🙏 আন্তৰিক ধন্যবাদ! পুনৰ আহিব।
         </div>
       `;
 
@@ -1056,7 +1092,6 @@
       setTimeout(() => { printContainer.classList.add("hidden"); }, 1000);
     }
 
-    // ফটো প্ৰচেছিং
     function captureGuaranteedGpsPhoto(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1288,7 +1323,6 @@
       watermarkEl.classList.remove("hidden");
     }
 
-    // পুৰণি ডাটা সংৰক্ষণ ব্যৱস্থা
     function loadAndMergeAllLegacyData() {
       let baseData = {
         customers: [
@@ -1307,33 +1341,40 @@
 
     let appData = loadAndMergeAllLegacyData();
 
+    // ম'বাইলৰ বাবে চুপাৰ-ফাষ্ট ক্লাউড ছিংক (Optimistic Instant Pipeline)
     function pushToGoogleSheets() {
       localStorage.setItem("cg_bajar_enterprise_db", JSON.stringify(appData));
-      document.getElementById("cloudSyncText").textContent = "⚡ Google Sheets-লৈ সংৰক্ষণ চলিছে...";
+      
+      const syncText = document.getElementById("cloudSyncText");
+      if (syncText) syncText.textContent = "⚡ ক্লাউড সংৰক্ষণ চলিছে...";
 
-      fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(appData)
-      })
-      .then(() => {
-        document.getElementById("cloudSyncText").textContent = "🟢 Google Sheets-ত লাইভ সংৰক্ষিত";
-      })
-      .catch(() => {
-        document.getElementById("cloudSyncText").textContent = "🟢 স্থানীয়ভাৱে সংৰক্ষিত";
-      });
+      // পলম নকৰাকৈ ব্যাকগ্ৰাউণ্ডত পে লোড প্ৰেৰণ
+      setTimeout(() => {
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(appData)
+        })
+        .then(() => {
+          if (syncText) syncText.textContent = "🟢 Google Sheets-ত লাইভ সংৰক্ষিত";
+        })
+        .catch(() => {
+          if (syncText) syncText.textContent = "🟢 স্থানীয়ভাৱে সংৰক্ষিত (নেটৱৰ্ক অফলাইন)";
+        });
+      }, 50);
 
       filterMarketByDate();
     }
 
-    function pullFromGoogleSheets(isManual = false) {
+    function pullFromGoogleSheets(isManual = false, callback = null) {
       if (isFetchingFromSheet || !navigator.onLine) return;
       isFetchingFromSheet = true;
-      if (isManual) document.getElementById("cloudSyncText").textContent = "⏳ Google Sheets-ৰ পৰা ছিংক চলিছে...";
+      const syncText = document.getElementById("cloudSyncText");
+      if (isManual && syncText) syncText.textContent = "⏳ ছিংক চলিছে...";
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
 
       fetch(GOOGLE_SCRIPT_URL, { signal: controller.signal })
       .then(res => res.json())
@@ -1345,13 +1386,17 @@
           if (remoteData.transactions.length !== appData.transactions.length || isManual) {
             appData = remoteData;
             localStorage.setItem("cg_bajar_enterprise_db", JSON.stringify(appData));
-            refreshCustomerDropdown(document.getElementById("custSelect").value);
-            renderCustomerDetails();
-            filterMarketByDate();
-            document.getElementById("cloudSyncText").textContent = "⚡ Google Sheets-ৰ পৰা লাইভ ছিংক হ'ল!";
+            
+            if (!isCustomerViewMode) {
+              refreshCustomerDropdown(document.getElementById("custSelect").value);
+              renderCustomerDetails();
+              filterMarketByDate();
+            }
+            if (callback) callback();
+            if (syncText) syncText.textContent = "⚡ Google Sheets-ৰ পৰা লাইভ ছিংক হ'ল!";
             if (isManual) alert("✅ Google Sheets-ৰ পৰা সকলো ডাটা মিলি গ'ল!");
           } else {
-            document.getElementById("cloudSyncText").textContent = "🟢 Google Sheets লাইভ ছিংক সক্ৰিয়";
+            if (syncText) syncText.textContent = "🟢 Google Sheets লাইভ ছিংক সক্ৰিয়";
           }
         }
       })
@@ -1363,7 +1408,9 @@
     }
 
     function startIntelligentSync() {
-      setInterval(() => { pullFromGoogleSheets(false); }, 3500);
+      if (isCustomerViewMode) return;
+      // ম'বাইলৰ বেটাৰী আৰু ডাটা ৰক্ষা কৰি ৫ ছেকেণ্ডৰ মূৰে মূৰে পৰীক্ষা
+      setInterval(() => { pullFromGoogleSheets(false); }, 5000);
     }
 
     function exportEncryptedBackup() {
@@ -1378,6 +1425,7 @@
 
     function refreshCustomerDropdown(selectedId = null) {
       const sel = document.getElementById("custSelect");
+      if (!sel) return;
       sel.innerHTML = "";
       appData.customers.forEach(c => {
         const opt = document.createElement("option");
@@ -1389,21 +1437,16 @@
       renderCustomerDetails();
     }
 
-    function renderCustomerDetails() {
-      const custId = document.getElementById("custSelect").value;
+    // নিৰ্দিষ্ট গ্ৰাহকৰ বাবে বিল ৰেণ্ডাৰ (Customer View Mode)
+    function renderCustomerDetailsById(custId) {
       const cust = appData.customers.find(c => c.id === custId);
       if (!cust) return;
 
-      document.getElementById("dispName").textContent = cust.name;
-      document.getElementById("dispAddress").textContent = cust.address;
-      document.getElementById("dispPhone").textContent = cust.phone;
-      document.getElementById("custProfileImg").src = cust.photo || "./logo.png";
-      
       document.getElementById("recName").textContent = cust.name;
       document.getElementById("recAddress").textContent = cust.address;
       document.getElementById("recPhone").textContent = cust.phone;
       document.getElementById("recCustPic").src = cust.photo || "./logo.png";
-      document.getElementById("recIssuedBy").textContent = currentManager ? currentManager.name : "";
+      document.getElementById("recIssuedBy").textContent = "চেতিয়া গাঁও থলুৱা বজাৰ";
       document.getElementById("recGeneratedTime").textContent = new Date().toLocaleDateString('en-GB');
 
       let debit = 0, credit = 0;
@@ -1427,16 +1470,36 @@
         </tr>`;
       });
       const due = debit - credit;
-      document.getElementById("dispDue").textContent = due;
       document.getElementById("recTotalDue").textContent = due;
+      updateReceiptDynamicQr(due, cust.name);
+    }
 
-      // WhatsApp বাৰ্তাত লাইভ ডিজিটেল বিলৰ লিংক সংযোগ (যাতে গ্ৰাহকে ফটোত স্পৰ্শ কৰিব পাৰে)
-      const currentWebLink = window.location.href.split("?")[0];
-      const waMsg = `চেতিয়া গাঁও থলুৱা বজাৰ\nপ্ৰতি, ${cust.name}\nবৰ্তমান মুঠ বকেয়া বাকী: ₹${due}\nযোগাযোগ: 9613777612\n\nআপোনাৰ ডিজিটেল বিল ও সংৰক্ষিত ফটোকপি চাবলৈ লিংক:\n${currentWebLink}\n\nধন্যবাদ! পুনৰ আহিব।`;
+    function renderCustomerDetails() {
+      if (isCustomerViewMode) return;
+      const custId = document.getElementById("custSelect").value;
+      const cust = appData.customers.find(c => c.id === custId);
+      if (!cust) return;
+
+      document.getElementById("dispName").textContent = cust.name;
+      document.getElementById("dispAddress").textContent = cust.address;
+      document.getElementById("dispPhone").textContent = cust.phone;
+      document.getElementById("custProfileImg").src = cust.photo || "./logo.png";
+      
+      let debit = 0, credit = 0;
+      appData.transactions.filter(t => t.customerId === custId).forEach(t => {
+        debit += t.debit; credit += t.credit;
+      });
+      const due = debit - credit;
+      document.getElementById("dispDue").textContent = due;
+
+      // গ্ৰাহকৰ বাবে স্বতন্ত্ৰ নিৰাপদ ডিজিটেল বিল লিংক
+      const baseUrl = window.location.origin + window.location.pathname;
+      const directBillLink = `${baseUrl}?cid=${cust.id}`;
+      
+      const waMsg = `চেতিয়া গাঁও থলুৱা বজাৰ\nপ্ৰতি, ${cust.name}\nবৰ্তমান মুঠ বকেয়া বাকী: ₹${due}\nযোগাযোগ: 9613777612\n\nতলৰ লিংকত ক্লিক কৰি আপোনাৰ ডিজিটেল বিল চাওক:\n${directBillLink}\n\nধন্যবাদ! পুনৰ আহিব।`;
       document.getElementById("waBtn").href = `https://wa.me/91${cust.phone}?text=${encodeURIComponent(waMsg)}`;
 
-      // লাইভ UPI QR ক'ড আপডেট
-      updateReceiptDynamicQr(due, cust.name);
+      renderCustomerDetailsById(custId);
     }
 
     function openEditCustomerModal() {
@@ -1579,9 +1642,11 @@
       };
 
       appData.transactions.push(newTx);
-      pushToGoogleSheets();
+      
+      // ম'বাইলত পলম নকৰাকৈ ক্ষন্তেকতে লোকাল আপডেট কৰক
       renderCustomerDetails();
-      alert("✅ এন্ট্ৰি সংৰক্ষিত হ'ল আৰু Google Sheets ক্লাউডত লাইভ ছিংক সম্পন্ন হ'ল!");
+      pushToGoogleSheets();
+      alert("✅ এন্ট্ৰি সংৰক্ষিত হ'ল!");
       
       document.getElementById("note").value = "";
       capturedPhotoBase64 = "";
@@ -1678,8 +1743,11 @@
       setTimeout(() => { printWin.print(); }, 500);
     }
 
-    refreshCustomerDropdown();
-    checkExistingSession();
+    // ইনিশিয়ালাইজেচন
+    if (!checkUrlViewMode()) {
+      refreshCustomerDropdown();
+      checkExistingSession();
+    }
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
   </script>
 </body>
