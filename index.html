@@ -3,15 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>চেতিয়া গাঁও থলুৱা বজাৰ | Enterprise Live Edition</title>
+  <title>চেতিয়া গাঁও থলুৱা বজাৰ | Enterprise Fortress AI</title>
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./logo.png">
   <meta name="theme-color" content="#0d3810">
-  
+
+  <!-- Professional SolaimanLipi Bold + Crisp Assamese/Bengali Fallback -->
+  <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@600;700;800&display=swap" rel="stylesheet">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
+    /* Optional offline SolaimanLipi.ttf if uploaded to GitHub root */
+    @font-face {
+      font-family: 'SolaimanLipiLocal';
+      src: url('./SolaimanLipi.ttf') format('truetype');
+      font-weight: 400 900;
+      font-display: swap;
+    }
+
     :root {
       --primary: #0d3810;
       --primary-gradient: linear-gradient(135deg, #0d3810 0%, #1b5e20 50%, #052407 100%);
@@ -23,44 +35,82 @@
       --border-color: #d1e7d3;
       --text-main: #141f15;
       --text-muted: #536354;
+      --bill-font: 'SolaimanLipiLocal', 'SolaimanLipi', 'Noto Sans Bengali', sans-serif;
       --shadow-sm: 0 2px 8px rgba(13, 56, 16, 0.06);
       --shadow-md: 0 4px 16px rgba(13, 56, 16, 0.12);
-      --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.25);
     }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: 'SolaimanLipiLocal', 'SolaimanLipi', 'Noto Sans Bengali', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin: 0; padding: 10px; background: var(--light-bg); color: var(--text-main);
       -webkit-font-smoothing: antialiased;
     }
-    
+
     .header {
       background: var(--primary-gradient);
       color: white; padding: 18px 14px; border-radius: 16px;
       text-align: center; box-shadow: var(--shadow-md);
       border-bottom: 3.5px solid var(--gold); position: relative; overflow: hidden;
     }
-    .header h2 { margin: 0; font-size: 1.4rem; letter-spacing: 0.6px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.4); }
-    .header .slogan { margin: 5px 0 0; font-size: 0.9rem; font-weight: 800; color: var(--gold); }
-    .header .sub-slogan { margin: 3px 0 0; font-size: 0.8rem; font-weight: 600; color: #ffffff; opacity: 0.95; }
-    .header .contact-no { margin: 8px 0 0; font-size: 0.82rem; font-weight: 800; background: rgba(255,255,255,0.2); display: inline-block; padding: 3px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(4px); }
+    .header h2 { margin: 0; font-size: 1.48rem; letter-spacing: 0.4px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.4); }
+    .header .slogan { margin: 5px 0 0; font-size: 0.94rem; font-weight: 700; color: var(--gold); }
+    .header .sub-slogan { margin: 3px 0 0; font-size: 0.84rem; font-weight: 700; color: #ffffff; opacity: 0.96; }
+    .header .contact-no { margin: 8px 0 0; font-size: 0.85rem; font-weight: 700; background: rgba(255,255,255,0.2); display: inline-block; padding: 3px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); }
 
     .sync-panel {
       background: #ffffff; border: 1.5px solid #a5d6a7; border-radius: 12px;
-      padding: 8px 14px; margin-top: 10px; display: flex; justify-content: space-between;
-      align-items: center; font-size: 0.78rem; font-weight: 700; box-shadow: var(--shadow-sm);
+      padding: 8px 12px; margin-top: 10px; display: flex; justify-content: space-between;
+      align-items: center; font-size: 0.78rem; font-weight: 700; box-shadow: var(--shadow-sm); gap: 8px;
     }
-    .sync-dot { height: 10px; width: 10px; background-color: #2e7d32; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #2e7d32; }
+    .sync-dot { height: 10px; width: 10px; background-color: #2e7d32; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #2e7d32; flex-shrink: 0; }
+    .sync-dot.pending { background-color: #f57c00; box-shadow: 0 0 8px #f57c00; }
 
     .card {
       background: var(--card-bg); border: 1px solid var(--border-color);
       border-radius: 14px; padding: 14px; margin-top: 12px; box-shadow: var(--shadow-sm);
     }
     .card-title {
-      margin: 0 0 10px 0; color: var(--primary); font-size: 0.98rem; font-weight: 800;
+      margin: 0 0 10px 0; color: var(--primary); font-size: 1rem; font-weight: 800;
       border-bottom: 2px solid #e8f5e9; padding-bottom: 6px; display: flex;
-      justify-content: space-between; align-items: center;
+      justify-content: space-between; align-items: center; gap: 6px; flex-wrap: wrap;
     }
+
+    /* Executive Intelligence Grid */
+    .bi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .bi-tile {
+      background: #fafdfa; border: 1px solid #d5e8d6; border-radius: 10px;
+      padding: 10px; border-left: 4px solid var(--primary);
+    }
+    .bi-tile.danger { background: #fff5f5; border-color: #ffcdd2; border-left-color: var(--accent); }
+    .bi-tile.blue { background: #f0f7ff; border-color: #bbdefb; border-left-color: #0277bd; }
+    .bi-tile.purple { background: #f9f1ff; border-color: #e1bee7; border-left-color: #6a1b9a; }
+    .bi-label { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); }
+    .bi-val { font-size: 1.2rem; font-weight: 800; color: var(--primary); margin-top: 2px; }
+    .bi-tile.danger .bi-val { color: var(--accent); }
+    .bi-tile.blue .bi-val { color: #01579b; }
+    .bi-tile.purple .bi-val { color: #4a148c; }
+    .bi-sub { font-size: 0.69rem; color: #555; margin-top: 2px; font-weight: 700; }
+
+    .progress-bar-bg { width: 100%; height: 8px; background: #e0e0e0; border-radius: 6px; overflow: hidden; margin-top: 6px; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #2e7d32, #66bb6a); transition: width 0.3s; }
+
+    .filter-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .filter-chip {
+      background: #fff; border: 1px solid #a5d6a7; color: var(--primary);
+      padding: 4px 10px; border-radius: 16px; font-size: 0.76rem; font-weight: 700; cursor: pointer;
+    }
+    .filter-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .leader-list { max-height: 190px; overflow-y: auto; margin-top: 8px; border: 1px solid #e0e0e0; border-radius: 8px; }
+    .leader-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 10px; border-bottom: 1px solid #f0f0f0; cursor: pointer; font-size: 0.84rem;
+    }
+    .leader-item:hover { background: #f1f8e9; }
+    .leader-item:last-child { border-bottom: none; }
+    .aging-tag { font-size: 0.68rem; padding: 2px 6px; border-radius: 10px; font-weight: 700; margin-left: 4px; }
+    .aging-warn { background: #fff3e0; color: #e65100; }
+    .aging-crit { background: #ffebee; color: #c62828; }
 
     .profile-card-flex { display: flex; align-items: center; gap: 12px; }
     .avatar-wrapper { position: relative; width: 54px; height: 54px; flex-shrink: 0; }
@@ -72,12 +122,17 @@
       padding: 10px 12px; border-radius: 8px; margin-top: 10px;
       display: flex; justify-content: space-between; align-items: center;
     }
-    .due-amount { color: var(--accent); font-size: 1.45rem; font-weight: 900; }
+    .due-amount { color: var(--accent); font-size: 1.48rem; font-weight: 800; }
 
-    label { display: block; font-size: 0.82rem; font-weight: 800; margin-top: 8px; margin-bottom: 4px; color: #2c3e2e; }
+    .limit-alert-bar {
+      background: #b71c1c; color: #fff; padding: 7px 10px; border-radius: 8px;
+      font-size: 0.78rem; font-weight: 700; margin-top: 8px; text-align: center;
+    }
+
+    label { display: block; font-size: 0.85rem; font-weight: 700; margin-top: 8px; margin-bottom: 4px; color: #2c3e2e; }
     input, select {
       width: 100%; padding: 10px; border: 1.5px solid #c2d6c4; border-radius: 8px;
-      font-size: 0.92rem; background: #fafdfa; color: #111;
+      font-size: 0.94rem; font-family: inherit; background: #fafdfa; color: #111;
     }
     input:focus, select:focus { border-color: var(--secondary); outline: none; background: #fff; }
     .row { display: flex; gap: 8px; }
@@ -85,8 +140,8 @@
 
     .btn {
       width: 100%; padding: 10px; border: none; border-radius: 8px; font-size: 0.9rem;
-      font-weight: 800; cursor: pointer; margin-top: 8px; display: flex; align-items: center;
-      justify-content: center; gap: 6px; text-decoration: none;
+      font-weight: 700; font-family: inherit; cursor: pointer; margin-top: 8px; display: flex;
+      align-items: center; justify-content: center; gap: 6px; text-decoration: none;
     }
     .btn:active { transform: scale(0.98); opacity: 0.9; }
     .btn-primary { background: var(--primary); color: white; }
@@ -98,118 +153,256 @@
     .btn-danger { background: var(--accent); color: white; }
     .btn-edit { background: #e65100; color: white; }
     .btn-settings { background: #4a148c; color: white; }
-    .btn-voice { background: linear-gradient(135deg, #d81b60, #8e24aa); color: white; box-shadow: 0 4px 10px rgba(216,27,96,0.3); }
+    .btn-ai { background: linear-gradient(135deg, #1565c0, #6a1b9a); color: white; }
+    .btn-voice { background: linear-gradient(135deg, #d81b60, #8e24aa); color: white; }
     .btn-outline { background: transparent; border: 1.5px solid var(--secondary); color: var(--secondary); }
 
     .qty-stepper { display: flex; align-items: center; gap: 8px; }
     .qty-step-btn {
       width: 48px; height: 42px; background: #e8f5e9; border: 1.5px solid var(--secondary);
-      border-radius: 8px; font-size: 1.3rem; font-weight: 900; color: var(--primary);
+      border-radius: 8px; font-size: 1.3rem; font-weight: 800; color: var(--primary);
       cursor: pointer; display: flex; align-items: center; justify-content: center;
     }
     .qty-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
     .qty-chip {
       background: #fff; border: 1px solid #a5d6a7; color: var(--primary);
-      padding: 5px 12px; border-radius: 16px; font-size: 0.78rem; font-weight: 800; cursor: pointer;
+      padding: 5px 12px; border-radius: 16px; font-size: 0.8rem; font-weight: 700; cursor: pointer;
     }
     .qty-chip.active { background: var(--primary); color: #fff; }
 
+    /* ============================================================== */
+    /* PROFESSIONAL SOLAIMANLIPI BOLD BILL DESIGN                     */
+    /* ============================================================== */
+    .bill-toolbar {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; align-items: center; justify-content: space-between;
+      background: #f1f8e9; padding: 8px; border-radius: 10px; border: 1px solid #c8e6c9;
+    }
+    .bill-toolbar-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+    .mini-btn {
+      border: none; border-radius: 7px; padding: 6px 10px; font-size: 0.78rem;
+      font-weight: 700; font-family: inherit; cursor: pointer; color: #fff;
+    }
+
     #receiptArea {
-      position: relative; background: #ffffff; padding: 18px 14px;
-      border: 2px solid var(--primary); border-radius: 12px; margin-top: 10px;
-      color: #111; overflow: hidden;
+      position: relative; background: #ffffff; padding: 20px 16px;
+      border: 2.5px solid var(--primary); border-radius: 12px; margin-top: 6px;
+      color: #0e170f; overflow: hidden;
+      font-family: var(--bill-font);
+      font-weight: 700;
+      letter-spacing: 0.15px;
+      line-height: 1.45;
+    }
+    #receiptArea h2, #receiptArea th, #receiptArea b, #receiptArea .summary-net {
+      font-family: var(--bill-font);
+      font-weight: 800;
     }
     .receipt-watermark {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
       width: 65%; opacity: 0.08; pointer-events: none; z-index: 1;
     }
     .receipt-content { position: relative; z-index: 2; }
-    .bill-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.76rem; }
-    .bill-table th { background: #e8f5e9; color: var(--primary); border: 1px solid #c8e6c9; padding: 7px 4px; font-weight: 800; text-align: center; }
-    .bill-table td { border: 1px solid #e0e0e0; padding: 7px 4px; text-align: left; }
+    .bill-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.84rem; font-family: var(--bill-font); font-weight: 700; }
+    .bill-table th { background: #e8f5e9; color: var(--primary); border: 1.2px solid #a5d6a7; padding: 8px 4px; font-weight: 800; text-align: center; font-size: 0.85rem; }
+    .bill-table td { border: 1px solid #d5e5d6; padding: 7px 5px; text-align: left; font-weight: 700; }
     .bill-table tr:nth-child(even) { background: #fafdfa; }
+    .opening-row { background: #fffde7 !important; color: #4e342e; }
+
+    .bill-summary-box {
+      border-top: 2.5px solid var(--primary);
+      margin-top: 12px; padding-top: 8px; background: #f8fcf8; border-radius: 0 0 8px 8px;
+      font-family: var(--bill-font);
+    }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 3px 8px; font-size: 0.94rem; font-weight: 700; color: #1a241b;
+    }
+    .summary-net {
+      border-top: 1.5px dashed #81c784; margin-top: 4px; padding-top: 6px;
+      font-size: 1.08rem; font-weight: 800; color: #111;
+    }
+    .summary-formula {
+      text-align: right; font-size: 0.82rem; font-weight: 700; color: #2e4a30; padding: 2px 8px 5px;
+    }
+
+    .tx-act-btn {
+      border: none; background: #e8f5e9; border-radius: 5px;
+      padding: 3px 6px; cursor: pointer; font-size: 0.78rem; margin: 0 1px;
+    }
+    .tx-act-btn:hover { background: #c8e6c9; }
+    .tx-act-del { background: #ffebee; }
+    .tx-act-del:hover { background: #ffcdd2; }
+
+    .exporting-hd .no-export { display: none !important; }
 
     .bill-qr-box {
       margin-top: 12px; background: #fdfefe; border: 1.5px dashed #2e7d32;
-      border-radius: 10px; padding: 10px; display: flex; align-items: center;
+      border-radius: 10px; padding: 10px 12px; display: flex; align-items: center;
       justify-content: space-between; gap: 10px;
     }
     .bill-qr-graphic { background: white; padding: 5px; border: 1px solid #ddd; border-radius: 6px; }
 
     .thankyou-box-short {
-      text-align: center; font-size: 0.8rem; font-weight: 800; color: var(--primary);
+      text-align: center; font-size: 0.88rem; font-weight: 700; color: var(--primary);
       border: 1.5px dashed #81c784; border-radius: 8px; padding: 8px; margin: 12px 0 8px 0; background: #f4faf4;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
     }
-    .sign-section { margin-top: 12px; display: flex; justify-content: space-between; align-items: flex-end; }
-    .sign-box { text-align: right; width: 185px; }
-    .sign-box-left { text-align: left; width: 140px; }
-    .sign-img { max-height: 46px; max-width: 125px; object-fit: contain; display: block; margin-bottom: 2px; }
-    .stamp-text { font-size: 0.64rem; color: #0d47a1; font-weight: 800; line-height: 1.25; margin-bottom: 3px; }
-    .sign-line { border-top: 1.5px solid #222; font-size: 0.72rem; font-weight: 800; color: #111; padding-top: 3px; }
+    .sign-section { margin-top: 14px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .sign-box { text-align: right; width: 205px; }
+    .sign-box-left { text-align: left; width: 165px; }
+    .sign-img { max-height: 48px; max-width: 130px; object-fit: contain; display: block; margin-bottom: 2px; }
+    .sign-box .sign-img { margin-left: auto; }
+    .stamp-text { font-size: 0.7rem; color: #0d47a1; font-weight: 700; line-height: 1.3; margin-bottom: 3px; }
+    .sign-line { border-top: 1.5px solid #222; font-size: 0.8rem; font-weight: 800; color: #111; padding-top: 3px; }
 
-    .proof-icon-btn {
-      color: #0277bd; font-size: 1.1rem; cursor: pointer; text-decoration: none;
-      display: inline-block; padding: 2px 4px; border-radius: 4px;
-    }
+    .proof-icon-btn { color: #0277bd; font-size: 1.1rem; cursor: pointer; text-decoration: none; display: inline-block; padding: 2px 4px; }
 
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.82); display: flex; justify-content: center;
-      align-items: center; z-index: 99999; padding: 14px; backdrop-filter: blur(4px);
+      background: rgba(5, 25, 7, 0.94); display: flex; justify-content: center;
+      align-items: center; z-index: 99999; padding: 14px; backdrop-filter: blur(8px);
     }
     .popup-box {
       background: white; border-radius: 16px; padding: 20px; width: 100%;
-      max-width: 420px; text-align: center; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg);
+      max-width: 430px; text-align: center; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg);
     }
+    .sec-log-box {
+      max-height: 150px; overflow-y: auto; background: #fff; border: 1px solid #ddd;
+      border-radius: 8px; padding: 6px; font-size: 0.75rem; text-align: left;
+    }
+    .sec-log-row { padding: 5px 2px; border-bottom: 1px solid #eee; }
     .hidden { display: none !important; }
-
-    .customer-portal-banner {
-      background: #e8f5e9; border: 1.5px solid #81c784; border-radius: 10px;
-      padding: 10px; margin-bottom: 10px; text-align: center; font-size: 0.85rem;
-      font-weight: 800; color: var(--primary);
-    }
 
     @media print {
       body * { visibility: hidden; }
       #thermalPrintArea, #thermalPrintArea * { visibility: visible; }
-      #thermalPrintArea { position: absolute; left: 0; top: 0; width: 58mm; padding: 0; margin: 0; font-family: monospace; font-size: 11px; }
+      #thermalPrintArea { position: absolute; left: 0; top: 0; width: 58mm; padding: 0; margin: 0; font-family: var(--bill-font); font-weight: 700; font-size: 11px; }
     }
   </style>
 </head>
 <body>
 
-  <div id="customerPortalBanner" class="customer-portal-banner hidden">
-    🏪 আপোনাৰ ডিজিটেল বিল ৰচিদ | চেতিয়া গাঁও থলুৱা বজাৰ
-  </div>
-
+  <!-- ZERO-LEAK SERVER-AUTHENTICATED LOGIN WALL -->
   <div id="authOverlay" class="modal-overlay">
     <div class="popup-box">
-      <div style="font-size:2.2rem; margin-bottom:4px;">🛡️</div>
+      <div style="font-size:2.4rem; margin-bottom:4px;">🔐</div>
       <h3 style="margin:2px 0; color:var(--primary); font-weight:800;">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
-      <p style="font-size:0.75rem; color:#0277bd; font-weight:700; margin-bottom:14px;">পৰিচালক সুৰক্ষিত প্ৰৱেশ | 24H Session</p>
+      <p style="font-size:0.78rem; color:#b71c1c; font-weight:700; margin-bottom:14px;">
+        🛡️ STRICT ACCESS: কেৱল ২ জন অনুমোদিত পৰিচালকৰ বাবেহে
+      </p>
       
-      <label style="text-align:left;">ম'বাইল নম্বৰ:</label>
+      <label style="text-align:left;">অনুমোদিত ম'বাইল নম্বৰ:</label>
       <input type="tel" id="loginPhone" placeholder="১০ অংকৰ মোবাইল নম্বৰ" autocomplete="tel">
       
       <label style="text-align:left; margin-top:8px;">গোপন PIN (৬টা সংখ্যা):</label>
       <input type="password" id="loginPin" maxlength="6" placeholder="৬ অংকৰ গোপন PIN" inputmode="numeric">
       
-      <button class="btn btn-primary" style="margin-top:16px;" onclick="authenticateUser()">প্ৰৱেশ কৰক</button>
+      <button id="loginSubmitBtn" class="btn btn-primary" style="margin-top:16px;" onclick="authenticateUser()">
+        🛡️ সুৰক্ষিত প্ৰৱেশ কৰক
+      </button>
+      <div id="loginStatusMsg" style="font-size:0.78rem; margin-top:8px; font-weight:700; color:#555;"></div>
       
-      <div style="margin-top:14px; text-align:right;">
-        <a href="javascript:void(0)" style="font-size:0.78rem; color:#c62828; text-decoration:none; font-weight:800;" onclick="openSecurityQuestionsModal()">
-          🔑 PIN পাহৰিলে? (Security Questions)
+      <div style="margin-top:12px; text-align:right;">
+        <a href="javascript:void(0)" style="font-size:0.8rem; color:#c62828; text-decoration:none; font-weight:700;" onclick="openSecurityQuestionsModal()">
+          🔑 PIN পাহৰিলে? (Server Verified Reset)
         </a>
       </div>
     </div>
   </div>
 
+  <!-- বিলৰ ভিতৰৰ পৰাই তাৎক্ষণিক নতুন বাকী / জমা যোগ ম'ডেল -->
+  <div id="quickBillAddModal" class="modal-overlay hidden">
+    <div class="popup-box" style="text-align:left;">
+      <h3 id="quickAddTitle" style="margin-top:0; color:var(--primary); border-bottom:2px solid #a5d6a7; padding-bottom:6px; font-weight:800;">
+        ➕ নতুন বাকী যোগ কৰক (পুৰণি বাকী অটুট থাকিব)
+      </h3>
+      <input type="hidden" id="quickAddType" value="debit">
+
+      <label>তাৰিখ:</label>
+      <input type="date" id="quickAddDate">
+
+      <div id="quickAddItemBox">
+        <label>সামগ্ৰী:</label>
+        <select id="quickAddItem" onchange="updateQuickAddRate()">
+          <option value="থলুৱা গাহৰি মাংস">থলুৱা গাহৰি মাংস</option>
+          <option value="সতেজ মাছ">সতেজ মাছ</option>
+          <option value="পুৰণি বাকী যোগ">পুৰণি বাকী যোগ</option>
+          <option value="অন্যান্য">অন্যান্য</option>
+        </select>
+        <div class="row">
+          <div><label>ওজন (কেজি):</label><input type="number" id="quickAddQty" step="0.05" value="1" oninput="calcQuickAddAmt()"></div>
+          <div><label>দৰ (₹):</label><input type="number" id="quickAddRate" value="300" oninput="calcQuickAddAmt()"></div>
+        </div>
+      </div>
+
+      <label id="quickAddAmtLbl">মুঠ টকা (₹):</label>
+      <input type="number" id="quickAddAmt" value="300" style="font-weight:800; font-size:1.1rem; color:#b71c1c;">
+
+      <label>ৰিমাৰ্কচ / টোকা:</label>
+      <input type="text" id="quickAddNote" placeholder="যেনে: আবেলি নিলে / গধূলি দিলে">
+
+      <div class="row" style="margin-top:14px;">
+        <button class="btn btn-primary" style="margin-top:0;" onclick="saveQuickBillAdd()">💾 যোগ কৰক</button>
+        <button class="btn btn-secondary" style="margin-top:0;" onclick="closeQuickBillAddModal()">বাতিল</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- বিলৰ এণ্ট্ৰি সম্পাদনা ম'ডেল (+ অতিৰিক্ত টকা যোগ সুবিধা সহ) -->
+  <div id="editTxModal" class="modal-overlay hidden">
+    <div class="popup-box" style="text-align:left;">
+      <h3 style="margin-top:0; color:#e65100; border-bottom:2px solid #ffcc80; padding-bottom:6px; font-weight:800;">
+        ✏️ বিলৰ এণ্ট্ৰি সম্পাদনা
+      </h3>
+      <input type="hidden" id="editTxId">
+
+      <label>লেনদেনৰ প্ৰকাৰ:</label>
+      <select id="editTxType" onchange="toggleEditTxFields()">
+        <option value="debit">বাকী বিক্ৰী (+)</option>
+        <option value="credit">ধন পৰিশোধ / জমা (-)</option>
+      </select>
+
+      <label>তাৰিখ:</label>
+      <input type="date" id="editTxDate">
+
+      <div id="editTxItemGroup">
+        <label>সামগ্ৰীৰ নাম:</label>
+        <input type="text" id="editTxItem">
+        <label>পৰিমাণ (ওজন):</label>
+        <input type="text" id="editTxQty">
+      </div>
+
+      <label id="editTxAmtLabel">বৰ্তমান টকাৰ পৰিমাণ (₹):</label>
+      <input type="number" id="editTxAmount" style="font-weight:800; font-size:1.08rem;">
+
+      <!-- পুৰণি টকা নাকাটাকৈয়ে অতিৰিক্ত টকা যোগ কৰাৰ সহায়ক -->
+      <div style="background:#e8f5e9; border:1px dashed #66bb6a; border-radius:8px; padding:8px; margin-top:8px;">
+        <label style="margin-top:0; color:#1b5e20; font-size:0.78rem;">➕ এই শাৰীতে অতিৰিক্ত টকা যোগ কৰিব বিচাৰে নেকি? (ঐচ্ছিক):</label>
+        <div class="row" style="align-items:center;">
+          <div><input type="number" id="editExtraAddAmt" placeholder="যেনে: 150"></div>
+          <div style="flex:0 0 95px;">
+            <button type="button" class="btn btn-primary" style="margin-top:0; padding:8px 6px; font-size:0.78rem;" onclick="applyExtraToEditAmt()">+ যোগ</button>
+          </div>
+        </div>
+      </div>
+
+      <label>ৰিমাৰ্কচ / টোকা:</label>
+      <input type="text" id="editTxNote">
+
+      <div class="row" style="margin-top:14px;">
+        <button class="btn btn-primary" style="margin-top:0;" onclick="saveEditedTransaction()">💾 আপডেট কৰক</button>
+        <button class="btn btn-secondary" style="margin-top:0;" onclick="closeEditTxModal()">বাতিল</button>
+      </div>
+      <button class="btn btn-danger" style="margin-top:8px;" onclick="deleteEditingTransaction()">🗑️ এই এণ্ট্ৰি Recycle Bin-লৈ পঠিয়াওক</button>
+    </div>
+  </div>
+
+  <!-- AI ভইচ এন্ট্ৰি পৰীক্ষণ ম'ডেল -->
   <div id="voiceReviewModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:#8e24aa; border-bottom:2px solid #ce93d8; padding-bottom:6px; font-weight:800;">
         🎙️ AI ভইচ এন্ট্ৰি পৰীক্ষণ (Final Decision)
       </h3>
-      <p style="font-size:0.75rem; color:#444; margin:0 0 10px;">
+      <p style="font-size:0.78rem; color:#444; margin:0 0 10px;">
         আপুনি কোৱা বাক্য: <b id="voiceRecognizedRawText" style="color:#1b5e20;">"-"</b>
       </p>
 
@@ -226,16 +419,9 @@
         <div id="vItemRow">
           <label style="color:#4a148c; margin-top:6px;">সামগ্ৰী:</label>
           <input type="text" id="vParsedItem" value="থলুৱা গাহৰি মাংস">
-
           <div class="row">
-            <div>
-              <label style="color:#4a148c; margin-top:6px;">ওজন (কেজি):</label>
-              <input type="number" id="vParsedQty" step="0.1" value="1.0" oninput="updateVoiceReviewCalc()">
-            </div>
-            <div>
-              <label style="color:#4a148c; margin-top:6px;">দৰ (₹):</label>
-              <input type="number" id="vParsedRate" value="300" oninput="updateVoiceReviewCalc()">
-            </div>
+            <div><label style="color:#4a148c; margin-top:6px;">ওজন (কেজি):</label><input type="number" id="vParsedQty" step="0.1" value="1.0" oninput="updateVoiceReviewCalc()"></div>
+            <div><label style="color:#4a148c; margin-top:6px;">দৰ (₹):</label><input type="number" id="vParsedRate" value="300" oninput="updateVoiceReviewCalc()"></div>
           </div>
         </div>
 
@@ -247,18 +433,19 @@
       </div>
 
       <div class="row" style="margin-top:14px;">
-        <button class="btn btn-primary" onclick="confirmVoiceTransaction()">✅ অনুমোদন আৰু সংৰক্ষণ কৰক</button>
+        <button class="btn btn-primary" onclick="confirmVoiceTransaction()">✅ অনুমোদন ও সংৰক্ষণ</button>
         <button class="btn btn-secondary" onclick="closeVoiceReviewModal()">বাতিল</button>
       </div>
     </div>
   </div>
 
+  <!-- সুৰক্ষা প্ৰশ্নৰ দ্বাৰা Server-Side PIN ৰিচেট -->
   <div id="securityQuestionsModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:var(--accent); border-bottom:2px solid #ef9a9a; padding-bottom:6px; font-weight:800;">
-        🔐 সুৰক্ষা প্ৰশ্নৰ দ্বাৰা PIN ৰিচেট
+        🔐 Server-Side PIN ৰিচেট
       </h3>
-      <p style="font-size:0.76rem; color:#555; margin:0 0 10px;">পৰিচালক নিৰ্বাচন কৰক:</p>
+      <p style="font-size:0.78rem; color:#555; margin:0 0 10px;">পৰিচালক নিৰ্বাচন কৰক:</p>
       <select id="resetRoleSelect">
         <option value="ADMIN">নিতুল দিহিঙীয়া (মুখ্য পৰিচালক)</option>
         <option value="OPERATOR">ৰণ্টু চেতিয়া (সহ-পৰিচালক)</option>
@@ -266,10 +453,10 @@
 
       <div style="background:#f9fbe7; border:1px solid #dce775; border-radius:10px; padding:12px; margin-top:10px;">
         <label style="color:#33691e; margin-top:0;">Question 1: What is your favourite place?</label>
-        <input type="text" id="secAns1" placeholder="উত্তৰ দিয়ক (Dhakuakhana)">
+        <input type="text" id="secAns1" placeholder="উত্তৰ দিয়ক">
 
         <label style="color:#33691e; margin-top:8px;">Question 2: What is Your Code?</label>
-        <input type="text" id="secAns2" placeholder="উত্তৰ দিয়ক (22KN)">
+        <input type="password" id="secAns2" placeholder="গোপন ক'ড দিয়ক">
       </div>
 
       <div style="margin-top:10px;">
@@ -277,43 +464,99 @@
         <input type="password" id="newSecPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN" inputmode="numeric">
       </div>
 
-      <button class="btn btn-primary" style="margin-top:14px;" onclick="verifySecurityAnswersAndReset()">
-        ✅ প্ৰশ্ন ভেৰিফাই কৰি PIN সংৰক্ষণ কৰক
+      <button id="resetSubmitBtn" class="btn btn-primary" style="margin-top:14px;" onclick="verifySecurityAnswersAndReset()">
+        ✅ Server ভেৰিফাই কৰি PIN সংৰক্ষণ কৰক
       </button>
       <button class="btn btn-outline" style="margin-top:8px;" onclick="closeSecurityQuestionsModal()">বাতিল</button>
     </div>
   </div>
 
+  <!-- ফটোকপি প্ৰদৰ্শন পপআপ -->
   <div id="proofViewModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:var(--primary); font-size:1.05rem; border-bottom:2px solid var(--border-color); padding-bottom:6px; font-weight:800;">
         📸 সংৰক্ষিত ফটোকপি
       </h3>
       <div style="text-align:center; margin:10px 0;">
-        <img id="proofModalImg" src="" style="width:100%; max-height:280px; object-fit:contain; border-radius:10px; border:2px solid var(--primary); box-shadow:var(--shadow-sm);">
+        <img id="proofModalImg" src="" style="width:100%; max-height:280px; object-fit:contain; border-radius:10px; border:2px solid var(--primary);">
       </div>
-      <div id="proofModalMeta" style="font-size:0.76rem; color:#111; background:#f1f8e9; padding:10px; border-radius:8px; line-height:1.5; border:1px solid #c8e6c9;"></div>
+      <div id="proofModalMeta" style="font-size:0.78rem; color:#111; background:#f1f8e9; padding:10px; border-radius:8px; line-height:1.5; border:1px solid #c8e6c9;"></div>
       <button class="btn btn-secondary" style="margin-top:12px;" onclick="closeProofModal()">বন্ধ কৰক</button>
     </div>
   </div>
 
+  <!-- মুখ্য পৰিচালক চুপাৰ চেটিংছ + Strict Device Lock + Recycle Bin -->
   <div id="superSettingsModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:#4a148c; border-bottom:2.5px solid #ba68c8; padding-bottom:8px; font-weight:800;">
-        ⚙️ মুখ্য পৰিচালক বিশেষ চেটিংছ (Admin)
+        ⚙️ Master Admin সুৰক্ষা ও বিজনেচ চেটিংছ
       </h3>
 
+      <!-- Strict Device Whitelist Lock -->
+      <div style="background:#e3f2fd; border:1.5px solid #64b5f6; border-radius:10px; padding:10px; margin-top:8px;">
+        <div style="font-size:0.84rem; font-weight:800; color:#0d47a1;">🛡️ Strict Device Lock (নতুন ডিভাইচ ব্লক):</div>
+        <div style="font-size:0.73rem; color:#333; margin-top:3px;">
+          দুয়োজন পৰিচালকৰ ফোনত এবাৰ ল'গইন কৰাৰ পাছত এইটো ON কৰি দিলে আন কোনো অজ্ঞাত ডিভাইচে PIN জানিলেও ল'গইন কৰিব নোৱাৰিব।
+        </div>
+        <div id="approvedDevicesList" style="font-size:0.72rem; color:#1565c0; margin-top:5px; font-weight:700;"></div>
+        <button id="toggleDeviceLockBtn" class="btn btn-invoice" style="margin-top:6px; padding:7px; font-size:0.8rem;" onclick="toggleStrictDeviceLock()">
+          🔓 বৰ্তমান OFF আছে — ON কৰক
+        </button>
+      </div>
+
+      <!-- Remote Kill Switch -->
+      <div style="background:#ffebee; border:1px solid #ef9a9a; border-radius:10px; padding:10px; margin-top:10px;">
+        <div style="font-size:0.82rem; font-weight:800; color:#b71c1c;">🚨 জৰুৰীকালীন সুৰক্ষা (Remote Kill Switch):</div>
+        <button class="btn btn-danger" style="margin-top:6px; padding:7px; font-size:0.78rem;" onclick="revokeAllDevices()">
+          🔒 আন সকলো ডিভাইচ লগ আউট কৰক
+        </button>
+      </div>
+
+      <!-- Security Audit Log -->
+      <div style="background:#f3e5f5; border:1px solid #ce93d8; border-radius:10px; padding:10px; margin-top:10px;">
+        <div style="font-size:0.82rem; font-weight:800; color:#4a148c; margin-bottom:4px;">🕵️ সুৰক্ষা ও ল'গইন ৰেকৰ্ড (Security Audit Log):</div>
+        <div id="securityLogContainer" class="sec-log-box">লোড হৈ আছে...</div>
+      </div>
+
+      <!-- Unlimited Recycle Bin (Never Auto-Deletes) -->
+      <div style="background:#fff8e1; border:1px solid #ffe082; border-radius:10px; padding:10px; margin-top:10px;">
+        <div style="font-size:0.82rem; font-weight:800; color:#e65100; margin-bottom:4px; display:flex; justify-content:space-between; align-items:center;">
+          <span>♻️ ডিলিট হোৱা এণ্ট্ৰি (অসীম Recycle Bin):</span>
+          <button class="tx-act-btn tx-act-del" onclick="emptyTrashManually()" style="font-size:0.7rem; font-weight:700; color:#b71c1c;">সম্পূৰ্ণ খালী</button>
+        </div>
+        <div id="trashBinContainer" class="sec-log-box">খালী</div>
+      </div>
+
+      <!-- Selling Rates & Cost Rates (for Profit Estimator) -->
       <div style="background:#e8f5e9; border:1px solid #a5d6a7; border-radius:10px; padding:10px; margin-top:10px;">
-        <div style="font-size:0.82rem; font-weight:800; color:var(--primary); margin-bottom:4px;">💳 ব্যৱসায়িক UPI ID:</div>
+        <div style="font-size:0.84rem; font-weight:800; color:var(--primary); margin-bottom:4px;">🏷️ বিক্ৰী দৰ, কিনা দৰ ও ক্ৰেডিট লিমিট:</div>
+        <div class="row">
+          <div><label style="margin-top:2px;">গাহৰি বিক্ৰী (₹/কেজি):</label><input type="number" id="setPorkRate" value="300"></div>
+          <div><label style="margin-top:2px;">গাহৰি কিনা (₹/কেজি):</label><input type="number" id="setPorkCost" value="240"></div>
+        </div>
+        <div class="row">
+          <div><label style="margin-top:4px;">মাছ বিক্ৰী (₹/কেজি):</label><input type="number" id="setFishRate" value="250"></div>
+          <div><label style="margin-top:4px;">মাছ কিনা (₹/কেজি):</label><input type="number" id="setFishCost" value="190"></div>
+        </div>
+        <label style="margin-top:4px;">গ্ৰাহকৰ ডিফল্ট বাকী সীমা (Credit Limit ₹):</label>
+        <input type="number" id="setDefaultCreditLimit" value="3000">
+        <button class="btn btn-primary" style="margin-top:6px; padding:7px; font-size:0.8rem;" onclick="saveDefaultRates()">
+          💾 দৰ ও সীমা সংৰক্ষণ কৰক
+        </button>
+      </div>
+
+      <!-- UPI ID -->
+      <div style="background:#e8f5e9; border:1px solid #a5d6a7; border-radius:10px; padding:10px; margin-top:10px;">
+        <div style="font-size:0.84rem; font-weight:800; color:var(--primary); margin-bottom:4px;">💳 ব্যৱসায়িক UPI ID:</div>
         <input type="text" id="businessUpiInput" placeholder="যেনে: 9613777612@okaxis">
         <button class="btn btn-primary" style="margin-top:6px; padding:7px; font-size:0.8rem;" onclick="saveBusinessUpiId()">
           💾 UPI ID সংৰক্ষণ কৰক
         </button>
       </div>
 
+      <!-- PIN Management -->
       <div style="background:#fafafa; border:1px solid #ddd; border-radius:10px; padding:10px; margin-top:10px;">
-        <div style="font-size:0.82rem; font-weight:800; color:var(--primary); margin-bottom:4px;">👤 সহ-পৰিচালক (ৰণ্টু চেতিয়া) নিয়ন্ত্ৰণ:</div>
-        <label>নতুন ৬-অংকৰ PIN দিয়ক:</label>
+        <div style="font-size:0.84rem; font-weight:800; color:var(--primary); margin-bottom:4px;">👤 সহ-পৰিচালক (ৰণ্টু চেতিয়া) PIN:</div>
         <input type="password" id="resetOperatorPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN" inputmode="numeric">
         <button class="btn btn-primary" style="margin-top:6px; padding:7px; font-size:0.8rem;" onclick="adminResetOperatorPin()">
           ✅ ৰণ্টু চেতিয়াৰ PIN সলনি কৰক
@@ -321,26 +564,33 @@
       </div>
 
       <div style="background:#fafafa; border:1px solid #ddd; border-radius:10px; padding:10px; margin-top:10px;">
-        <label>🔐 নিজৰ PIN সলনি (নিতুল দিহিঙীয়া):</label>
+        <label style="margin-top:0;">🔐 নিজৰ PIN সলনি (নিতুল দিহিঙীয়া):</label>
         <input type="password" id="adminSelfNewPin" maxlength="6" placeholder="নতুন ৬-অংকৰ PIN" inputmode="numeric">
         <button class="btn btn-secondary" style="margin-top:6px; padding:7px; font-size:0.8rem;" onclick="adminChangeSelfPin()">
-          💾 সংৰক্ষণ কৰক
+          💾 নিজৰ PIN সলনি কৰক
         </button>
       </div>
 
       <div style="background:#fafafa; border:1px solid #ddd; border-radius:10px; padding:10px; margin-top:10px;">
-        <label>🏪 ব্যৱসায়িক ল'গ' (বিল ৱাটাৰমাৰ্ক):</label>
+        <label style="margin-top:0;">🏪 ব্যৱসায়িক ল'গ' (বিল ৱাটাৰমাৰ্ক):</label>
         <input type="file" id="logoUploadInput" accept="image/*" onchange="uploadBusinessLogo(event)">
       </div>
 
-      <button class="btn btn-outline" style="margin-top:10px;" onclick="exportEncryptedBackup()">
-        📥 সম্পূৰ্ণ ডেটাবেছ ফাইল ডাউনলোড (Backup)
-      </button>
+      <!-- Backup, Excel CSV & Restore -->
+      <div class="row" style="margin-top:10px;">
+        <button class="btn btn-outline" style="margin-top:0; font-size:0.78rem;" onclick="exportEncryptedBackup()">📥 JSON বেকআপ</button>
+        <button class="btn btn-invoice" style="margin-top:0; font-size:0.78rem;" onclick="exportExcelCsv()">📊 Excel (CSV)</button>
+      </div>
+      <label class="btn btn-secondary" style="margin-top:8px; font-size:0.8rem; cursor:pointer;">
+        📤 পুৰণি JSON বেকআপ Restore কৰক
+        <input type="file" accept=".json" class="hidden" onchange="importBackupFile(event)">
+      </label>
       
       <button class="btn btn-secondary" style="margin-top:12px;" onclick="closeSuperSettingsModal()">❌ বন্ধ কৰক</button>
     </div>
   </div>
 
+  <!-- গ্ৰাহক সম্পাদনা ম'ডেল (+ Credit Limit সহ) -->
   <div id="editCustomerModal" class="modal-overlay hidden">
     <div class="popup-box" style="text-align:left;">
       <h3 style="margin-top:0; color:#e65100; border-bottom:2px solid #ffcc80; padding-bottom:6px; font-weight:800;">
@@ -353,6 +603,8 @@
       <input type="tel" id="editCustPhone">
       <label style="margin-top:8px;">ঠিকনা / গাঁও:</label>
       <input type="text" id="editCustAddress">
+      <label style="margin-top:8px;">বাকী সীমা (Credit Limit ₹):</label>
+      <input type="number" id="editCustLimit" placeholder="যেনে: 3000">
       <div class="row" style="margin-top:14px;">
         <button class="btn btn-primary" style="margin-top:0;" onclick="saveEditedCustomer()">💾 সংৰক্ষণ</button>
         <button class="btn btn-secondary" style="margin-top:0;" onclick="closeEditCustomerModal()">বাতিল</button>
@@ -360,24 +612,31 @@
     </div>
   </div>
 
-  <div class="header">
-    <h2>🏪 চেতিয়া গাঁও থলুৱা বজাৰ</h2>
-    <div class="slogan">"পথাৰো আমাৰ, বজাৰো আমাৰ"</div>
-    <div class="sub-slogan">জয় জুবিন দা | জয় আই অসম</div>
-    <div class="contact-no">যোগাযোগ: 📞 9613777612</div>
-  </div>
+  <!-- ========================================================= -->
+  <!-- PROTECTED APP SHELL (Hidden until Server Auth Succeeds)   -->
+  <!-- ========================================================= -->
+  <div id="appShell" class="hidden">
 
-  <div id="adminControlsArea">
-    <div class="sync-panel">
-      <div style="display:flex; align-items:center; gap:8px;">
-        <span class="sync-dot"></span>
-        <span id="cloudSyncText">গুগল শ্বীট ক্লাউড সংলগ্ন (Google Sheets Live)</span>
-      </div>
-      <button class="btn-outline" style="width:auto; padding:3px 10px; font-size:0.74rem; margin:0;" onclick="pullFromGoogleSheets(true)">
-        🔄 Sync Now
-      </button>
+    <div class="header">
+      <h2>🏪 চেতিয়া গাঁও থলুৱা বজাৰ</h2>
+      <div class="slogan">"পথাৰো আমাৰ, বজাৰো আমাৰ"</div>
+      <div class="sub-slogan">জয় জুবিন দা | জয় আই অসম</div>
+      <div class="contact-no">যোগাযোগ: 📞 9613777612</div>
     </div>
 
+    <!-- লাইভ ছিংক ষ্টেটাছ বাৰ -->
+    <div class="sync-panel">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span id="syncDot" class="sync-dot"></span>
+        <span id="cloudSyncText">🛡️ চিকিউৰ ক্লাউড সংলগ্ন (শূন্য ডাটা লছ)</span>
+      </div>
+      <div style="display:flex; gap:5px;">
+        <button class="btn-outline" style="width:auto; padding:3px 9px; font-size:0.74rem; margin:0;" onclick="pullFromGoogleSheets(true)">🔄 Sync</button>
+        <button class="btn-outline" style="width:auto; padding:3px 8px; font-size:0.74rem; margin:0; border-color:#c62828; color:#c62828;" onclick="lockScreenNow()" title="তাৎক্ষণিক লক">🔐 লক</button>
+      </div>
+    </div>
+
+    <!-- পৰিচালক প্ৰফাইল কাৰ্ড -->
     <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
       <div class="profile-card-flex">
         <div class="avatar-wrapper">
@@ -386,24 +645,90 @@
           <input type="file" id="mgrPhotoUpload" accept="image/*" class="hidden" onchange="uploadManagerPhoto(event)">
         </div>
         <div>
-          <div style="font-weight:800; color:var(--primary); font-size:1.02rem;" id="activeMgrName">নিতুল দিহিঙীয়া</div>
-          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;" id="activeMgrRole">মুখ্য পৰিচালক</div>
+          <div style="font-weight:800; color:var(--primary); font-size:1.05rem;" id="activeMgrName">-</div>
+          <div style="font-size:0.76rem; color:var(--text-muted); font-weight:700;" id="activeMgrRole">-</div>
         </div>
       </div>
       <div style="display:flex; gap:6px;">
-        <button id="adminSettingsBtn" class="btn btn-settings admin-only-btn" style="width:auto; padding:6px 12px; font-size:0.76rem; margin:0;" onclick="openSuperSettingsModal()">
+        <button id="adminSettingsBtn" class="btn btn-settings admin-only-btn" style="width:auto; padding:6px 11px; font-size:0.76rem; margin:0;" onclick="openSuperSettingsModal()">
           ⚙️ চেটিংছ
         </button>
-        <button class="btn btn-danger" style="width:auto; padding:6px 12px; font-size:0.76rem; margin:0;" onclick="logoutManager()">
+        <button class="btn btn-danger" style="width:auto; padding:6px 11px; font-size:0.76rem; margin:0;" onclick="logoutManager()">
           🔒 লগ আউট
         </button>
       </div>
     </div>
 
+    <!-- ১. AI ব্যৱসায়িক বুদ্ধিমত্তা ডেশ্বব’ৰ্ড -->
+    <div class="card" style="border-top: 4px solid var(--gold);">
+      <div class="card-title">
+        <span>🤖 AI ব্যৱসায়িক বুদ্ধিমত্তা ডেশ্বব’ৰ্ড</span>
+        <span style="font-size:0.74rem; color:var(--text-muted);">এই মাহৰ খতিয়ান</span>
+      </div>
+
+      <div class="bi-grid">
+        <div class="bi-tile danger">
+          <div class="bi-label">সৰ্বমুঠ বজাৰ বাকী (Total Due)</div>
+          <div class="bi-val">₹<span id="biTotalMarketDue">0</span></div>
+          <div class="bi-sub" id="biDueCustomerCount">0 জন গ্ৰাহকৰ বাকী</div>
+        </div>
+        <div class="bi-tile">
+          <div class="bi-label">এই মাহৰ সংগ্ৰহ (Collection)</div>
+          <div class="bi-val">₹<span id="biMonthCredit">0</span></div>
+          <div class="bi-sub">বিক্ৰী: ₹<span id="biMonthDebit">0</span></div>
+        </div>
+        <div class="bi-tile blue">
+          <div class="bi-label">গাহৰি মাংস (এই মাহ)</div>
+          <div class="bi-val"><span id="biPorkKg">0</span> কেজি</div>
+          <div class="bi-sub">মূল্য: ₹<span id="biPorkAmt">0</span></div>
+        </div>
+        <div class="bi-tile blue">
+          <div class="bi-label">সতেজ মাছ (এই মাহ)</div>
+          <div class="bi-val"><span id="biFishKg">0</span> কেজি</div>
+          <div class="bi-sub">মূল্য: ₹<span id="biFishAmt">0</span></div>
+        </div>
+        <div class="bi-tile purple">
+          <div class="bi-label">AI কাইলৈৰ চাহিদা (Forecast)</div>
+          <div class="bi-val"><span id="biTomorrowDemand">~0 কেজি</span></div>
+          <div class="bi-sub">গাহৰি + মাছ আনুমানিক</div>
+        </div>
+        <div class="bi-tile purple">
+          <div class="bi-label">আনুমানিক মাহিলী লাভ</div>
+          <div class="bi-val">₹<span id="biEstProfit">0</span></div>
+          <div class="bi-sub">কিনা-বেচা দৰ অনুযায়ী</div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px; font-size:0.78rem; font-weight:700; color:#2c3e2e; display:flex; justify-content:space-between;">
+        <span>মাহিলী আদায়ৰ হাৰ (Recovery Rate):</span>
+        <span id="biRecoveryPct" style="color:var(--primary);">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div id="biRecoveryBar" class="progress-bar-fill" style="width:0%;"></div>
+      </div>
+    </div>
+
+    <!-- ২. স্মাৰ্ট গ্ৰাহক অনুসন্ধান আৰু বকেয়া লিডাৰব’ৰ্ড -->
+    <div class="card">
+      <div class="card-title">
+        <span>🔍 স্মাৰ্ট গ্ৰাহক অনুসন্ধান ও বকেয়া তালিকা</span>
+      </div>
+      <input type="text" id="custSearchInput" placeholder="নাম, গাঁও বা ফোন নম্বৰেৰে বিচাৰক..." oninput="renderCustomerLeaderboard()">
+      <div class="filter-chips">
+        <span class="filter-chip active" data-filter="all" onclick="setCustFilter('all', this)">সকলো</span>
+        <span class="filter-chip" data-filter="due" onclick="setCustFilter('due', this)">বাকী থকা</span>
+        <span class="filter-chip" data-filter="high" onclick="setCustFilter('high', this)">₹1000+ বাকী</span>
+        <span class="filter-chip" data-filter="overdue" onclick="setCustFilter('overdue', this)">⏰ ১৫+ দিন</span>
+        <span class="filter-chip" data-filter="overlimit" onclick="setCustFilter('overlimit', this)">🚨 সীমা পাৰ</span>
+      </div>
+      <div id="customerLeaderboard" class="leader-list"></div>
+    </div>
+
+    <!-- ৩. দৈনিক তাৰিখ ফিল্টাৰ আৰু বজাৰ খতিয়ান -->
     <div class="card" style="border-left: 5px solid var(--primary);">
       <div class="card-title">
         <span>📅 দৈনিক তাৰিখ অনুসৰি বজাৰ খতিয়ান</span>
-        <span style="font-size:0.72rem; color:var(--text-muted);">Daily Audit</span>
+        <span style="font-size:0.74rem; color:var(--text-muted);">Daily Audit</span>
       </div>
       
       <div class="row" style="align-items:flex-end;">
@@ -411,23 +736,23 @@
           <label>তাৰিখ বাছক (Date Filter):</label>
           <input type="date" id="dailyAuditDateInput" onchange="filterMarketByDate()">
         </div>
-        <div style="flex:0 0 90px;">
+        <div style="flex:0 0 92px;">
           <button class="btn btn-primary" style="margin-top:0; padding:9px 6px;" onclick="resetToTodayAudit()">আজিৰ দিন</button>
         </div>
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;">
         <div style="background:#ffebee; border-radius:10px; padding:10px; border-left:4px solid var(--accent);">
-          <div style="font-size:0.72rem; color:#555; font-weight:800;">সেইদিনা মুঠ বাকী:</div>
-          <div style="font-size:1.25rem; font-weight:900; color:var(--accent);">₹<span id="dailyAuditDebit">0</span></div>
+          <div style="font-size:0.74rem; color:#555; font-weight:700;">সেইদিনা মুঠ বাকী:</div>
+          <div style="font-size:1.25rem; font-weight:800; color:var(--accent);">₹<span id="dailyAuditDebit">0</span></div>
         </div>
         <div style="background:#e8f5e9; border-radius:10px; padding:10px; border-left:4px solid var(--primary);">
-          <div style="font-size:0.72rem; color:#555; font-weight:800;">সেইদিনা মুঠ জমা:</div>
-          <div style="font-size:1.25rem; font-weight:900; color:var(--primary);">₹<span id="dailyAuditCredit">0</span></div>
+          <div style="font-size:0.74rem; color:#555; font-weight:700;">সেইদিনা মুঠ জমা:</div>
+          <div style="font-size:1.25rem; font-weight:800; color:var(--primary);">₹<span id="dailyAuditCredit">0</span></div>
         </div>
       </div>
 
-      <div style="margin-top:10px; font-size:0.76rem;">
+      <div style="margin-top:10px; font-size:0.78rem;">
         <b>সেইদিনাৰ গ্ৰাহকৰ লেনদেন খতিয়ান:</b>
         <div style="max-height:150px; overflow-y:auto; border:1px solid #e0e0e0; border-radius:8px; margin-top:6px;">
           <table class="bill-table" style="margin-top:0;">
@@ -448,10 +773,11 @@
       </div>
     </div>
 
+    <!-- ৪. চহী ব্যৱস্থাপনা (Admin Only) -->
     <div class="card admin-only-feature">
       <div class="card-title">
         <span>✍️ দ্বৈত চহী ব্যৱস্থাপনা</span>
-        <span style="font-size:0.72rem; color:var(--accent);">Master Admin</span>
+        <span style="font-size:0.74rem; color:var(--accent);">Master Admin</span>
       </div>
       <label>১. Authorised Signatory (ৰণ্টু চেতিয়া):</label>
       <input type="file" id="authSigUpload" accept="image/*" onchange="uploadAuthSignature(event)">
@@ -459,10 +785,11 @@
       <input type="file" id="issuerSigUpload" accept="image/*" onchange="uploadIssuerSignature(event)">
     </div>
 
-    <div class="card">
+    <!-- ৫. গ্ৰাহক পাছবুক ব্যৱস্থাপনা -->
+    <div class="card" id="customerPassbookCard">
       <div class="card-title">
         <span>👤 গ্ৰাহক ডিজিটেল পাছবুক</span>
-        <button class="btn btn-outline" style="width:auto; padding:4px 10px; font-size:0.75rem;" onclick="toggleNewCustForm()">+ নতুন গ্ৰাহক</button>
+        <button class="btn btn-outline" style="width:auto; padding:4px 10px; font-size:0.78rem; margin:0;" onclick="toggleNewCustForm()">+ নতুন গ্ৰাহক</button>
       </div>
 
       <div id="newCustSec" class="hidden" style="background:#f9f9f9; padding:10px; border-radius:10px; margin-bottom:8px; border:1px solid #ddd;">
@@ -486,9 +813,13 @@
             <input type="file" id="custPhotoUpload" accept="image/*" class="hidden" onchange="uploadCustomerPhoto(event)">
           </div>
           <div>
-            <div style="font-size:1.1rem; font-weight:800; color:var(--primary);" id="dispName">-</div>
-            <div style="font-size:0.78rem; color:#444; margin-top:2px;">
+            <div style="font-size:1.12rem; font-weight:800; color:var(--primary);" id="dispName">-</div>
+            <div style="font-size:0.8rem; color:#444; margin-top:2px;">
               📍 <span id="dispAddress">-</span> | 📞 <span id="dispPhone">-</span>
+            </div>
+            <div style="margin-top:4px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+              <span id="custRiskBadge" style="font-size:0.72rem; font-weight:700; padding:2px 8px; border-radius:10px; background:#e8f5e9; color:#1b5e20;">🟢 নিৰাপদ</span>
+              <span id="custTrustStars" style="font-size:0.76rem; color:#f57f17; font-weight:800;">★★★★★</span>
             </div>
           </div>
         </div>
@@ -497,244 +828,566 @@
           <span style="font-weight:700;">বৰ্তমান মুঠ বকেয়া বাকী:</span>
           <span class="due-amount">₹<span id="dispDue">0</span></span>
         </div>
+        <div id="custCreditLimitAlert" class="limit-alert-bar hidden"></div>
       </div>
 
       <div class="row" style="margin-top:8px;">
+        <button class="btn btn-primary" onclick="quickFullSettlement()" style="background:#1b5e20;">✅ সম্পূৰ্ণ পৰিশোধ</button>
+        <button class="btn btn-ai" onclick="sendAiSmartReminder()">🤖 স্মাৰ্ট তাগাদা</button>
+      </div>
+
+      <div class="row" style="margin-top:6px;">
         <button class="btn btn-edit admin-only-btn" onclick="openEditCustomerModal()">✏️ সম্পাদনা</button>
         <button class="btn btn-danger admin-only-btn" onclick="deleteSelectedCustomer()">❌ মচক</button>
       </div>
 
-      <div class="row" style="margin-top:8px;">
+      <div class="row" style="margin-top:6px;">
         <button class="btn btn-invoice" onclick="generateInvoiceImage()">📸 বিলৰ ফটো (HD)</button>
-        <button class="btn btn-thermal" onclick="printThermalReceipt()">🖨️ Thermal POS প্ৰিন্ট</button>
+        <button class="btn btn-thermal" onclick="printThermalReceipt()">🖨️ Thermal POS</button>
       </div>
       
       <div class="row" style="margin-top:6px;">
         <button class="btn btn-pdf" onclick="generatePassbookPdf()">📄 পাছবুক PDF</button>
-        <a id="waBtn" class="btn btn-wa" href="#" target="_blank">📲 WhatsApp বিল ও লিংক</a>
+        <a id="waBtn" class="btn btn-wa" href="#" target="_blank">📲 WhatsApp হিচাপ</a>
       </div>
     </div>
-  </div>
 
-  <div class="card" id="billViewContainer">
-    <div class="card-title"><span>🧾 ডিজিটেল বিল ৰচিদ</span></div>
-    <div id="receiptArea">
-      <img id="billWatermarkLogo" class="receipt-watermark hidden" src="./logo.png" alt="Watermark">
-      <div class="receipt-content">
-        <div style="text-align:center; border-bottom:2.5px solid var(--primary); padding-bottom:8px;">
-          <h2 style="margin:0; color:var(--primary); font-size:1.3rem; font-weight:900;">চেতিয়া গাঁও থলুৱা বজাৰ</h2>
-          <p style="margin:3px 0; font-size:0.8rem; font-weight:800; color:#222;">"পথাৰো আমাৰ, বজাৰো আমাৰ"</p>
-          <p style="margin:1px 0; font-size:0.74rem; font-weight:700; color:var(--primary);">জয় জুবিন দা | জয় আই অসম</p>
-          <p style="margin:3px 0 0; font-size:0.75rem; font-weight:800; color:var(--primary);">📞 যোগাযোগ: 9613777612</p>
+    <!-- ৬. ডিজিটেল বিল ৰচিদ (SolaimanLipi Bold + ইন-বিল এডিট + নাকাটাকৈ নতুন বাকী যোগ) -->
+    <div class="card" id="billViewContainer">
+      <div class="card-title">
+        <span>🧾 ডিজিটেল বিল ৰচিদ (SolaimanLipi Bold)</span>
+      </div>
+
+      <!-- বিলৰ ভিতৰৰ পৰাই নতুন বাকী/জমা যোগ ও সময়সীমা ফিল্টাৰ (পুৰণি ডাটা অটুট থাকিব) -->
+      <div class="bill-toolbar no-export">
+        <div class="bill-toolbar-btns">
+          <button class="mini-btn" style="background:#c62828;" onclick="openQuickBillAddModal('debit')">➕ নতুন বাকী</button>
+          <button class="mini-btn" style="background:#1b5e20;" onclick="openQuickBillAddModal('credit')">➕ ধন জমা</button>
         </div>
-
-        <div style="font-size:0.78rem; margin:10px 0; display:flex; justify-content:space-between; align-items:center; background:#fafdfa; padding:6px 8px; border-radius:8px; border:1px solid #dcebdc;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <img id="recCustPic" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1.5px solid var(--secondary);" src="./logo.png" alt="">
-            <div><b>গ্ৰাহক:</b> <span id="recName">-</span><br><b>ঠিকনা:</b> <span id="recAddress">-</span></div>
-          </div>
-          <div style="text-align:right;"><b>তাৰিখ:</b> <span id="recGeneratedTime">-</span><br><b>ফোন:</b> <span id="recPhone">-</span></div>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <span style="font-size:0.74rem; font-weight:700; color:#2c3e2e;">দেখুৱাওক:</span>
+          <select id="billPeriodFilter" onchange="renderCustomerDetails()" style="width:auto; padding:5px 8px; font-size:0.76rem; font-weight:700;">
+            <option value="all">সকলো ৰেকৰ্ড</option>
+            <option value="this_month">এই মাহৰ (পূৰ্বৰ বাকী সহ)</option>
+            <option value="last_30">শেষৰ ৩০ দিন (পূৰ্বৰ বাকী সহ)</option>
+          </select>
         </div>
+      </div>
 
-        <table class="bill-table">
-          <thead>
-            <tr>
-              <th style="width:18%;">তাৰিখ</th>
-              <th style="width:26%;">সামগ্ৰী</th>
-              <th style="width:14%;">পৰিমাণ</th>
-              <th style="width:15%;">বাকী (+)</th>
-              <th style="width:15%;">জমা (-)</th>
-              <th style="width:auto;">ৰিমাৰ্কচ</th>
-            </tr>
-          </thead>
-          <tbody id="recTableBody"></tbody>
-        </table>
-
-        <div style="display:flex; justify-content:space-between; align-items:center; border-top:2.5px solid var(--primary); padding-top:8px; margin-top:10px;">
-          <span style="font-size:0.92rem; font-weight:900; color:#111;">মুঠ বকেয়া বাকী:</span>
-          <span style="font-size:1.35rem; font-weight:900; color:var(--accent);">₹<span id="recTotalDue">0</span></span>
-        </div>
-
-        <div class="bill-qr-box" id="billQrContainer">
-          <div>
-            <div style="font-size:0.78rem; font-weight:800; color:var(--primary);">📱 স্কেন কৰি পৰিশোধ কৰক:</div>
-            <div style="font-size:0.68rem; color:#555; margin-top:2px;">Google Pay / PhonePe / Paytm</div>
-            <div style="font-size:0.7rem; font-weight:bold; color:#1b5e20; margin-top:3px;">পৰিশোধ কৰিবলগীয়া: ₹<span id="recQrAmt">0</span></div>
-          </div>
-          <div id="receiptDynamicQr" class="bill-qr-graphic"></div>
-        </div>
-
-        <div class="thankyou-box-short">
-          🙏 ধন্যবাদ! আপোনাৰ সেৱাত চেতিয়া গাঁও থলুৱা বজাৰ। পুনৰ আহিব।
-        </div>
-
-        <div class="sign-section">
-          <div class="sign-box-left">
-            <img id="billIssuerSigImg" class="sign-img hidden" alt="Issuer Sig">
-            <div class="sign-line">বিল প্ৰস্তুতকৰ্তা: <span id="recIssuedBy">-</span></div>
-            <div style="font-size:0.62rem; color:#555;">জয় জুবিন দা | জয় আই অসম</div>
+      <div id="receiptArea">
+        <img id="billWatermarkLogo" class="receipt-watermark hidden" src="./logo.png" alt="Watermark">
+        <div class="receipt-content">
+          <div style="text-align:center; border-bottom:2.5px solid var(--primary); padding-bottom:8px;">
+            <h2 style="margin:0; color:var(--primary); font-size:1.45rem; font-weight:800;">চেতিয়া গাঁও থলুৱা বজাৰ</h2>
+            <p style="margin:3px 0; font-size:0.88rem; font-weight:700; color:#222;">"পথাৰো আমাৰ, বজাৰো আমাৰ"</p>
+            <p style="margin:1px 0; font-size:0.82rem; font-weight:700; color:var(--primary);">জয় জুবিন দা | জয় আই অসম</p>
+            <p style="margin:3px 0 0; font-size:0.82rem; font-weight:800; color:var(--primary);">📞 যোগাযোগ: 9613777612</p>
           </div>
 
-          <div class="sign-box">
-            <img id="billAuthSigImg" class="sign-img hidden" alt="Authorised Sig">
-            <div id="billStampInfo" class="stamp-text hidden">
-              ✔ Digitally Verified: Rantu Chetia<br>
-              <span id="stampDateTime" style="font-size:0.6rem; color:#555;"></span>
+          <div style="font-size:0.86rem; margin:10px 0; display:flex; justify-content:space-between; align-items:center; background:#fafdfa; padding:8px 10px; border-radius:8px; border:1px solid #cce3ce;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <img id="recCustPic" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1.5px solid var(--secondary);" src="./logo.png" alt="">
+              <div>
+                <b>গ্ৰাহক:</b> <span id="recName">-</span>
+                <button class="tx-act-btn no-export admin-only-btn" style="display:inline-block;" data-html2canvas-ignore="true" onclick="openEditCustomerModal()" title="গ্ৰাহক সম্পাদনা">✏️</button><br>
+                <b>ঠিকনা:</b> <span id="recAddress">-</span>
+              </div>
             </div>
-            <div class="sign-line">Authorised Signatory</div>
-            <div style="font-size:0.62rem; color:#555;">চেতিয়া গাঁও থলুৱা বজাৰ</div>
+            <div style="text-align:right;"><b>তাৰিখ:</b> <span id="recGeneratedTime">-</span><br><b>ফোন:</b> <span id="recPhone">-</span></div>
+          </div>
+
+          <table class="bill-table">
+            <thead>
+              <tr>
+                <th style="width:17%;">তাৰিখ</th>
+                <th style="width:24%;">সামগ্ৰী</th>
+                <th style="width:13%;">পৰিমাণ</th>
+                <th style="width:14%;">বাকী (+)</th>
+                <th style="width:14%;">জমা (-)</th>
+                <th style="width:auto;">ৰিমাৰ্কচ</th>
+                <th class="no-export" data-html2canvas-ignore="true" style="width:62px;">সম্পাদনা</th>
+              </tr>
+            </thead>
+            <tbody id="recTableBody"></tbody>
+          </table>
+
+          <div class="bill-summary-box">
+            <div class="summary-row">
+              <span>মুঠ বাকী / বিক্ৰী (+):</span>
+              <span style="color:#222; font-weight:800;">₹<span id="recTotalDebit">0</span></span>
+            </div>
+            <div class="summary-row">
+              <span>মুঠ ধন পৰিশোধ (-):</span>
+              <span style="color:#1b5e20; font-weight:800;">- ₹<span id="recTotalCredit">0</span></span>
+            </div>
+            <div class="summary-row summary-net">
+              <span>মুঠ বকেয়া বাকী (=):</span>
+              <span style="color:var(--accent); font-size:1.45rem; font-weight:800;">₹<span id="recTotalDue">0</span></span>
+            </div>
+            <div class="summary-formula" id="recFormulaText">মুঠ বাকী ₹0 - ধন পৰিশোধ ₹0 = বকেয়া বাকী ₹0</div>
+          </div>
+
+          <div class="bill-qr-box" id="billQrContainer">
+            <div>
+              <div style="font-size:0.86rem; font-weight:800; color:var(--primary);">📱 স্কেন কৰি পৰিশোধ কৰক:</div>
+              <div style="font-size:0.76rem; color:#444; margin-top:2px;">Google Pay / PhonePe / Paytm</div>
+              <div style="font-size:0.8rem; font-weight:800; color:#1b5e20; margin-top:3px;">পৰিশোধ কৰিবলগীয়া: ₹<span id="recQrAmt">0</span></div>
+            </div>
+            <div id="receiptDynamicQr" class="bill-qr-graphic"></div>
+          </div>
+
+          <div class="thankyou-box-short">
+            <span id="recThankYouText">🙏 ধন্যবাদ! আপোনাৰ সেৱাত চেতিয়া গাঁও থলুৱা বজাৰ। পুনৰ আহিব।</span>
+            <button class="tx-act-btn no-export" data-html2canvas-ignore="true" onclick="editBillThankYou()" title="বাৰ্তা সলাওক">✏️</button>
+          </div>
+
+          <div class="sign-section">
+            <div class="sign-box-left">
+              <img id="billIssuerSigImg" class="sign-img hidden" alt="Issuer Sig">
+              <div class="sign-line">বিল প্ৰস্তুতকৰ্তা: <span id="recIssuedBy">-</span></div>
+              <div style="font-size:0.7rem; color:#555;">জয় জুবিন দা | জয় আই অসম</div>
+            </div>
+
+            <div class="sign-box">
+              <img id="billAuthSigImg" class="sign-img hidden" alt="Authorised Sig">
+              <div id="billStampInfo" class="stamp-text">
+                ✔ Digitally Verified: Rantu Chetia<br>
+                <span id="stampDateTime" style="font-size:0.68rem; color:#444;"></span>
+              </div>
+              <div class="sign-line">Authorised Signatory</div>
+              <div style="font-size:0.7rem; color:#555;">চেতিয়া গাঁও থলুৱা বজাৰ</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="card" id="adminNewEntryCard">
-    <div class="card-title">
-      <span>📝 নতুন এণ্ট্ৰি</span>
-      <div style="display:flex; gap:6px;">
-        <button class="btn btn-voice" style="width:auto; padding:5px 12px; font-size:0.78rem; margin:0;" onclick="startVoiceRecognition('as-IN')">
-          🎙️ অসমীয়াত কওক
-        </button>
-        <button class="btn btn-voice" style="width:auto; padding:5px 10px; font-size:0.75rem; margin:0; background:#5e35b1;" onclick="startVoiceRecognition('en-IN')">
-          🎤 English
-        </button>
+    <!-- ৭. নতুন এন্ট্ৰি (AI ভইচ এন্ট্ৰি + কেমেৰা GPS সহ) -->
+    <div class="card" id="adminNewEntryCard">
+      <div class="card-title">
+        <span>📝 নতুন এণ্ট্ৰি (সম্পূৰ্ণ ফৰ্ম)</span>
+        <div style="display:flex; gap:6px;">
+          <button class="btn btn-voice" style="width:auto; padding:5px 12px; font-size:0.78rem; margin:0;" onclick="startVoiceRecognition('as-IN')">
+            🎙️ অসমীয়াত কওক
+          </button>
+          <button class="btn btn-voice" style="width:auto; padding:5px 10px; font-size:0.75rem; margin:0; background:#5e35b1;" onclick="startVoiceRecognition('en-IN')">
+            🎤 English
+          </button>
+        </div>
       </div>
-    </div>
 
-    <label>প্ৰকাৰ:</label>
-    <select id="txType" onchange="toggleTxTypeFields()">
-      <option value="debit">বাকী বিক্ৰী (নতুন বাকী)</option>
-      <option value="credit">ধন জমা (পৰিশোধ)</option>
-      <option value="old_due">পুৰণি বাকী সংমিশ্ৰণ</option>
-    </select>
-    
-    <div class="row">
-      <div><label>📅 তাৰিখ:</label><input type="date" id="entryDateInput"></div>
-      <div><label>⏰ সময়:</label><input type="time" id="entryTimeInput"></div>
-    </div>
-    
-    <div id="itemDetailSection">
-      <label>সামগ্ৰী:</label>
-      <select id="itemType" onchange="updateDefaultRate()">
-        <option value="থলুৱা গাহৰি মাংস">থলুৱা গাহৰি মাংস</option>
-        <option value="সতেজ মাছ">সতেজ মাছ</option>
-        <option value="অন্যান্য">অন্যান্য</option>
+      <label>প্ৰকাৰ:</label>
+      <select id="txType" onchange="toggleTxTypeFields()">
+        <option value="debit">বাকী বিক্ৰী (নতুন বাকী)</option>
+        <option value="credit">ধন জমা (পৰিশোধ)</option>
+        <option value="old_due">পুৰণি বাকী সংমিশ্ৰণ</option>
       </select>
-
-      <label>পৰিমাণ (কেজি):</label>
-      <div class="qty-stepper">
-        <button type="button" class="qty-step-btn" onclick="stepQty(-0.25)">➖</button>
-        <input type="number" id="qtyNumber" step="0.05" min="0" value="1.0" style="text-align:center; font-weight:800; font-size:1.15rem;" oninput="calcTotalAmount()">
-        <button type="button" class="qty-step-btn" onclick="stepQty(0.25)">➕</button>
+      
+      <div class="row">
+        <div><label>📅 তাৰিখ:</label><input type="date" id="entryDateInput"></div>
+        <div><label>⏰ সময়:</label><input type="time" id="entryTimeInput"></div>
       </div>
       
-      <div class="qty-chips">
-        <span class="qty-chip" onclick="setQuickQty(0.5)">0.5 কেজি</span>
-        <span class="qty-chip active" onclick="setQuickQty(1.0)">1.0 কেজি</span>
-        <span class="qty-chip" onclick="setQuickQty(1.5)">1.5 কেজি</span>
-        <span class="qty-chip" onclick="setQuickQty(2.0)">2.0 কেজি</span>
-        <span class="qty-chip" onclick="setQuickQty(3.0)">3.0 কেজি</span>
-        <span class="qty-chip" onclick="setQuickQty(5.0)">5.0 কেজি</span>
-      </div>
+      <div id="itemDetailSection">
+        <label>সামগ্ৰী:</label>
+        <select id="itemType" onchange="updateDefaultRate()">
+          <option value="থলুৱা গাহৰি মাংস">থলুৱা গাহৰি মাংস</option>
+          <option value="সতেজ মাছ">সতেজ মাছ</option>
+          <option value="অন্যান্য">অন্যান্য</option>
+        </select>
 
-      <div class="row" style="margin-top:8px;">
-        <div>
-          <label>দৰ (প্ৰতি কেজি ₹):</label>
-          <input type="number" id="rate" value="300" oninput="calcTotalAmount()">
+        <label>পৰিমাণ (কেজি):</label>
+        <div class="qty-stepper">
+          <button type="button" class="qty-step-btn" onclick="stepQty(-0.25)">➖</button>
+          <input type="number" id="qtyNumber" step="0.05" min="0" value="1.0" style="text-align:center; font-weight:800; font-size:1.15rem;" oninput="calcTotalAmount()">
+          <button type="button" class="qty-step-btn" onclick="stepQty(0.25)">➕</button>
         </div>
-        <div>
-          <label>মুঠ টকা (₹):</label>
-          <input type="number" id="amount" value="300">
+        
+        <div class="qty-chips">
+          <span class="qty-chip" onclick="setQuickQty(0.5)">0.5 কেজি</span>
+          <span class="qty-chip active" onclick="setQuickQty(1.0)">1.0 কেজি</span>
+          <span class="qty-chip" onclick="setQuickQty(1.5)">1.5 কেজি</span>
+          <span class="qty-chip" onclick="setQuickQty(2.0)">2.0 কেজি</span>
+          <span class="qty-chip" onclick="setQuickQty(3.0)">3.0 কেজি</span>
+          <span class="qty-chip" onclick="setQuickQty(5.0)">5.0 কেজি</span>
+        </div>
+
+        <div class="row" style="margin-top:8px;">
+          <div>
+            <label>দৰ (প্ৰতি কেজি ₹):</label>
+            <input type="number" id="rate" value="300" oninput="calcTotalAmount()">
+          </div>
+          <div>
+            <label>মুঠ টকা (₹):</label>
+            <input type="number" id="amount" value="300">
+          </div>
         </div>
       </div>
-    </div>
 
-    <div id="creditAmountRow" class="hidden">
-      <label>জমা ধনৰ পৰিমাণ (₹):</label>
-      <input type="number" id="creditAmountInput" placeholder="টকা দিয়ক">
-    </div>
-
-    <label style="margin-top:8px;">ৰিমাৰ্কচ / টোকা (Remarks / Note):</label>
-    <input type="text" id="note" placeholder="যেনে: আবেলি নিলে / Google Pay দিলে / বিশেষ টোকা">
-
-    <div style="background:#e8f4fd; border:1.5px dashed #0277bd; border-radius:10px; padding:10px; margin-top:8px;">
-      <div style="font-size:0.8rem; font-weight:800; color:#01579b; margin-bottom:4px;">
-        📸 মাংস লোৱাৰ ফটোকপি (ঐচ্ছিক):
+      <div id="creditAmountRow" class="hidden">
+        <label>জমা ধনৰ পৰিমাণ (₹):</label>
+        <input type="number" id="creditAmountInput" placeholder="টকা দিয়ক">
       </div>
-      <input type="file" id="gpsCamInput" accept="image/*" capture="environment" onchange="captureGuaranteedGpsPhoto(event)">
-      <div id="gpsLocationDisplay" style="font-size:0.72rem; color:#444; margin-top:4px; font-weight:600;">📍 স্থিতি: ফটো লোৱা হোৱা নাই</div>
+
+      <label style="margin-top:8px;">ৰিমাৰ্কচ / টোকা (Remarks / Note):</label>
+      <input type="text" id="note" placeholder="যেনে: আবেলি নিলে / Google Pay দিলে / বিশেষ টোকা">
+
+      <div style="background:#e8f4fd; border:1.5px dashed #0277bd; border-radius:10px; padding:10px; margin-top:8px;">
+        <div style="font-size:0.82rem; font-weight:700; color:#01579b; margin-bottom:4px;">
+          📸 মাংস লোৱাৰ ফটোকপি (ঐচ্ছিক):
+        </div>
+        <input type="file" id="gpsCamInput" accept="image/*" capture="environment" onchange="captureGuaranteedGpsPhoto(event)">
+        <div id="gpsLocationDisplay" style="font-size:0.74rem; color:#444; margin-top:4px; font-weight:700;">📍 স্থিতি: ফটো লোৱা হোৱা নাই</div>
+      </div>
+
+      <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু চিকিউৰ ক্লাউড ছিংক</button>
     </div>
 
-    <button class="btn btn-primary" onclick="addTransaction()">💾 সংৰক্ষণ আৰু লাইভ ছিংক</button>
-  </div>
+  </div><!-- END #appShell -->
 
   <div id="thermalPrintArea" class="hidden"></div>
 
   <script>
+    // ========================================================
+    // ZERO SECRETS IN FRONTEND: ALL AUTH RUNS ON GOOGLE SERVER
+    // ========================================================
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz-U4SxZ71-HLqQWPLotuYomqzaHTWke3T2MxDrxgwHVxfTudkLgr8LkIuxvaKlwn3L/exec";
 
-    const DEFAULT_MANAGERS = {
-      ADMIN: { name: "নিতুল দিহিঙীয়া", role: "মুখ্য পৰিচালক", phone: "8822427980", pin: "291205", photo: "./logo.png", isAdmin: true },
-      OPERATOR: { name: "ৰণ্টু চেতিয়া", role: "সহ-পৰিচালক", phone: "9613777612", pin: "123456", photo: "./logo.png", isAdmin: false }
-    };
-    
-    let managersData = JSON.parse(localStorage.getItem("cg_bajar_managers_enterprise")) || DEFAULT_MANAGERS;
+    // Unique persistent Device ID for Strict Device Whitelisting
+    let deviceId = localStorage.getItem("cg_unique_device_id");
+    if (!deviceId) {
+      deviceId = "DEV-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem("cg_unique_device_id", deviceId);
+    }
+
+    let authToken = localStorage.getItem("cg_secure_token") || "";
     let currentManager = null;
+    let securityLogCache = [];
+    let securityConfigCache = { strictDeviceLock: false, approvedDevices: {} };
+    let activeCustFilter = "all";
+    let pendingOfflineSync = localStorage.getItem("cg_pending_sync") === "1";
+    let isFetchingFromSheet = false;
+    let syncTimer = null;
+    let idleTimer = null;
+    const IDLE_LOCK_MS = 15 * 60 * 1000;
+
     let savedAuthSignature = localStorage.getItem("cg_bajar_auth_signature") || "";
     let savedIssuerSignature = localStorage.getItem("cg_bajar_issuer_signature") || "";
     let savedStampMeta = localStorage.getItem("cg_bajar_sig_stamp") || "";
     let businessLogo = localStorage.getItem("cg_bajar_business_logo") || "";
     let businessUpiId = localStorage.getItem("cg_bajar_business_upi") || "9613777612@okaxis";
+    let customThankYouMsg = localStorage.getItem("cg_bajar_thankyou_msg") || "🙏 ধন্যবাদ! আপোনাৰ সেৱাত চেতিয়া গাঁও থলুৱা বজাৰ। পুনৰ আহিব।";
 
     let capturedPhotoBase64 = "";
     let capturedGpsLocation = "";
-    let isFetchingFromSheet = false;
-    let isCustomerViewMode = false;
 
-    function saveManagersAuth() {
-      localStorage.setItem("cg_bajar_managers_enterprise", JSON.stringify(managersData));
+    let appData = {
+      customers: [],
+      transactions: [],
+      trash: [],
+      deletedCustMap: {},
+      deletedTxMap: {},
+      purgedTrashMap: {},
+      settings: { porkRate: 300, fishRate: 250, porkCost: 240, fishCost: 190, defaultCreditLimit: 3000, upiId: "9613777612@okaxis" },
+      lastModified: 0
+    };
+
+    function esc(str) {
+      return String(str == null ? "" : str)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
     }
 
-    const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000;
-
-    function checkUrlViewMode() {
-      const params = new URLSearchParams(window.location.search);
-      const custId = params.get('cid');
-
-      if (custId) {
-        isCustomerViewMode = true;
-        document.getElementById("authOverlay").classList.add("hidden");
-        document.getElementById("customerPortalBanner").classList.remove("hidden");
-        document.getElementById("adminControlsArea").classList.add("hidden");
-        document.getElementById("adminNewEntryCard").classList.add("hidden");
-        
-        applySignatures();
-        applyBusinessLogo();
-        renderCustomerDetailsById(custId);
-        
-        pullFromGoogleSheets(false, () => {
-          renderCustomerDetailsById(custId);
-        });
-        return true;
-      }
-      return false;
+    function getDeviceLabel() {
+      const ua = navigator.userAgent || "";
+      if (/Android/i.test(ua)) return "Android Mobile";
+      if (/iPhone|iPad/i.test(ua)) return "iOS Device";
+      if (/Windows/i.test(ua)) return "Windows PC";
+      if (/Macintosh/i.test(ua)) return "Mac";
+      return "Web Browser";
     }
 
-    function checkExistingSession() {
-      const sessionStr = localStorage.getItem("cg_bajar_active_session");
-      if (!sessionStr) return false;
+    async function apiPost(payload) {
+      const controller = new AbortController();
+      const tId = setTimeout(() => controller.abort(), 14000);
       try {
-        const session = JSON.parse(sessionStr);
-        if (Date.now() - session.loginTimestamp < SESSION_EXPIRY_MS) {
-          currentManager = session.manager;
+        const res = await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+        clearTimeout(tId);
+        return await res.json();
+      } catch (err) {
+        clearTimeout(tId);
+        throw err;
+      }
+    }
+
+    // ========================================================
+    // SERVER-SIDE AUTHENTICATION, DEVICE LOCK & IDLE LOCK
+    // ========================================================
+    function resetIdleTimer() {
+      if (!currentManager) return;
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => lockScreenNow(true), IDLE_LOCK_MS);
+    }
+    ["click", "touchstart", "keydown"].forEach(ev => document.addEventListener(ev, resetIdleTimer, { passive: true }));
+
+    function lockScreenNow(isAuto = false) {
+      clearTimeout(idleTimer);
+      clearInterval(syncTimer);
+      currentManager = null;
+      document.getElementById("appShell").classList.add("hidden");
+      document.getElementById("authOverlay").classList.remove("hidden");
+      document.getElementById("loginPin").value = "";
+      document.getElementById("loginStatusMsg").textContent = isAuto
+        ? "⏳ ১৫ মিনিট নিষ্ক্ৰিয় থকাৰ বাবে সুৰক্ষাৰ খাতিৰত লক কৰা হ'ল।"
+        : "🔐 স্ক্ৰীন লক কৰা হ'ল। পুনৰ PIN দি প্ৰৱেশ কৰক।";
+    }
+
+    async function authenticateUser() {
+      const phone = document.getElementById("loginPhone").value.trim();
+      const pin = document.getElementById("loginPin").value.trim();
+      const statusEl = document.getElementById("loginStatusMsg");
+      const btn = document.getElementById("loginSubmitBtn");
+
+      if (!phone || !pin) {
+        statusEl.style.color = "#c62828";
+        statusEl.textContent = "ম'বাইল নম্বৰ আৰু ৬-অংকৰ PIN দিয়ক।";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "⏳ চাৰ্ভাৰ ভেৰিফিকেচন চলিছে...";
+      statusEl.style.color = "#0277bd";
+      statusEl.textContent = "Google চিকিউৰ চাৰ্ভাৰৰ সৈতে সংযোগ হৈছে...";
+
+      try {
+        const res = await apiPost({ action: "login", phone, pin, device: getDeviceLabel(), deviceId });
+        btn.disabled = false;
+        btn.textContent = "🛡️ সুৰক্ষিত প্ৰৱেশ কৰক";
+
+        if (res.status === "ok" && res.token) {
+          authToken = res.token;
+          currentManager = res.manager;
+          securityLogCache = res.securityLog || [];
+          if (res.securityConfig) securityConfigCache = res.securityConfig;
+          localStorage.setItem("cg_secure_token", authToken);
+          localStorage.setItem("cg_active_mgr", JSON.stringify(currentManager));
+
+          if (res.appData && res.appData.customers) {
+            hydrateAppData(res.appData);
+          } else {
+            loadLocalCachedDataIfAny();
+          }
+
+          statusEl.textContent = "";
+          document.getElementById("loginPin").value = "";
           activateDashboard();
-          return true;
         } else {
-          localStorage.removeItem("cg_bajar_active_session");
+          statusEl.style.color = "#c62828";
+          statusEl.textContent = res.message || "❌ প্ৰৱেশ অস্বীকাৰ কৰা হ'ল!";
         }
-      } catch(e) { localStorage.removeItem("cg_bajar_active_session"); }
-      return false;
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = "🛡️ সুৰক্ষিত প্ৰৱেশ কৰক";
+        statusEl.style.color = "#c62828";
+        statusEl.textContent = "❌ ইন্টাৰনেট সংযোগ নাই বা চাৰ্ভাৰ আপডেট হোৱা নাই।";
+      }
+    }
+
+    async function verifySavedSession() {
+      if (!authToken) return;
+      const statusEl = document.getElementById("loginStatusMsg");
+      statusEl.style.color = "#0277bd";
+      statusEl.textContent = "⏳ সুৰক্ষিত চেছন পৰীক্ষা চলিছে...";
+
+      if (!navigator.onLine) {
+        const savedMgr = localStorage.getItem("cg_active_mgr");
+        const savedDb = localStorage.getItem("cg_bajar_enterprise_db");
+        if (savedMgr && savedDb) {
+          currentManager = JSON.parse(savedMgr);
+          hydrateAppData(JSON.parse(savedDb));
+          statusEl.textContent = "";
+          activateDashboard();
+          updateSyncBadge("🟡 অফলাইন মোড (নেট আহিলে ছিংক হ'ব)", true);
+          return;
+        }
+      }
+
+      try {
+        const res = await apiPost({ action: "verifySession", token: authToken });
+        if (res.status === "ok" && res.manager) {
+          currentManager = res.manager;
+          securityLogCache = res.securityLog || [];
+          if (res.securityConfig) securityConfigCache = res.securityConfig;
+          localStorage.setItem("cg_active_mgr", JSON.stringify(currentManager));
+          if (res.appData && res.appData.customers && !pendingOfflineSync) {
+            hydrateAppData(res.appData);
+          } else {
+            loadLocalCachedDataIfAny();
+          }
+          statusEl.textContent = "";
+          activateDashboard();
+          if (pendingOfflineSync) pushToGoogleSheets();
+        } else {
+          clearClientSession();
+          statusEl.style.color = "#c62828";
+          statusEl.textContent = "🔒 চেছন সমাপ্ত হৈছে। পুনৰ ল'গইন কৰক।";
+        }
+      } catch (e) {
+        const savedMgr = localStorage.getItem("cg_active_mgr");
+        const savedDb = localStorage.getItem("cg_bajar_enterprise_db");
+        if (savedMgr && savedDb) {
+          currentManager = JSON.parse(savedMgr);
+          hydrateAppData(JSON.parse(savedDb));
+          statusEl.textContent = "";
+          activateDashboard();
+          updateSyncBadge("🟡 অফলাইন মোড সক্ৰিয়", true);
+        } else {
+          statusEl.textContent = "";
+        }
+      }
+    }
+
+    function clearClientSession() {
+      authToken = "";
+      currentManager = null;
+      clearInterval(syncTimer);
+      clearTimeout(idleTimer);
+      localStorage.removeItem("cg_secure_token");
+      localStorage.removeItem("cg_active_mgr");
+      // NOTE: Google Sheets holds permanent cloud data; only hide UI on screen
+      document.getElementById("appShell").classList.add("hidden");
+      document.getElementById("authOverlay").classList.remove("hidden");
+    }
+
+    async function logoutManager() {
+      const tok = authToken;
+      // Clear local cached view on shared PCs (cloud data remains 100% untouched)
+      localStorage.removeItem("cg_bajar_enterprise_db");
+      localStorage.removeItem("cg_pending_sync");
+      clearClientSession();
+      document.getElementById("loginStatusMsg").textContent = "✅ সুৰক্ষিতভাৱে লগ আউট হ'ল।";
+      if (tok && navigator.onLine) {
+        try { await apiPost({ action: "logout", token: tok }); } catch (e) {}
+      }
+    }
+
+    async function toggleStrictDeviceLock() {
+      if (!currentManager || !currentManager.isAdmin) return;
+      const nextState = !securityConfigCache.strictDeviceLock;
+      const msg = nextState
+        ? "Strict Device Lock ON কৰিলে কেৱল বৰ্তমান অনুমোদিত ডিভাইচসমূহৰ পৰাহে ল'গইন কৰিব পাৰিব। ON কৰিবনে?"
+        : "নতুন ডিভাইচ যোগ কৰিবলৈ Strict Device Lock OFF কৰিবনে?";
+      if (!confirm(msg)) return;
+      try {
+        const res = await apiPost({ action: "toggleDeviceLock", token: authToken, enabled: nextState });
+        if (res.status === "ok" && res.securityConfig) {
+          securityConfigCache = res.securityConfig;
+          renderDeviceLockUI();
+          alert(nextState ? "🔐 Strict Device Lock সক্ৰিয় হ'ল!" : "🔓 Strict Device Lock বন্ধ কৰা হ'ল।");
+        }
+      } catch (e) { alert("❌ সংযোগ সমস্যা!"); }
+    }
+
+    function renderDeviceLockUI() {
+      const btn = document.getElementById("toggleDeviceLockBtn");
+      const listEl = document.getElementById("approvedDevicesList");
+      if (!btn || !listEl) return;
+      const devs = Object.values(securityConfigCache.approvedDevices || {});
+      listEl.textContent = devs.length
+        ? `অনুমোদিত ডিভাইচ (${devs.length}টা): ` + devs.map(d => `${d.owner.split(' ')[0]} (${d.label})`).join(", ")
+        : "অনুমোদিত ডিভাইচ: ১টা";
+
+      if (securityConfigCache.strictDeviceLock) {
+        btn.textContent = "🔐 Strict Lock ON আছে — OFF কৰক";
+        btn.style.background = "#1b5e20";
+      } else {
+        btn.textContent = "🔓 বৰ্তমান OFF আছে — ON কৰক";
+        btn.style.background = "#0277bd";
+      }
+    }
+
+    async function revokeAllDevices() {
+      if (!currentManager || !currentManager.isAdmin) return;
+      if (!confirm("আন সকলো ফোন আৰু কম্পিউটাৰৰ পৰা তৎক্ষণাত লগ আউট কৰিবনে?")) return;
+      const resetDevs = confirm("আন পুৰণি ডিভাইচসমূহৰ অনুমোদনো (Device Whitelist) বাতিল কৰিবনে?");
+      try {
+        const res = await apiPost({ action: "revokeAll", token: authToken, resetDevices: resetDevs });
+        if (res.securityConfig) {
+          securityConfigCache = res.securityConfig;
+          renderDeviceLockUI();
+        }
+        alert(res.message || "সম্পন্ন হ'ল!");
+        pullFromGoogleSheets(false);
+      } catch (e) { alert("❌ ইন্টাৰনেট সংযোগ পৰীক্ষা কৰক।"); }
+    }
+
+    function loadLocalCachedDataIfAny() {
+      const cached = localStorage.getItem("cg_bajar_enterprise_db");
+      if (cached) {
+        try { hydrateAppData(JSON.parse(cached)); return; } catch (e) {}
+      }
+      if (!appData.customers || appData.customers.length === 0) {
+        appData.customers = [
+          { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png", creditLimit: 3000, updatedAt: 1 },
+          { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png", creditLimit: 3000, updatedAt: 1 }
+        ];
+      }
+    }
+
+    function hydrateAppData(data) {
+      appData = data || appData;
+      if (!Array.isArray(appData.customers)) appData.customers = [];
+      if (!Array.isArray(appData.transactions)) appData.transactions = [];
+      if (!Array.isArray(appData.trash)) appData.trash = [];
+      if (!appData.deletedCustMap) appData.deletedCustMap = {};
+      if (!appData.deletedTxMap) appData.deletedTxMap = {};
+      if (!appData.purgedTrashMap) appData.purgedTrashMap = {};
+      if (!appData.settings) appData.settings = {};
+      appData.settings = Object.assign(
+        { porkRate: 300, fishRate: 250, porkCost: 240, fishCost: 190, defaultCreditLimit: 3000, upiId: businessUpiId },
+        appData.settings
+      );
+      if (appData.settings.upiId) {
+        businessUpiId = appData.settings.upiId;
+        localStorage.setItem("cg_bajar_business_upi", businessUpiId);
+      }
+      localStorage.setItem("cg_bajar_enterprise_db", JSON.stringify(appData));
+    }
+
+    function activateDashboard() {
+      document.getElementById("authOverlay").classList.add("hidden");
+      document.getElementById("appShell").classList.remove("hidden");
+
+      const mgrPhoto = localStorage.getItem("cg_mgr_photo_" + currentManager.roleKey) || "./logo.png";
+      document.getElementById("activeMgrName").textContent = currentManager.name;
+      document.getElementById("activeMgrRole").textContent = currentManager.role;
+      document.getElementById("activeMgrPhoto").src = mgrPhoto;
+      
+      document.querySelectorAll(".admin-only-btn, .admin-only-feature").forEach(el => {
+        el.style.display = currentManager.isAdmin ? (el.tagName === "BUTTON" ? "inline-flex" : "block") : "none";
+      });
+
+      setDefaultDateTime();
+      applySignatures();
+      applyBusinessLogo();
+      applyThankYouMsg();
+      updateDefaultRate();
+      refreshCustomerDropdown();
+      renderBusinessIntelligence();
+      renderCustomerLeaderboard();
+      filterMarketByDate();
+      resetIdleTimer();
+
+      clearInterval(syncTimer);
+      syncTimer = setInterval(() => {
+        if (pendingOfflineSync && navigator.onLine) pushToGoogleSheets();
+        else pullFromGoogleSheets(false);
+      }, 4500);
     }
 
     function setDefaultDateTime() {
@@ -745,163 +1398,635 @@
       document.getElementById("entryTimeInput").value = now.toTimeString().slice(0, 5);
     }
 
-    function authenticateUser() {
-      const phone = document.getElementById("loginPhone").value.trim();
-      const pin = document.getElementById("loginPin").value.trim();
-      if (phone === managersData.ADMIN.phone && pin === managersData.ADMIN.pin) {
-        currentManager = managersData.ADMIN;
-      } else if (phone === managersData.OPERATOR.phone && pin === managersData.OPERATOR.pin) {
-        currentManager = managersData.OPERATOR;
-      } else {
-        alert("❌ ভুল নম্বৰ বা ৬-অংকৰ গোপন PIN!");
-        return;
-      }
-
-      localStorage.setItem("cg_bajar_active_session", JSON.stringify({
-        manager: currentManager,
-        loginTimestamp: Date.now()
-      }));
-
-      activateDashboard();
+    function updateSyncBadge(text, isPending = false) {
+      const el = document.getElementById("cloudSyncText");
+      const dot = document.getElementById("syncDot");
+      if (el) el.textContent = text;
+      if (dot) dot.classList.toggle("pending", isPending);
     }
 
-    function activateDashboard() {
-      document.getElementById("authOverlay").classList.add("hidden");
-      document.getElementById("activeMgrName").textContent = currentManager.name;
-      document.getElementById("activeMgrRole").textContent = currentManager.role;
-      document.getElementById("activeMgrPhoto").src = currentManager.photo || "./logo.png";
-      
-      document.querySelectorAll(".admin-only-btn, .admin-only-feature").forEach(el => {
-        el.style.display = currentManager.isAdmin ? "block" : "none";
-      });
-
-      renderCustomerDetails();
-      applySignatures();
-      setDefaultDateTime();
-      applyBusinessLogo();
-      pullFromGoogleSheets(false);
-      startIntelligentSync();
-
-      const upiInput = document.getElementById("businessUpiInput");
-      if (upiInput) upiInput.value = businessUpiId;
-    }
-
-    function logoutManager() {
-      currentManager = null;
-      localStorage.removeItem("cg_bajar_active_session");
-      document.getElementById("authOverlay").classList.remove("hidden");
-    }
-
-    function saveBusinessUpiId() {
-      const val = document.getElementById("businessUpiInput").value.trim();
-      if (!val || !val.includes("@")) { alert("সঠিক UPI ID দিয়ক!"); return; }
-      businessUpiId = val;
-      localStorage.setItem("cg_bajar_business_upi", businessUpiId);
-      renderCustomerDetails();
-      alert("✅ ব্যৱসায়িক UPI ID সংৰক্ষণ হ'ল!");
-    }
-
+    // ========================================================
+    // SERVER-SIDE PIN RESET & ADMIN PIN CHANGES
+    // ========================================================
     function openSecurityQuestionsModal() {
       document.getElementById("secAns1").value = "";
       document.getElementById("secAns2").value = "";
       document.getElementById("newSecPin").value = "";
       document.getElementById("securityQuestionsModal").classList.remove("hidden");
     }
+    function closeSecurityQuestionsModal() { document.getElementById("securityQuestionsModal").classList.add("hidden"); }
 
-    function closeSecurityQuestionsModal() {
-      document.getElementById("securityQuestionsModal").classList.add("hidden");
-    }
-
-    function verifySecurityAnswersAndReset() {
-      const targetRole = document.getElementById("resetRoleSelect").value;
-      const ans1 = document.getElementById("secAns1").value.trim().toLowerCase();
-      const ans2 = document.getElementById("secAns2").value.trim().toUpperCase();
+    async function verifySecurityAnswersAndReset() {
+      const role = document.getElementById("resetRoleSelect").value;
+      const ans1 = document.getElementById("secAns1").value.trim();
+      const ans2 = document.getElementById("secAns2").value.trim();
       const newPin = document.getElementById("newSecPin").value.trim();
+      const btn = document.getElementById("resetSubmitBtn");
 
-      if (ans1 !== "dhakuakhana") { alert("❌ Question 1 ৰ উত্তৰ ভুল!"); return; }
-      if (ans2 !== "22KN" && ans2 !== "22kn") { alert("❌ Question 2 ৰ ক'ড ভুল!"); return; }
-      if (!newPin || newPin.length !== 6 || isNaN(newPin)) { alert("❌ সঠিক ৬টা সংখ্যাৰ PIN দিয়ক!"); return; }
-
-      managersData[targetRole].pin = newPin;
-      saveManagersAuth();
-      closeSecurityQuestionsModal();
-      alert(`✅ প্ৰশ্ন দুটাৰ উত্তৰ সঠিক প্ৰমাণিত হ'ল!\n${managersData[targetRole].name}-ৰ নতুন PIN সফলতাৰে সংৰক্ষিত হ'ল।`);
+      if (!/^\d{6}$/.test(newPin)) { alert("❌ সঠিক ৬টা সংখ্যাৰ PIN দিয়ক!"); return; }
+      btn.disabled = true; btn.textContent = "⏳ Server-ত পৰীক্ষা চলিছে...";
+      try {
+        const res = await apiPost({ action: "resetPin", role, ans1, ans2, newPin, device: getDeviceLabel() });
+        btn.disabled = false; btn.textContent = "✅ Server ভেৰিফাই কৰি PIN সংৰক্ষণ কৰক";
+        if (res.status === "ok") { closeSecurityQuestionsModal(); alert(res.message); }
+        else { alert(res.message || "❌ ৰিচেট বিফল হ'ল!"); }
+      } catch (e) {
+        btn.disabled = false; btn.textContent = "✅ Server ভেৰিফাই কৰি PIN সংৰক্ষণ কৰক";
+        alert("❌ ইন্টাৰনেট সংযোগ পৰীক্ষা কৰক।");
+      }
     }
 
-    function adminResetOperatorPin() {
+    async function adminResetOperatorPin() {
       const newPin = document.getElementById("resetOperatorPin").value.trim();
-      if (!newPin || newPin.length !== 6) { alert("৬টা সংখ্যাৰ PIN দিয়ক!"); return; }
-      managersData.OPERATOR.pin = newPin;
-      saveManagersAuth();
-      alert(`✅ ৰণ্টু চেতিয়াৰ নতুন PIN সংৰক্ষিত হ'ল!`);
-      document.getElementById("resetOperatorPin").value = "";
+      if (!/^\d{6}$/.test(newPin)) { alert("৬টা সংখ্যাৰ PIN দিয়ক!"); return; }
+      try {
+        const res = await apiPost({ action: "adminChangePin", token: authToken, targetRole: "OPERATOR", newPin });
+        alert(res.message || "সম্পন্ন!");
+        if (res.status === "ok") document.getElementById("resetOperatorPin").value = "";
+      } catch (e) { alert("❌ সংযোগ সমস্যা!"); }
     }
 
-    function adminChangeSelfPin() {
+    async function adminChangeSelfPin() {
       const newPin = document.getElementById("adminSelfNewPin").value.trim();
-      if (!newPin || newPin.length !== 6) { alert("৬টা সংখ্যাৰ PIN দিয়ক!"); return; }
-      managersData.ADMIN.pin = newPin;
-      saveManagersAuth();
-      alert(`✅ নতুন PIN সংৰক্ষিত হ'ল!`);
-      document.getElementById("adminSelfNewPin").value = "";
+      if (!/^\d{6}$/.test(newPin)) { alert("৬টা সংখ্যাৰ PIN দিয়ক!"); return; }
+      try {
+        const res = await apiPost({ action: "adminChangePin", token: authToken, targetRole: "ADMIN", newPin });
+        alert(res.message || "সম্পন্ন!");
+        if (res.status === "ok") document.getElementById("adminSelfNewPin").value = "";
+      } catch (e) { alert("❌ সংযোগ সমস্যা!"); }
     }
 
-    function startVoiceRecognition(langCode) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        alert("আপোনাৰ ব্ৰাউজাৰত Voice Recognition সমৰ্থিত নহয়। Google Chrome ব্যৱহাৰ কৰক।");
+    // ========================================================
+    // AI BUSINESS INTELLIGENCE, DEMAND FORECAST & TRUST RATING
+    // ========================================================
+    function parseDDMMYYYY(str) {
+      if (!str) return null;
+      const p = str.split("/");
+      if (p.length !== 3) return null;
+      return new Date(parseInt(p[2], 10), parseInt(p[1], 10) - 1, parseInt(p[0], 10));
+    }
+
+    function getCustomerStats(custId) {
+      let debit = 0, credit = 0, lastTxDate = null, lastCreditDate = null;
+      appData.transactions.forEach(t => {
+        if (t.customerId !== custId) return;
+        debit += Number(t.debit) || 0;
+        credit += Number(t.credit) || 0;
+        const dt = parseDDMMYYYY(t.date);
+        if (dt && (!lastTxDate || dt > lastTxDate)) lastTxDate = dt;
+        if (t.credit > 0 && dt && (!lastCreditDate || dt > lastCreditDate)) lastCreditDate = dt;
+      });
+      const due = debit - credit;
+      const refDate = lastCreditDate || lastTxDate;
+      const daysSince = refDate ? Math.max(0, Math.floor((Date.now() - refDate.getTime()) / (1000 * 60 * 60 * 24))) : 0;
+
+      // AI Trust Score (1 to 5 Stars)
+      let stars = 5;
+      if (due > 0) {
+        const ratio = debit > 0 ? credit / debit : 0;
+        if (daysSince >= 45 || due >= 5000) stars = 1;
+        else if (daysSince >= 30 || due >= 3000) stars = 2;
+        else if (daysSince >= 15 || ratio < 0.25) stars = 3;
+        else if (ratio < 0.6) stars = 4;
+      }
+      return { debit, credit, due, daysSince, stars };
+    }
+
+    function renderBusinessIntelligence() {
+      const now = new Date();
+      const curMonth = now.getMonth();
+      const curYear = now.getFullYear();
+
+      let totalMarketDue = 0, dueCustCount = 0;
+      appData.customers.forEach(c => {
+        const st = getCustomerStats(c.id);
+        if (st.due > 0) { totalMarketDue += st.due; dueCustCount++; }
+      });
+
+      let mDebit = 0, mCredit = 0, porkKg = 0, porkAmt = 0, fishKg = 0, fishAmt = 0;
+      const activeDaysSet = {};
+
+      appData.transactions.forEach(t => {
+        const dt = parseDDMMYYYY(t.date);
+        if (!dt || dt.getMonth() !== curMonth || dt.getFullYear() !== curYear) return;
+        mDebit += Number(t.debit) || 0;
+        mCredit += Number(t.credit) || 0;
+        if (t.debit > 0) {
+          activeDaysSet[t.date] = true;
+          const kg = parseFloat(t.qty) || 0;
+          if ((t.item || "").includes("গাহৰি")) { porkKg += kg; porkAmt += Number(t.debit) || 0; }
+          else if ((t.item || "").includes("মাছ")) { fishKg += kg; fishAmt += Number(t.debit) || 0; }
+        }
+      });
+
+      const pct = mDebit > 0 ? Math.min(100, Math.round((mCredit / mDebit) * 100)) : (mCredit > 0 ? 100 : 0);
+
+      // AI Tomorrow Demand Forecast
+      const activeDays = Math.max(1, Object.keys(activeDaysSet).length);
+      const totalKg = porkKg + fishKg;
+      const forecastKg = totalKg > 0 ? Math.max(2, Math.round((totalKg / activeDays) * 1.15)) : 15;
+
+      // Estimated Monthly Profit
+      const porkMargin = Math.max(0, (appData.settings.porkRate || 300) - (appData.settings.porkCost || 240));
+      const fishMargin = Math.max(0, (appData.settings.fishRate || 250) - (appData.settings.fishCost || 190));
+      const estProfit = Math.round((porkKg * porkMargin) + (fishKg * fishMargin));
+
+      document.getElementById("biTotalMarketDue").textContent = totalMarketDue;
+      document.getElementById("biDueCustomerCount").textContent = `${dueCustCount} জন গ্ৰাহকৰ বাকী আছে`;
+      document.getElementById("biMonthCredit").textContent = mCredit;
+      document.getElementById("biMonthDebit").textContent = mDebit;
+      document.getElementById("biPorkKg").textContent = porkKg.toFixed(1).replace(/\.0$/, '');
+      document.getElementById("biPorkAmt").textContent = porkAmt;
+      document.getElementById("biFishKg").textContent = fishKg.toFixed(1).replace(/\.0$/, '');
+      document.getElementById("biFishAmt").textContent = fishAmt;
+      document.getElementById("biTomorrowDemand").textContent = `~${forecastKg} কেজি`;
+      document.getElementById("biEstProfit").textContent = estProfit;
+      document.getElementById("biRecoveryPct").textContent = pct + "%";
+      document.getElementById("biRecoveryBar").style.width = pct + "%";
+    }
+
+    function setCustFilter(filterKey, el) {
+      activeCustFilter = filterKey;
+      document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+      if (el) el.classList.add("active");
+      renderCustomerLeaderboard();
+    }
+
+    function renderCustomerLeaderboard() {
+      const q = (document.getElementById("custSearchInput").value || "").trim().toLowerCase();
+      const box = document.getElementById("customerLeaderboard");
+      if (!box) return;
+
+      const defLim = appData.settings.defaultCreditLimit || 3000;
+      let rows = appData.customers.map(c => ({ c, st: getCustomerStats(c.id), limit: c.creditLimit || defLim }));
+
+      if (q) {
+        rows = rows.filter(r =>
+          (r.c.name || "").toLowerCase().includes(q) ||
+          (r.c.address || "").toLowerCase().includes(q) ||
+          (r.c.phone || "").includes(q)
+        );
+      }
+      if (activeCustFilter === "due") rows = rows.filter(r => r.st.due > 0);
+      else if (activeCustFilter === "high") rows = rows.filter(r => r.st.due >= 1000);
+      else if (activeCustFilter === "overdue") rows = rows.filter(r => r.st.due > 0 && r.st.daysSince >= 15);
+      else if (activeCustFilter === "overlimit") rows = rows.filter(r => r.st.due >= r.limit);
+
+      rows.sort((a, b) => b.st.due - a.st.due);
+
+      if (rows.length === 0) {
+        box.innerHTML = `<div style="padding:12px; text-align:center; color:#888; font-size:0.78rem;">কোনো গ্ৰাহক পোৱা নগ'ল</div>`;
         return;
       }
 
+      box.innerHTML = rows.map(r => {
+        let badge = "";
+        if (r.st.due >= r.limit) badge = `<span class="aging-tag aging-crit">🚨 সীমা পাৰ</span>`;
+        else if (r.st.due > 0 && r.st.daysSince >= 30) badge = `<span class="aging-tag aging-crit">${r.st.daysSince} দিন</span>`;
+        else if (r.st.due > 0 && r.st.daysSince >= 15) badge = `<span class="aging-tag aging-warn">${r.st.daysSince} দিন</span>`;
+        const amtColor = r.st.due > 0 ? "#c62828" : "#1b5e20";
+        return `<div class="leader-item" onclick="jumpToCustomer('${esc(r.c.id)}')">
+          <div>
+            <b>${esc(r.c.name)}</b>${badge}
+            <div style="font-size:0.72rem; color:#555;">📍 ${esc(r.c.address || "-")} | 📞 ${esc(r.c.phone || "-")}</div>
+          </div>
+          <div style="font-weight:800; color:${amtColor}; font-size:0.95rem;">₹${r.st.due}</div>
+        </div>`;
+      }).join("");
+    }
+
+    function jumpToCustomer(custId) {
+      const sel = document.getElementById("custSelect");
+      if (sel) {
+        sel.value = custId;
+        renderCustomerDetails();
+        document.getElementById("billViewContainer").scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    // ========================================================
+    // NON-DESTRUCTIVE SECURE CLOUD SYNC
+    // ========================================================
+    function touchCustomerBaakiTimestamp(custId) {
+      const nowStamp = new Date().toLocaleString('en-GB');
+      const cust = appData.customers.find(c => c.id === custId);
+      if (cust) {
+        cust.lastUpdated = nowStamp;
+        cust.updatedAt = Date.now();
+      }
+      savedStampMeta = nowStamp;
+      localStorage.setItem("cg_bajar_sig_stamp", savedStampMeta);
+      appData.lastModified = Date.now();
+    }
+
+    async function pushToGoogleSheets(forceReplace = false) {
+      if (!appData.lastModified) appData.lastModified = Date.now();
+      localStorage.setItem("cg_bajar_enterprise_db", JSON.stringify(appData));
+      pendingOfflineSync = true;
+      localStorage.setItem("cg_pending_sync", "1");
+
+      renderBusinessIntelligence();
+      renderCustomerLeaderboard();
+      filterMarketByDate();
+
+      if (!navigator.onLine || !authToken) {
+        updateSyncBadge("🟡 স্থানীয়ভাৱে সংৰক্ষিত (অফলাইন)", true);
+        return;
+      }
+
+      updateSyncBadge("⚡ চিকিউৰ ক্লাউডত সংৰক্ষণ চলিছে...", true);
+      try {
+        const res = await apiPost({ action: "saveData", token: authToken, appData, forceReplace });
+        if (res.status === "ok") {
+          pendingOfflineSync = false;
+          localStorage.setItem("cg_pending_sync", "0");
+          if (res.appData && res.appData.customers) {
+            const curSel = document.getElementById("custSelect").value;
+            hydrateAppData(res.appData);
+            refreshCustomerDropdown(curSel);
+          } else {
+            appData.lastModified = res.lastModified || appData.lastModified;
+            localStorage.setItem("cg_bajar_enterprise_db", JSON.stringify(appData));
+          }
+          updateSyncBadge("🟢 চিকিউৰ ক্লাউডত সংৰক্ষিত (অটুট ডাটা)", false);
+        } else if (res.status === "unauthorized") {
+          alert("🔒 সুৰক্ষা চেছন সমাপ্ত হৈছে। পুনৰ ল'গইন কৰক।");
+          clearClientSession();
+        } else {
+          updateSyncBadge("🟡 ছিংক বাকী আছে", true);
+        }
+      } catch (err) {
+        updateSyncBadge("🟡 অফলাইনত সংৰক্ষিত (নেট আহিলে ছিংক হ'ব)", true);
+      }
+    }
+
+    async function pullFromGoogleSheets(isManual = false) {
+      if (isFetchingFromSheet || !navigator.onLine || !authToken) return;
+      if (pendingOfflineSync && !isManual) { pushToGoogleSheets(); return; }
+      isFetchingFromSheet = true;
+      if (isManual) updateSyncBadge("⏳ চিকিউৰ ক্লাউড ছিংক চলিছে...", true);
+
+      try {
+        const res = await apiPost({ action: "getData", token: authToken });
+        isFetchingFromSheet = false;
+
+        if (res.status === "unauthorized") {
+          clearClientSession();
+          document.getElementById("loginStatusMsg").textContent = "🔒 আপোনাৰ চেছন বন্ধ কৰা হৈছে। পুনৰ ল'গইন কৰক।";
+          return;
+        }
+        if (res.status === "ok") {
+          if (res.securityLog) securityLogCache = res.securityLog;
+          if (res.securityConfig) securityConfigCache = res.securityConfig;
+          const remoteData = res.appData;
+          if (remoteData && remoteData.customers && remoteData.transactions) {
+            const remoteMod = remoteData.lastModified || 0;
+            const localMod = appData.lastModified || 0;
+            if ((remoteMod > localMod) || (remoteData.transactions.length !== appData.transactions.length && !pendingOfflineSync) || isManual) {
+              const curSel = document.getElementById("custSelect").value;
+              hydrateAppData(remoteData);
+              pendingOfflineSync = false;
+              localStorage.setItem("cg_pending_sync", "0");
+              refreshCustomerDropdown(curSel);
+              renderBusinessIntelligence();
+              renderCustomerLeaderboard();
+              filterMarketByDate();
+              updateSyncBadge(`⚡ লাইভ ছিংক সম্পন্ন (${appData.transactions.length}টা এণ্ট্ৰি)`, false);
+              if (isManual) alert(`✅ সুৰক্ষিত ক্লাউড ছিংক সম্পন্ন! মুঠ এণ্ট্ৰি: ${appData.transactions.length}`);
+            } else {
+              updateSyncBadge("🛡️ চিকিউৰ ক্লাউড সংলগ্ন (শূন্য ডাটা লছ)", false);
+            }
+          }
+        }
+      } catch (e) {
+        isFetchingFromSheet = false;
+        if (isManual) alert("❌ ইন্টাৰনেট সংযোগ পৰীক্ষা কৰক।");
+      }
+    }
+
+    // ========================================================
+    // IN-BILL QUICK ADD (+ নতুন বাকী / + জমা) WITHOUT DELETING OLD
+    // ========================================================
+    function openQuickBillAddModal(type) {
+      const custId = document.getElementById("custSelect").value;
+      if (!custId) { alert("প্ৰথমে এজন গ্ৰাহক নিৰ্বাচন কৰক!"); return; }
+
+      document.getElementById("quickAddType").value = type;
+      document.getElementById("quickAddDate").value = new Date().toISOString().slice(0, 10);
+      document.getElementById("quickAddNote").value = "";
+
+      if (type === "credit") {
+        document.getElementById("quickAddTitle").textContent = "➕ ধন পৰিশোধ (জমা) যোগ কৰক";
+        document.getElementById("quickAddItemBox").classList.add("hidden");
+        document.getElementById("quickAddAmtLbl").textContent = "জমা টকাৰ পৰিমাণ (₹):";
+        document.getElementById("quickAddAmt").value = "";
+      } else {
+        document.getElementById("quickAddTitle").textContent = "➕ নতুন বাকী যোগ (পুৰণি বাকী অটুট থাকিব)";
+        document.getElementById("quickAddItemBox").classList.remove("hidden");
+        document.getElementById("quickAddAmtLbl").textContent = "মুঠ বাকী টকা (₹):";
+        document.getElementById("quickAddItem").value = "থলুৱা গাহৰি মাংস";
+        document.getElementById("quickAddQty").value = "1";
+        document.getElementById("quickAddRate").value = appData.settings.porkRate || 300;
+        calcQuickAddAmt();
+      }
+      document.getElementById("quickBillAddModal").classList.remove("hidden");
+    }
+
+    function closeQuickBillAddModal() { document.getElementById("quickBillAddModal").classList.add("hidden"); }
+
+    function updateQuickAddRate() {
+      const item = document.getElementById("quickAddItem").value;
+      if (item === "থলুৱা গাহৰি মাংস") document.getElementById("quickAddRate").value = appData.settings.porkRate || 300;
+      else if (item === "সতেজ মাছ") document.getElementById("quickAddRate").value = appData.settings.fishRate || 250;
+      else if (item === "পুৰণি বাকী যোগ") { document.getElementById("quickAddQty").value = "0"; document.getElementById("quickAddRate").value = "0"; return; }
+      calcQuickAddAmt();
+    }
+
+    function calcQuickAddAmt() {
+      const q = parseFloat(document.getElementById("quickAddQty").value) || 0;
+      const r = parseFloat(document.getElementById("quickAddRate").value) || 0;
+      if (q > 0 && r > 0) document.getElementById("quickAddAmt").value = Math.round(q * r);
+    }
+
+    function saveQuickBillAdd() {
+      const custId = document.getElementById("custSelect").value;
+      const type = document.getElementById("quickAddType").value;
+      const amt = parseFloat(document.getElementById("quickAddAmt").value) || 0;
+      if (amt <= 0) { alert("সঠিক টকাৰ পৰিমাণ দিয়ক!"); return; }
+
+      const isoDate = document.getElementById("quickAddDate").value || new Date().toISOString().slice(0, 10);
+      const d = isoDate.split("-").reverse().join("/");
+      const q = parseFloat(document.getElementById("quickAddQty").value) || 0;
+
+      appData.transactions.push({
+        id: "T" + Date.now(),
+        customerId: custId,
+        date: d,
+        time: new Date().toTimeString().slice(0, 5),
+        item: type === "credit" ? "ধন পৰিশোধ (জমা)" : document.getElementById("quickAddItem").value,
+        qty: (type === "credit" || q <= 0) ? "-" : `${q} কেজি`,
+        note: document.getElementById("quickAddNote").value.trim() || "-",
+        debit: type === "credit" ? 0 : amt,
+        credit: type === "credit" ? amt : 0,
+        enteredBy: currentManager ? currentManager.name : "",
+        updatedAt: Date.now(),
+        proofPhoto: "",
+        gpsLocation: ""
+      });
+
+      touchCustomerBaakiTimestamp(custId);
+      closeQuickBillAddModal();
+      renderCustomerDetails();
+      pushToGoogleSheets();
+    }
+
+    // ========================================================
+    // IN-BILL ROW EDIT (+ EXTRA ADD), DELETE & UNLIMITED TRASH
+    // ========================================================
+    function ddmmyyyyToIso(dStr) {
+      if (!dStr) return new Date().toISOString().slice(0, 10);
+      const parts = dStr.split("/");
+      if (parts.length === 3) return `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function openEditTxModal(txId) {
+      const tx = appData.transactions.find(t => t.id === txId);
+      if (!tx) return;
+      const isCredit = tx.credit > 0 && tx.debit === 0;
+      document.getElementById("editTxId").value = tx.id;
+      document.getElementById("editTxType").value = isCredit ? "credit" : "debit";
+      document.getElementById("editTxDate").value = ddmmyyyyToIso(tx.date);
+      document.getElementById("editTxItem").value = tx.item || "";
+      document.getElementById("editTxQty").value = tx.qty || "-";
+      document.getElementById("editTxAmount").value = isCredit ? tx.credit : tx.debit;
+      document.getElementById("editExtraAddAmt").value = "";
+      document.getElementById("editTxNote").value = (tx.note === "-") ? "" : (tx.note || "");
+      toggleEditTxFields();
+      document.getElementById("editTxModal").classList.remove("hidden");
+    }
+
+    function applyExtraToEditAmt() {
+      const base = parseFloat(document.getElementById("editTxAmount").value) || 0;
+      const extra = parseFloat(document.getElementById("editExtraAddAmt").value) || 0;
+      if (extra <= 0) return;
+      document.getElementById("editTxAmount").value = base + extra;
+      document.getElementById("editExtraAddAmt").value = "";
+    }
+
+    function toggleEditTxFields() {
+      const isCredit = document.getElementById("editTxType").value === "credit";
+      document.getElementById("editTxItemGroup").classList.toggle("hidden", isCredit);
+      document.getElementById("editTxAmtLabel").textContent = isCredit ? "জমা / পৰিশোধৰ পৰিমাণ (₹):" : "বাকী টকাৰ পৰিমাণ (₹):";
+    }
+
+    function closeEditTxModal() { document.getElementById("editTxModal").classList.add("hidden"); }
+
+    function saveEditedTransaction() {
+      const txId = document.getElementById("editTxId").value;
+      const tx = appData.transactions.find(t => t.id === txId);
+      if (!tx) return;
+
+      const type = document.getElementById("editTxType").value;
+      const isoDate = document.getElementById("editTxDate").value;
+      const amt = parseFloat(document.getElementById("editTxAmount").value) || 0;
+      if (amt <= 0) { alert("সঠিক টকাৰ পৰিমাণ দিয়ক!"); return; }
+
+      if (isoDate) tx.date = isoDate.split("-").reverse().join("/");
+      if (type === "credit") {
+        tx.item = "ধন পৰিশোধ (জমা)"; tx.qty = "-"; tx.debit = 0; tx.credit = amt;
+      } else {
+        tx.item = document.getElementById("editTxItem").value.trim() || "থলুৱা গাহৰি মাংস";
+        tx.qty = document.getElementById("editTxQty").value.trim() || "-";
+        tx.debit = amt; tx.credit = 0;
+      }
+      tx.note = document.getElementById("editTxNote").value.trim() || "-";
+      tx.editedBy = currentManager ? currentManager.name : "";
+      tx.updatedAt = Date.now();
+
+      touchCustomerBaakiTimestamp(tx.customerId);
+      closeEditTxModal();
+      renderCustomerDetails();
+      pushToGoogleSheets();
+      alert("✅ বিলৰ এণ্ট্ৰি সফলতাৰে আপডেট হ'ল!");
+    }
+
+    function deleteTransactionById(txId) {
+      const tx = appData.transactions.find(t => t.id === txId);
+      if (!tx) return;
+      const amtText = tx.debit ? `বাকী ₹${tx.debit}` : `জমা ₹${tx.credit}`;
+      if (!confirm(`আপুনি নিশ্চিতনে ${tx.date}-ৰ (${tx.item}, ${amtText}) এণ্ট্ৰিটো Recycle Bin-লৈ পঠিয়াব?`)) return;
+
+      const custId = tx.customerId;
+      const now = Date.now();
+      tx.deletedAt = new Date().toLocaleString('en-GB');
+      tx.deletedBy = currentManager ? currentManager.name : "";
+      tx.updatedAt = now;
+      appData.trash.unshift(tx); // Unlimited trash — never auto-deleted
+      appData.deletedTxMap[txId] = now;
+      appData.transactions = appData.transactions.filter(t => t.id !== txId);
+
+      touchCustomerBaakiTimestamp(custId);
+      renderCustomerDetails();
+      pushToGoogleSheets();
+    }
+
+    function deleteEditingTransaction() {
+      const txId = document.getElementById("editTxId").value;
+      closeEditTxModal();
+      deleteTransactionById(txId);
+    }
+
+    function emptyTrashManually() {
+      if (!currentManager || !currentManager.isAdmin) return;
+      if (!appData.trash.length) return;
+      if (!confirm("Recycle Bin-ত থকা সকলো ডিলিট হোৱা এণ্ট্ৰি চিৰদিনৰ বাবে মচি পেলাবনে?")) return;
+      const now = Date.now();
+      appData.trash.forEach(t => { appData.purgedTrashMap[t.id] = now; });
+      appData.trash = [];
+      appData.lastModified = now;
+      renderTrashBin();
+      pushToGoogleSheets();
+    }
+
+    function renderSecurityLog() {
+      const box = document.getElementById("securityLogContainer");
+      if (!box) return;
+      if (!securityLogCache || securityLogCache.length === 0) {
+        box.innerHTML = `<div style="color:#888;">কোনো ৰেকৰ্ড নাই</div>`;
+        return;
+      }
+      box.innerHTML = securityLogCache.map(l => {
+        const isWarn = l.type.includes("FAILED") || l.type.includes("BLOCKED");
+        return `<div class="sec-log-row" style="color:${isWarn ? '#c62828' : '#1b5e20'};">
+          <b>[${esc(l.type)}]</b> ${esc(l.actor)} — <span style="color:#555;">${esc(l.detail)}</span><br>
+          <small style="color:#777;">🕒 ${esc(l.time)}</small>
+        </div>`;
+      }).join("");
+    }
+
+    function renderTrashBin() {
+      const box = document.getElementById("trashBinContainer");
+      if (!box) return;
+      if (!appData.trash || appData.trash.length === 0) {
+        box.innerHTML = `<div style="color:#888;">কোনো ডিলিট হোৱা এণ্ট্ৰি নাই</div>`;
+        return;
+      }
+      box.innerHTML = appData.trash.map(t => {
+        const c = appData.customers.find(x => x.id === t.customerId);
+        const cName = c ? c.name : "অজ্ঞাত";
+        return `<div class="sec-log-row" style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <b>${esc(cName)}</b> (${esc(t.date)})<br>
+            <small>${esc(t.item)}: ₹${t.debit || t.credit} | মচিলে: ${esc(t.deletedBy || '-')}</small>
+          </div>
+          <button class="tx-act-btn" onclick="restoreTrashItem('${esc(t.id)}')" style="font-weight:700; color:#1b5e20;">↩️ Restore</button>
+        </div>`;
+      }).join("");
+    }
+
+    function restoreTrashItem(txId) {
+      const tx = appData.trash.find(t => t.id === txId);
+      if (!tx) return;
+      delete tx.deletedAt;
+      delete tx.deletedBy;
+      tx.updatedAt = Date.now();
+      delete appData.deletedTxMap[txId];
+      appData.transactions.push(tx);
+      appData.trash = appData.trash.filter(t => t.id !== txId);
+      touchCustomerBaakiTimestamp(tx.customerId);
+      renderTrashBin();
+      renderCustomerDetails();
+      pushToGoogleSheets();
+      alert("✅ এণ্ট্ৰিটো পুনৰ ঘূৰাই অনা হ'ল!");
+    }
+
+    // ========================================================
+    // ONE-TAP FULL SETTLEMENT & SMART REMINDER
+    // ========================================================
+    function quickFullSettlement() {
+      const custId = document.getElementById("custSelect").value;
+      const cust = appData.customers.find(c => c.id === custId);
+      if (!cust) return;
+      const st = getCustomerStats(custId);
+      if (st.due <= 0) { alert("এই গ্ৰাহকৰ কোনো বকেয়া বাকী নাই!"); return; }
+      if (!confirm(`'${cust.name}'-ৰ সম্পূৰ্ণ বকেয়া বাকী ₹${st.due} পৰিশোধ (জমা) হিচাপে এণ্ট্ৰি কৰিবনে?`)) return;
+
+      appData.transactions.push({
+        id: "T" + Date.now(),
+        customerId: custId,
+        date: new Date().toLocaleDateString('en-GB'),
+        time: new Date().toTimeString().slice(0, 5),
+        item: "ধন পৰিশোধ (সম্পূৰ্ণ)",
+        qty: "-",
+        note: "সম্পূৰ্ণ বাকী পৰিশোধ",
+        debit: 0,
+        credit: st.due,
+        enteredBy: currentManager ? currentManager.name : "",
+        updatedAt: Date.now(),
+        proofPhoto: "",
+        gpsLocation: ""
+      });
+
+      touchCustomerBaakiTimestamp(custId);
+      renderCustomerDetails();
+      pushToGoogleSheets();
+      alert(`✅ ₹${st.due} সম্পূৰ্ণ পৰিশোধ সংৰক্ষিত হ'ল!`);
+    }
+
+    function sendAiSmartReminder() {
+      const custId = document.getElementById("custSelect").value;
+      const cust = appData.customers.find(c => c.id === custId);
+      if (!cust) return;
+      const st = getCustomerStats(custId);
+      if (st.due <= 0) { alert("কোনো বাকী নাই!"); return; }
+
+      let msg = (st.due >= (cust.creditLimit || appData.settings.defaultCreditLimit || 3000) || st.daysSince >= 30)
+        ? `নমস্কাৰ ${cust.name} ডাঙৰীয়া, চেতিয়া গাঁও থলুৱা বজাৰৰ তৰফৰ পৰা জনোৱা হৈছে যে আপোনাৰ মুঠ বকেয়া বাকী ₹${st.due} (মুঠ বাকী ₹${st.debit} - ধন পৰিশোধ ₹${st.credit}) হৈছে। অনুগ্ৰহ কৰি শীঘ্ৰেই পৰিশোধ কৰি সহায় কৰিব। UPI ID: ${businessUpiId} | যোগাযোগ: 9613777612`
+        : `নমস্কাৰ ${cust.name} ডাঙৰীয়া, চেতিয়া গাঁও থলুৱা বজাৰৰ সৈতে জড়িত থকাৰ বাবে ধন্যবাদ। আপোনাৰ বৰ্তমান বকেয়া বাকী ₹${st.due} (মুঠ ₹${st.debit} - জমা ₹${st.credit})। সুবিধা অনুযায়ী পৰিশোধ কৰিব। UPI ID: ${businessUpiId}`;
+      window.open(`https://wa.me/91${cust.phone}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // ========================================================
+    // AI VOICE ENTRY (ASSAMESE & ENGLISH + MANAGER REVIEW)
+    // ========================================================
+    function startVoiceRecognition(langCode) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) { alert("Google Chrome ব্যৱহাৰ কৰক।"); return; }
       const recognition = new SpeechRecognition();
       recognition.lang = langCode;
       recognition.continuous = false;
       recognition.interimResults = false;
-
-      document.getElementById("cloudSyncText").textContent = `🎙️ কথা কওক (${langCode === 'as-IN' ? 'অসমীয়াত' : 'English'})...`;
+      updateSyncBadge(`🎙️ কথা কওক (${langCode === 'as-IN' ? 'অসমীয়াত' : 'English'})...`, true);
 
       recognition.onresult = function(event) {
         const spokenText = event.results[0][0].transcript;
-        document.getElementById("cloudSyncText").textContent = `🎙️ গ্ৰহণ কৰা বাক্য: "${spokenText}"`;
+        updateSyncBadge(`🎙️ গ্ৰহণ: "${spokenText}"`, false);
         parseSpokenVoiceText(spokenText);
       };
-
-      recognition.onerror = function() {
-        document.getElementById("cloudSyncText").textContent = "❌ মাত ধৰিব পৰা নগ'ল, পুনৰ চেষ্টা কৰক।";
-      };
-
+      recognition.onerror = function() { updateSyncBadge("❌ মাত ধৰিব পৰা নগ'ল।", true); };
       recognition.start();
     }
 
     function parseSpokenVoiceText(rawText) {
       let text = rawText.toLowerCase();
-      let matchedCustId = appData.customers[0].id;
+      let matchedCustId = appData.customers.length ? appData.customers[0].id : "";
       let matchedType = "debit";
       let matchedItem = "থলুৱা গাহৰি মাংস";
       let matchedQty = 1.0;
-      let matchedRate = 300;
-      let matchedAmount = 300;
-      let matchedNote = rawText;
+      let matchedRate = appData.settings.porkRate || 300;
+      let matchedAmount = matchedRate;
 
       appData.customers.forEach(c => {
-        let cName = c.name.toLowerCase();
-        if (text.includes(cName) || text.includes(cName.split(" ")[0])) {
-          matchedCustId = c.id;
-        }
+        let cName = (c.name || "").toLowerCase();
+        if (cName && (text.includes(cName) || text.includes(cName.split(" ")[0]))) matchedCustId = c.id;
       });
-
-      if (text.includes("জমা") || text.includes("দিলে") || text.includes("পৰিশোধ") || text.includes("paid") || text.includes("credit")) {
-        matchedType = "credit";
-      }
-
-      if (text.includes("মাছ") || text.includes("fish")) {
-        matchedItem = "সতেজ মাছ";
-        matchedRate = 250;
-      }
+      if (text.includes("জমা") || text.includes("দিলে") || text.includes("পৰিশোধ") || text.includes("paid") || text.includes("credit")) matchedType = "credit";
+      if (text.includes("মাছ") || text.includes("fish")) { matchedItem = "সতেজ মাছ"; matchedRate = appData.settings.fishRate || 250; }
 
       if (text.includes("আধা কেজি") || text.includes("half kg") || text.includes("0.5")) matchedQty = 0.5;
       else if (text.includes("দেৰ কেজি") || text.includes("দেড় কেজি") || text.includes("1.5")) matchedQty = 1.5;
-      else if (text.includes("দুগুণ") || text.includes("দুই কেজি") || text.includes("2 kg") || text.includes("2 কেজি")) matchedQty = 2.0;
+      else if (text.includes("দুই কেজি") || text.includes("2 kg") || text.includes("2 কেজি")) matchedQty = 2.0;
       else if (text.includes("আঢ়ৈ কেজি") || text.includes("2.5")) matchedQty = 2.5;
       else if (text.includes("তিনি কেজি") || text.includes("3 kg") || text.includes("3 কেজি")) matchedQty = 3.0;
       else if (text.includes("পাঁচ কেজি") || text.includes("5 kg") || text.includes("5 কেজি")) matchedQty = 5.0;
@@ -909,22 +2034,18 @@
         let numMatch = text.match(/\d+(\.\d+)?/);
         if (numMatch) {
           let parsedNum = parseFloat(numMatch[0]);
-          if (parsedNum <= 20) matchedQty = parsedNum;
-          else if (matchedType === "credit") matchedAmount = parsedNum;
+          if (matchedType === "credit" || parsedNum > 20) matchedAmount = parsedNum;
+          else matchedQty = parsedNum;
         }
       }
-
-      if (matchedType === "debit") {
-        matchedAmount = Math.round(matchedQty * matchedRate);
-      }
+      if (matchedType === "debit") matchedAmount = Math.round(matchedQty * matchedRate);
 
       document.getElementById("voiceRecognizedRawText").textContent = `"${rawText}"`;
-      
       const vCustSel = document.getElementById("vParsedCustSelect");
       vCustSel.innerHTML = "";
       appData.customers.forEach(c => {
         let opt = document.createElement("option");
-        opt.value = c.id; opt.textContent = `${c.name} (${c.address})`;
+        opt.value = c.id; opt.textContent = `${c.name} (${c.address || "-"})`;
         if (c.id === matchedCustId) opt.selected = true;
         vCustSel.appendChild(opt);
       });
@@ -934,7 +2055,7 @@
       document.getElementById("vParsedQty").value = matchedQty;
       document.getElementById("vParsedRate").value = matchedRate;
       document.getElementById("vParsedAmount").value = matchedAmount;
-      document.getElementById("vParsedNote").value = matchedNote;
+      document.getElementById("vParsedNote").value = rawText;
 
       updateVoiceReviewCalc();
       document.getElementById("voiceReviewModal").classList.remove("hidden");
@@ -942,9 +2063,8 @@
 
     function updateVoiceReviewCalc() {
       let type = document.getElementById("vParsedTxType").value;
-      if (type === "credit") {
-        document.getElementById("vItemRow").style.display = "none";
-      } else {
+      if (type === "credit") { document.getElementById("vItemRow").style.display = "none"; }
+      else {
         document.getElementById("vItemRow").style.display = "block";
         let q = parseFloat(document.getElementById("vParsedQty").value) || 0;
         let r = parseFloat(document.getElementById("vParsedRate").value) || 0;
@@ -952,9 +2072,7 @@
       }
     }
 
-    function closeVoiceReviewModal() {
-      document.getElementById("voiceReviewModal").classList.add("hidden");
-    }
+    function closeVoiceReviewModal() { document.getElementById("voiceReviewModal").classList.add("hidden"); }
 
     function confirmVoiceTransaction() {
       const custId = document.getElementById("vParsedCustSelect").value;
@@ -963,133 +2081,297 @@
       const item = document.getElementById("vParsedItem").value;
       const qty = parseFloat(document.getElementById("vParsedQty").value) || 0;
       const note = document.getElementById("vParsedNote").value;
-
       if (amt <= 0) { alert("সঠিক টকাৰ পৰিমাণ দিয়ক!"); return; }
-
-      const d = new Date().toLocaleDateString('en-GB');
 
       appData.transactions.push({
         id: "T" + Date.now(),
         customerId: custId,
-        date: d,
+        date: new Date().toLocaleDateString('en-GB'),
+        time: new Date().toTimeString().slice(0, 5),
         item: (type === 'credit') ? "ধন পৰিশোধ (জমা)" : item,
         qty: (type === 'credit') ? "-" : `${qty} কেজি`,
         note: `🎙️ ${note}`,
         debit: (type === 'credit') ? 0 : amt,
         credit: (type === 'credit') ? amt : 0,
+        enteredBy: currentManager ? currentManager.name : "",
+        updatedAt: Date.now(),
         proofPhoto: "",
         gpsLocation: ""
       });
 
+      touchCustomerBaakiTimestamp(custId);
       renderCustomerDetails();
       pushToGoogleSheets();
       closeVoiceReviewModal();
       alert("✅ ভইচ এন্ট্ৰি সংৰক্ষিত হ'ল!");
     }
 
+    // ========================================================
+    // SETTINGS, RATES, EXCEL CSV, JSON BACKUP & RESTORE
+    // ========================================================
+    function openSuperSettingsModal() {
+      if (!currentManager || !currentManager.isAdmin) return;
+      renderDeviceLockUI();
+      renderSecurityLog();
+      renderTrashBin();
+      document.getElementById("businessUpiInput").value = businessUpiId;
+      document.getElementById("setPorkRate").value = appData.settings.porkRate || 300;
+      document.getElementById("setPorkCost").value = appData.settings.porkCost || 240;
+      document.getElementById("setFishRate").value = appData.settings.fishRate || 250;
+      document.getElementById("setFishCost").value = appData.settings.fishCost || 190;
+      document.getElementById("setDefaultCreditLimit").value = appData.settings.defaultCreditLimit || 3000;
+      document.getElementById("superSettingsModal").classList.remove("hidden");
+    }
+    function closeSuperSettingsModal() { document.getElementById("superSettingsModal").classList.add("hidden"); }
+
+    function saveBusinessUpiId() {
+      const val = document.getElementById("businessUpiInput").value.trim();
+      if (!val || !val.includes("@")) { alert("সঠিক UPI ID দিয়ক!"); return; }
+      businessUpiId = val;
+      appData.settings.upiId = val;
+      localStorage.setItem("cg_bajar_business_upi", businessUpiId);
+      appData.lastModified = Date.now();
+      renderCustomerDetails();
+      pushToGoogleSheets();
+      alert("✅ ব্যৱসায়িক UPI ID সংৰক্ষণ হ'ল!");
+    }
+
+    function saveDefaultRates() {
+      appData.settings.porkRate = parseFloat(document.getElementById("setPorkRate").value) || 300;
+      appData.settings.porkCost = parseFloat(document.getElementById("setPorkCost").value) || 240;
+      appData.settings.fishRate = parseFloat(document.getElementById("setFishRate").value) || 250;
+      appData.settings.fishCost = parseFloat(document.getElementById("setFishCost").value) || 190;
+      appData.settings.defaultCreditLimit = parseFloat(document.getElementById("setDefaultCreditLimit").value) || 3000;
+      appData.lastModified = Date.now();
+      updateDefaultRate();
+      renderBusinessIntelligence();
+      renderCustomerDetails();
+      pushToGoogleSheets();
+      alert("✅ দৰ ও ক্ৰেডিট লিমিট সংৰক্ষিত হ'ল!");
+    }
+
+    function applyThankYouMsg() {
+      const el = document.getElementById("recThankYouText");
+      if (el) el.textContent = customThankYouMsg;
+    }
+
+    function editBillThankYou() {
+      const updated = prompt("বিলৰ তলৰ বাৰ্তা সম্পাদনা কৰক:", customThankYouMsg);
+      if (updated && updated.trim()) {
+        customThankYouMsg = updated.trim();
+        localStorage.setItem("cg_bajar_thankyou_msg", customThankYouMsg);
+        applyThankYouMsg();
+      }
+    }
+
+    function exportEncryptedBackup() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+      const a = document.createElement("a");
+      a.setAttribute("href", dataStr);
+      a.setAttribute("download", `Chetia_Bajar_Backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+
+    function exportExcelCsv() {
+      let csv = "\uFEFFDate,Customer,Phone,Address,Item,Qty,Baaki_Debit,Paid_Credit,Remarks,EnteredBy\n";
+      appData.transactions.forEach(t => {
+        const c = appData.customers.find(x => x.id === t.customerId) || {};
+        const row = [t.date, c.name || "", c.phone || "", c.address || "", t.item || "", t.qty || "", t.debit || 0, t.credit || 0, t.note || "", t.enteredBy || ""];
+        csv += row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(",") + "\n";
+      });
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Chetia_Bajar_Ledger_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+
+    function importBackupFile(event) {
+      if (!currentManager || !currentManager.isAdmin) return;
+      const file = event.target.files[0]; if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (!parsed.customers || !parsed.transactions) throw new Error("Invalid");
+          if (!confirm(`এই বেকআপ ফাইলত ${parsed.customers.length} জন গ্ৰাহক আৰু ${parsed.transactions.length} টা এণ্ট্ৰি আছে। Restore কৰিবনে?`)) return;
+          hydrateAppData(parsed);
+          appData.lastModified = Date.now();
+          refreshCustomerDropdown();
+          pushToGoogleSheets(true);
+          closeSuperSettingsModal();
+          alert("✅ বেকআপ সফলতাৰে Restore হ'ল!");
+        } catch (err) { alert("❌ ভুল JSON ফাইল!"); }
+      };
+      reader.readAsText(file);
+    }
+
+    // ========================================================
+    // RENDER BILL (WITH PERIOD FILTER & NON-DESTRUCTIVE OPENING BAAKI)
+    // ========================================================
     function updateReceiptDynamicQr(dueAmt, custName) {
       const qrEl = document.getElementById("receiptDynamicQr");
       if (!qrEl) return;
       qrEl.innerHTML = "";
-
       document.getElementById("recQrAmt").textContent = dueAmt;
 
       if (dueAmt <= 0) {
-        qrEl.innerHTML = "<div style='font-size:11px; color:#2e7d32; font-weight:bold; padding:15px 5px;'>পৰিশোধিত<br>(No Due)</div>";
+        qrEl.innerHTML = "<div style='font-size:12px; color:#2e7d32; font-weight:800; padding:14px 5px;'>পৰিশোধিত<br>(No Due)</div>";
         return;
       }
-
       const upiUrl = `upi://pay?pa=${encodeURIComponent(businessUpiId)}&pn=${encodeURIComponent("Chetia Gaon Tholuwa Bazar")}&am=${dueAmt}&cu=INR&tn=${encodeURIComponent("Payment - " + custName)}`;
-
-      new QRCode(qrEl, {
-        text: upiUrl,
-        width: 82,
-        height: 82,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.M
-      });
+      new QRCode(qrEl, { text: upiUrl, width: 84, height: 84, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
     }
 
-    function printThermalReceipt() {
+    function refreshCustomerDropdown(selectedId = null) {
+      const sel = document.getElementById("custSelect");
+      if (!sel) return;
+      sel.innerHTML = "";
+      appData.customers.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = `${c.name} (${c.address || "-"})`;
+        if (selectedId && c.id === selectedId) opt.selected = true;
+        sel.appendChild(opt);
+      });
+      renderCustomerDetails();
+    }
+
+    function renderCustomerDetails() {
       const custId = document.getElementById("custSelect").value;
       const cust = appData.customers.find(c => c.id === custId);
       if (!cust) return;
 
-      let debit = 0, credit = 0;
-      let txList = appData.transactions.filter(t => t.customerId === custId);
-      let rowsHtml = "";
+      document.getElementById("dispName").textContent = cust.name;
+      document.getElementById("dispAddress").textContent = cust.address || "-";
+      document.getElementById("dispPhone").textContent = cust.phone || "-";
+      document.getElementById("custProfileImg").src = cust.photo || "./logo.png";
 
-      txList.forEach(t => {
-        debit += t.debit; credit += t.credit;
-        rowsHtml += `
-          <tr>
-            <td style="padding:2px 0;">${t.date}</td>
-            <td style="padding:2px 0;">${t.item}</td>
-            <td style="text-align:right; padding:2px 0;">${t.debit ? '+'+t.debit : '-'+t.credit}</td>
-          </tr>
-        `;
+      document.getElementById("recName").textContent = cust.name;
+      document.getElementById("recAddress").textContent = cust.address || "-";
+      document.getElementById("recPhone").textContent = cust.phone || "-";
+      document.getElementById("recCustPic").src = cust.photo || "./logo.png";
+      document.getElementById("recIssuedBy").textContent = currentManager ? currentManager.name : "চেতিয়া গাঁও থলুৱা বজাৰ";
+      document.getElementById("recGeneratedTime").textContent = new Date().toLocaleDateString('en-GB');
+
+      // Period filter (non-destructive view only)
+      const period = document.getElementById("billPeriodFilter") ? document.getElementById("billPeriodFilter").value : "all";
+      const now = new Date();
+      let cutoff = null;
+      if (period === "this_month") cutoff = new Date(now.getFullYear(), now.getMonth(), 1);
+      else if (period === "last_30") cutoff = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+      let allDebit = 0, allCredit = 0;
+      let prevNet = 0;
+      const shownTxs = [];
+
+      appData.transactions.filter(t => t.customerId === custId).forEach(t => {
+        const d = Number(t.debit) || 0;
+        const c = Number(t.credit) || 0;
+        allDebit += d;
+        allCredit += c;
+        const dt = parseDDMMYYYY(t.date);
+        if (cutoff && dt && dt < cutoff) {
+          prevNet += (d - c);
+        } else {
+          shownTxs.push(t);
+        }
       });
-      const due = debit - credit;
 
-      const printContainer = document.getElementById("thermalPrintArea");
-      printContainer.innerHTML = `
-        <div style="text-align:center; border-bottom:1px dashed #000; padding-bottom:4px;">
-          <h3 style="margin:0; font-size:14px;">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
-          <p style="margin:2px 0; font-size:10px;">"পথাৰো আমাৰ, বজাৰো আমাৰ"</p>
-          <p style="margin:1px 0; font-size:10px;">যোগাযোগ: 9613777612</p>
-        </div>
-        <div style="font-size:10px; margin:4px 0; border-bottom:1px dashed #000; padding-bottom:4px;">
-          গ্ৰাহক: ${cust.name}<br>
-          ঠিকনা: ${cust.address} | 📞 ${cust.phone}<br>
-          তাৰিখ: ${new Date().toLocaleDateString('en-GB')}
-        </div>
-        <table style="width:100%; font-size:10px; border-collapse:collapse;">
-          <thead>
-            <tr style="border-bottom:1px solid #000;">
-              <th style="text-align:left;">তাৰিখ</th>
-              <th style="text-align:left;">সামগ্ৰী</th>
-              <th style="text-align:right;">টকা</th>
-            </tr>
-          </thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
-        <div style="border-top:1px dashed #000; margin-top:4px; padding-top:4px; font-size:12px; font-weight:bold; display:flex; justify-content:space-between;">
-          <span>মুঠ বকেয়া বাকী:</span>
-          <span>₹${due}</span>
-        </div>
-        <div style="text-align:center; margin-top:8px; font-size:10px;">
-          UPI ID: ${businessUpiId}<br>
-          🙏 আন্তৰিক ধন্যবাদ! পুনৰ আহিব।
-        </div>
-      `;
+      const tbody = document.getElementById("recTableBody");
+      tbody.innerHTML = "";
 
-      printContainer.classList.remove("hidden");
-      window.print();
-      setTimeout(() => { printContainer.classList.add("hidden"); }, 1000);
+      let shownDebit = 0, shownCredit = 0;
+      if (cutoff && prevNet !== 0) {
+        if (prevNet > 0) shownDebit += prevNet;
+        else shownCredit += Math.abs(prevNet);
+        tbody.innerHTML += `<tr class="opening-row">
+          <td style="text-align:center;">পূৰ্বৰ</td>
+          <td><b>পূৰ্বৰ জিম্মাত থকা বাকী</b></td>
+          <td style="text-align:center;">-</td>
+          <td style="color:#d32f2f; text-align:right;">${prevNet > 0 ? '₹'+prevNet : '-'}</td>
+          <td style="color:#1b5e20; text-align:right;">${prevNet < 0 ? '₹'+Math.abs(prevNet) : '-'}</td>
+          <td style="font-size:0.76rem;">আগৰ হিচাপ অটুট আছে</td>
+          <td class="no-export" data-html2canvas-ignore="true" style="text-align:center; color:#888;">-</td>
+        </tr>`;
+      }
+
+      shownTxs.forEach(t => {
+        const d = Number(t.debit) || 0;
+        const c = Number(t.credit) || 0;
+        shownDebit += d;
+        shownCredit += c;
+        const iconHtml = t.proofPhoto ? `<span class="proof-icon-btn" onclick="viewProofPhoto('${esc(t.id)}')" title="ফটো চাওক">📷</span> ` : "";
+        const byInfo = t.editedBy ? ` <small style="color:#888;" class="no-export" data-html2canvas-ignore="true">[✏️${esc(t.editedBy.split(' ')[0])}]</small>` : "";
+
+        tbody.innerHTML += `<tr>
+          <td style="text-align:center;">${esc(t.date)}</td>
+          <td><b>${esc(t.item)}</b></td>
+          <td style="text-align:center;">${esc(t.qty || '-')}</td>
+          <td style="color:#d32f2f; text-align:right;">${d ? '₹'+d : '-'}</td>
+          <td style="color:#1b5e20; text-align:right;">${c ? '₹'+c : '-'}</td>
+          <td style="font-size:0.78rem;">${iconHtml}${esc(t.note || '-')}${byInfo}</td>
+          <td class="no-export" data-html2canvas-ignore="true" style="text-align:center; white-space:nowrap;">
+            <button class="tx-act-btn" onclick="openEditTxModal('${esc(t.id)}')" title="সম্পাদনা">✏️</button>
+            <button class="tx-act-btn tx-act-del" onclick="deleteTransactionById('${esc(t.id)}')" title="মচক">🗑️</button>
+          </td>
+        </tr>`;
+      });
+
+      const due = allDebit - allCredit;
+      const st = getCustomerStats(custId);
+      const limit = cust.creditLimit || appData.settings.defaultCreditLimit || 3000;
+
+      // Risk Badge & AI Stars
+      const badge = document.getElementById("custRiskBadge");
+      if (due >= limit || (due > 0 && st.daysSince >= 30)) {
+        badge.textContent = `🔴 উচ্চ বকেয়া (${st.daysSince} দিন)`;
+        badge.style.background = "#ffebee"; badge.style.color = "#c62828";
+      } else if (due >= 1000 || (due > 0 && st.daysSince >= 15)) {
+        badge.textContent = `🟡 মধ্যম বাকী (${st.daysSince} দিন)`;
+        badge.style.background = "#fff8e1"; badge.style.color = "#e65100";
+      } else {
+        badge.textContent = "🟢 নিৰাপদ হিচাপ";
+        badge.style.background = "#e8f5e9"; badge.style.color = "#1b5e20";
+      }
+      document.getElementById("custTrustStars").textContent = "★".repeat(st.stars) + "☆".repeat(5 - st.stars);
+
+      const alertBar = document.getElementById("custCreditLimitAlert");
+      if (due >= limit) {
+        alertBar.textContent = `🚨 সতৰ্কতা: এই গ্ৰাহকৰ বাকী সীমা (₹${limit}) অতিক্ৰম কৰিছে!`;
+        alertBar.classList.remove("hidden");
+      } else {
+        alertBar.classList.add("hidden");
+      }
+
+      const dispDeb = cutoff ? shownDebit : allDebit;
+      const dispCred = cutoff ? shownCredit : allCredit;
+
+      document.getElementById("dispDue").textContent = due;
+      document.getElementById("recTotalDebit").textContent = dispDeb;
+      document.getElementById("recTotalCredit").textContent = dispCred;
+      document.getElementById("recTotalDue").textContent = due;
+      document.getElementById("recFormulaText").textContent = `মুঠ বাকী ₹${dispDeb} - ধন পৰিশোধ ₹${dispCred} = বকেয়া বাকী ₹${due}`;
+
+      const waMsg = `চেতিয়া গাঁও থলুৱা বজাৰ\nপ্ৰতি, ${cust.name}\nমুঠ বাকী (+): ₹${allDebit}\nধন পৰিশোধ (-): ₹${allCredit}\nবৰ্তমান মুঠ বকেয়া বাকী (=): ₹${due}\nUPI ID: ${businessUpiId}\nযোগাযোগ: 9613777612\nধন্যবাদ! পুনৰ আহিব।`;
+      document.getElementById("waBtn").href = `https://wa.me/91${cust.phone}?text=${encodeURIComponent(waMsg)}`;
+
+      applySignatures(cust.lastUpdated || savedStampMeta);
+      updateReceiptDynamicQr(due, cust.name);
     }
 
     function captureGuaranteedGpsPhoto(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
+      const file = event.target.files[0]; if (!file) return;
       document.getElementById("gpsLocationDisplay").innerHTML = "⏳ ফটো সংগ্ৰহ চলিছে...";
-
       let latStr = "27.4885° N", lonStr = "94.9120° E";
-
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            latStr = pos.coords.latitude.toFixed(4) + "° N";
-            lonStr = pos.coords.longitude.toFixed(4) + "° E";
-            processPhotoWithGpsStamp(file, latStr, lonStr);
-          },
-          () => { processPhotoWithGpsStamp(file, latStr, lonStr); },
+          (pos) => processPhotoWithGpsStamp(file, pos.coords.latitude.toFixed(4) + "° N", pos.coords.longitude.toFixed(4) + "° E"),
+          () => processPhotoWithGpsStamp(file, latStr, lonStr),
           { enableHighAccuracy: true, timeout: 5000 }
         );
-      } else {
-        processPhotoWithGpsStamp(file, latStr, lonStr);
-      }
+      } else processPhotoWithGpsStamp(file, latStr, lonStr);
     }
 
     function processPhotoWithGpsStamp(file, lat, lon) {
@@ -1098,20 +2380,14 @@
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement("canvas");
-          canvas.width = 240;
-          canvas.height = (img.height / img.width) * 240;
+          canvas.width = 240; canvas.height = (img.height / img.width) * 240;
           const ctx = canvas.getContext("2d");
-
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
           ctx.fillRect(0, canvas.height - 28, canvas.width, 28);
-
-          ctx.fillStyle = "#ffffff";
-          ctx.font = "bold 9px sans-serif";
-          const nowStr = new Date().toLocaleString('en-GB');
-          ctx.fillText(`📍 ${lat}, ${lon} | ${nowStr}`, 5, canvas.height - 15);
+          ctx.fillStyle = "#ffffff"; ctx.font = "bold 9px sans-serif";
+          ctx.fillText(`📍 ${lat}, ${lon} | ${new Date().toLocaleString('en-GB')}`, 5, canvas.height - 15);
           ctx.fillText(`দোকান: চেতিয়া গাঁও থলুৱা বজাৰ`, 5, canvas.height - 4);
-
           capturedPhotoBase64 = canvas.toDataURL("image/jpeg", 0.35);
           capturedGpsLocation = `${lat}, ${lon}`;
           document.getElementById("gpsLocationDisplay").innerHTML = `✅ ফটোকপি সংৰক্ষিত (${capturedGpsLocation})`;
@@ -1123,35 +2399,25 @@
 
     function viewProofPhoto(txId) {
       const tx = appData.transactions.find(t => t.id === txId);
-      if (!tx || !tx.proofPhoto) {
-        alert("এই এন্ট্ৰিৰ কোনো ফটোকপি নাই।");
-        return;
-      }
+      if (!tx || !tx.proofPhoto) { alert("এই এন্ট্ৰিৰ কোনো ফটোকপি নাই।"); return; }
       document.getElementById("proofModalImg").src = tx.proofPhoto;
       document.getElementById("proofModalMeta").innerHTML = `
-        <b>তাৰিখ:</b> ${tx.date} | <b>সময়:</b> ${tx.time || '-'}<br>
-        <b>সামগ্ৰী:</b> ${tx.item} (${tx.qty})<br>
-        <b>ৰিমাৰ্কচ:</b> ${tx.note || '-'}<br>
-        <b>অৱস্থান:</b> ${tx.gpsLocation || 'সংলগ্ন আছে'}
+        <b>তাৰিখ:</b> ${esc(tx.date)} | <b>সময়:</b> ${esc(tx.time || '-')}<br>
+        <b>সামগ্ৰী:</b> ${esc(tx.item)} (${esc(tx.qty)})<br>
+        <b>ৰিমাৰ্কচ:</b> ${esc(tx.note || '-')}<br>
+        <b>অৱস্থান:</b> ${esc(tx.gpsLocation || 'সংলগ্ন আছে')}
       `;
       document.getElementById("proofViewModal").classList.remove("hidden");
     }
-
-    function closeProofModal() {
-      document.getElementById("proofViewModal").classList.add("hidden");
-    }
+    function closeProofModal() { document.getElementById("proofViewModal").classList.add("hidden"); }
 
     function filterMarketByDate() {
       const rawDate = document.getElementById("dailyAuditDateInput").value;
       if (!rawDate) return;
-
       const parts = rawDate.split("-");
       const filterDateStr = `${parts[2]}/${parts[1]}/${parts[0]}`;
-
-      let totalDayDebit = 0;
-      let totalDayCredit = 0;
+      let totalDayDebit = 0, totalDayCredit = 0;
       const matchingTxs = appData.transactions.filter(t => t.date === filterDateStr);
-
       const auditTbody = document.getElementById("dailyAuditTableBody");
       auditTbody.innerHTML = "";
 
@@ -1159,41 +2425,32 @@
         auditTbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#888;">এই তাৰিখত (${filterDateStr}) কোনো লেনদেন নাই</td></tr>`;
       } else {
         matchingTxs.forEach(t => {
-          totalDayDebit += t.debit;
-          totalDayCredit += t.credit;
-
+          totalDayDebit += Number(t.debit) || 0;
+          totalDayCredit += Number(t.credit) || 0;
           const cust = appData.customers.find(c => c.id === t.customerId);
           const custName = cust ? cust.name : "অজ্ঞাত";
-
-          let iconHtml = "";
-          if (t.proofPhoto) {
-            iconHtml = `<span class="proof-icon-btn" onclick="viewProofPhoto('${t.id}')" title="ফটো চাওক">📷</span> `;
-          }
-
+          const iconHtml = t.proofPhoto ? `<span class="proof-icon-btn" onclick="viewProofPhoto('${esc(t.id)}')" title="ফটো চাওক">📷</span> ` : "";
           auditTbody.innerHTML += `<tr>
-            <td><b>${custName}</b></td>
-            <td>${t.item} <small>(${t.qty || '-'})</small></td>
-            <td style="color:#d32f2f; font-weight:bold; text-align:right;">${t.debit ? '₹'+t.debit : '-'}</td>
-            <td style="color:#1b5e20; font-weight:bold; text-align:right;">${t.credit ? '₹'+t.credit : '-'}</td>
-            <td style="font-size:0.72rem;">${iconHtml}${t.note || '-'}</td>
+            <td><b>${esc(custName)}</b></td>
+            <td>${esc(t.item)} <small>(${esc(t.qty || '-')})</small></td>
+            <td style="color:#d32f2f; text-align:right;">${t.debit ? '₹'+t.debit : '-'}</td>
+            <td style="color:#1b5e20; text-align:right;">${t.credit ? '₹'+t.credit : '-'}</td>
+            <td style="font-size:0.74rem;">${iconHtml}${esc(t.note || '-')}</td>
           </tr>`;
         });
       }
-
       document.getElementById("dailyAuditDebit").textContent = totalDayDebit;
       document.getElementById("dailyAuditCredit").textContent = totalDayCredit;
     }
 
     function resetToTodayAudit() {
-      const now = new Date();
-      document.getElementById("dailyAuditDateInput").value = now.toISOString().slice(0, 10);
+      document.getElementById("dailyAuditDateInput").value = new Date().toISOString().slice(0, 10);
       filterMarketByDate();
     }
 
     function uploadAuthSignature(event) {
       if (!currentManager || !currentManager.isAdmin) return;
-      const file = event.target.files[0];
-      if (!file) return;
+      const file = event.target.files[0]; if (!file) return;
       const reader = new FileReader();
       reader.onload = function(e) {
         savedAuthSignature = e.target.result;
@@ -1201,59 +2458,42 @@
         localStorage.setItem("cg_bajar_auth_signature", savedAuthSignature);
         localStorage.setItem("cg_bajar_sig_stamp", savedStampMeta);
         applySignatures();
-        pushToGoogleSheets();
         alert("✅ Authorised Signatory সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
     }
 
     function uploadIssuerSignature(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+      if (!currentManager || !currentManager.isAdmin) return;
+      const file = event.target.files[0]; if (!file) return;
       const reader = new FileReader();
       reader.onload = function(e) {
         savedIssuerSignature = e.target.result;
         localStorage.setItem("cg_bajar_issuer_signature", savedIssuerSignature);
         applySignatures();
-        pushToGoogleSheets();
         alert("✅ বিল প্ৰস্তুতকৰ্তাৰ চহী সংৰক্ষিত হ'ল!");
       };
       reader.readAsDataURL(file);
     }
 
-    function applySignatures() {
+    function applySignatures(overrideTimestamp = null) {
       const authImg = document.getElementById("billAuthSigImg");
-      const stampInfo = document.getElementById("billStampInfo");
-      if (savedAuthSignature) {
-        authImg.src = savedAuthSignature;
-        authImg.classList.remove("hidden");
-        stampInfo.classList.remove("hidden");
-        document.getElementById("stampDateTime").textContent = savedStampMeta;
-      } else {
-        authImg.classList.add("hidden");
-        stampInfo.classList.add("hidden");
-      }
+      const stampTime = overrideTimestamp || savedStampMeta || new Date().toLocaleString('en-GB');
+      document.getElementById("stampDateTime").textContent = stampTime;
+      if (savedAuthSignature) { authImg.src = savedAuthSignature; authImg.classList.remove("hidden"); }
+      else authImg.classList.add("hidden");
 
       const issuerImg = document.getElementById("billIssuerSigImg");
-      if (savedIssuerSignature) {
-        issuerImg.src = savedIssuerSignature;
-        issuerImg.classList.remove("hidden");
-      } else {
-        issuerImg.classList.add("hidden");
-      }
+      if (savedIssuerSignature) { issuerImg.src = savedIssuerSignature; issuerImg.classList.remove("hidden"); }
+      else issuerImg.classList.add("hidden");
     }
 
     function uploadManagerPhoto(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+      const file = event.target.files[0]; if (!file || !currentManager) return;
       const reader = new FileReader();
       reader.onload = function(e) {
-        currentManager.photo = e.target.result;
-        if (currentManager.isAdmin) managersData.ADMIN.photo = e.target.result;
-        else managersData.OPERATOR.photo = e.target.result;
-        saveManagersAuth();
+        localStorage.setItem("cg_mgr_photo_" + currentManager.roleKey, e.target.result);
         document.getElementById("activeMgrPhoto").src = e.target.result;
-        pushToGoogleSheets();
       };
       reader.readAsDataURL(file);
     }
@@ -1261,12 +2501,13 @@
     function uploadCustomerPhoto(event) {
       const custId = document.getElementById("custSelect").value;
       const cust = appData.customers.find(c => c.id === custId);
-      if (!cust) return;
       const file = event.target.files[0];
-      if (!file) return;
+      if (!cust || !file) return;
       const reader = new FileReader();
       reader.onload = function(e) {
         cust.photo = e.target.result;
+        cust.updatedAt = Date.now();
+        appData.lastModified = Date.now();
         pushToGoogleSheets();
         document.getElementById("custProfileImg").src = e.target.result;
         document.getElementById("recCustPic").src = e.target.result;
@@ -1274,17 +2515,8 @@
       reader.readAsDataURL(file);
     }
 
-    function openSuperSettingsModal() {
-      if (!currentManager || !currentManager.isAdmin) return;
-      document.getElementById("superSettingsModal").classList.remove("hidden");
-    }
-    function closeSuperSettingsModal() {
-      document.getElementById("superSettingsModal").classList.add("hidden");
-    }
-
     function uploadBusinessLogo(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+      const file = event.target.files[0]; if (!file) return;
       const reader = new FileReader();
       reader.onload = function(e) {
         businessLogo = e.target.result;
@@ -1300,196 +2532,18 @@
       watermarkEl.classList.remove("hidden");
     }
 
-    function loadAndMergeAllLegacyData() {
-      let baseData = {
-        customers: [
-          { id: "C1", name: "জয়ন্ত দাস", phone: "9876543210", address: "চুতিমুখ", photo: "./logo.png" },
-          { id: "C2", name: "ৰূপম চেতিয়া", phone: "9123456789", address: "চেতিয়া গাঁও", photo: "./logo.png" }
-        ],
-        transactions: []
-      };
-
-      const primary = localStorage.getItem("cg_bajar_enterprise_db");
-      if (primary) {
-        try { return JSON.parse(primary); } catch(e){}
-      }
-      return baseData;
-    }
-
-    let appData = loadAndMergeAllLegacyData();
-
-    // ========================================================
-    // প্ৰকৃত গুগল ক্লাউড সংৰক্ষণ এঞ্জিন (Google Sheets Direct Push)
-    // ========================================================
-    function pushToGoogleSheets() {
-      localStorage.setItem("cg_bajar_enterprise_db", JSON.stringify(appData));
-      
-      const syncText = document.getElementById("cloudSyncText");
-      if (syncText) syncText.textContent = "⚡ Google Sheets-লৈ সংৰক্ষণ চলিছে...";
-
-      fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(appData)
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (syncText) syncText.textContent = "🟢 Google Sheets-ত লাইভ সংৰক্ষিত";
-      })
-      .catch(() => {
-        // ফেইলচেফ লোকাল সংৰক্ষণ
-        if (syncText) syncText.textContent = "🟢 স্থানীয়ভাৱে সংৰক্ষিত (অফলাইন)";
-      });
-
-      filterMarketByDate();
-    }
-
-    // কেচ-বাষ্টিংযুক্ত ডাটা সংগ্ৰহ (Always Fresh Data on PC/Mobile)
-    function pullFromGoogleSheets(isManual = false, callback = null) {
-      if (isFetchingFromSheet || !navigator.onLine) return;
-      isFetchingFromSheet = true;
-      const syncText = document.getElementById("cloudSyncText");
-      if (isManual && syncText) syncText.textContent = "⏳ Google Sheets-ৰ পৰা ছিংক চলিছে...";
-
-      const fetchUrl = GOOGLE_SCRIPT_URL + (GOOGLE_SCRIPT_URL.includes("?") ? "&" : "?") + "nocache=" + Date.now();
-
-      fetch(fetchUrl)
-      .then(res => res.json())
-      .then(data => {
-        isFetchingFromSheet = false;
-        let remoteData = typeof data === 'string' ? JSON.parse(data) : data;
-        if (remoteData && remoteData.customers && remoteData.transactions) {
-          if (remoteData.transactions.length !== appData.transactions.length || isManual) {
-            appData = remoteData;
-            localStorage.setItem("cg_bajar_enterprise_db", JSON.stringify(appData));
-            
-            if (!isCustomerViewMode) {
-              refreshCustomerDropdown(document.getElementById("custSelect").value);
-              renderCustomerDetails();
-              filterMarketByDate();
-            }
-            if (callback) callback();
-            if (syncText) syncText.textContent = `⚡ Google Sheets ছিংক সম্পন্ন (${remoteData.transactions.length}টা এন্ট্ৰি)`;
-            if (isManual) alert(`✅ Google Sheets-ৰ পৰা সকলো ডাটা কম্পিউটাৰত আহি গ'ল! মুঠ এন্ট্ৰি: ${remoteData.transactions.length}`);
-          } else {
-            if (syncText) syncText.textContent = "🟢 Google Sheets লাইভ ছিংক সক্ৰিয়";
-          }
-        }
-      })
-      .catch((err) => {
-        isFetchingFromSheet = false;
-        if (isManual) alert("Google Sheets সংযোগত সমস্যা হৈছে। অনুগ্ৰহ কৰি Apps Script-ত 'Anyone' একচেছ দিয়া হৈছেনে পৰীক্ষা কৰক।");
-      });
-    }
-
-    function startIntelligentSync() {
-      if (isCustomerViewMode) return;
-      // প্ৰতি ৩.৫ ছেকেণ্ডত অটোমেটিক পৰীক্ষা
-      setInterval(() => { pullFromGoogleSheets(false); }, 3500);
-    }
-
-    function exportEncryptedBackup() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
-      const downloadAnchor = document.createElement("a");
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `Chetia_Bajar_Backup_${new Date().toISOString().slice(0,10)}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    }
-
-    function refreshCustomerDropdown(selectedId = null) {
-      const sel = document.getElementById("custSelect");
-      if (!sel) return;
-      sel.innerHTML = "";
-      appData.customers.forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c.id;
-        opt.textContent = `${c.name} (${c.address})`;
-        if (selectedId && c.id === selectedId) opt.selected = true;
-        sel.appendChild(opt);
-      });
-      renderCustomerDetails();
-    }
-
-    function renderCustomerDetailsById(custId) {
-      const cust = appData.customers.find(c => c.id === custId);
-      if (!cust) return;
-
-      document.getElementById("recName").textContent = cust.name;
-      document.getElementById("recAddress").textContent = cust.address;
-      document.getElementById("recPhone").textContent = cust.phone;
-      document.getElementById("recCustPic").src = cust.photo || "./logo.png";
-      document.getElementById("recIssuedBy").textContent = "চেতিয়া গাঁও থলুৱা বজাৰ";
-      document.getElementById("recGeneratedTime").textContent = new Date().toLocaleDateString('en-GB');
-
-      let debit = 0, credit = 0;
-      const tbody = document.getElementById("recTableBody");
-      tbody.innerHTML = "";
-      appData.transactions.filter(t => t.customerId === custId).forEach(t => {
-        debit += t.debit; credit += t.credit;
-        
-        let iconHtml = "";
-        if (t.proofPhoto) {
-          iconHtml = `<span class="proof-icon-btn" onclick="viewProofPhoto('${t.id}')" title="ফটো চাওক">📷</span> `;
-        }
-
-        tbody.innerHTML += `<tr>
-          <td style="text-align:center;">${t.date}</td>
-          <td><b>${t.item}</b></td>
-          <td style="text-align:center;">${t.qty || '-'}</td>
-          <td style="color:#d32f2f; font-weight:bold; text-align:right;">${t.debit ? '₹'+t.debit : '-'}</td>
-          <td style="color:#1b5e20; font-weight:bold; text-align:right;">${t.credit ? '₹'+t.credit : '-'}</td>
-          <td style="font-size:0.74rem;">${iconHtml}${t.note || '-'}</td>
-        </tr>`;
-      });
-      const due = debit - credit;
-      document.getElementById("recTotalDue").textContent = due;
-      updateReceiptDynamicQr(due, cust.name);
-    }
-
-    function renderCustomerDetails() {
-      if (isCustomerViewMode) return;
-      const custId = document.getElementById("custSelect").value;
-      const cust = appData.customers.find(c => c.id === custId);
-      if (!cust) return;
-
-      document.getElementById("dispName").textContent = cust.name;
-      document.getElementById("dispAddress").textContent = cust.address;
-      document.getElementById("dispPhone").textContent = cust.phone;
-      document.getElementById("custProfileImg").src = cust.photo || "./logo.png";
-      
-      let debit = 0, credit = 0;
-      appData.transactions.filter(t => t.customerId === custId).forEach(t => {
-        debit += t.debit; credit += t.credit;
-      });
-      const due = debit - credit;
-      document.getElementById("dispDue").textContent = due;
-
-      const baseUrl = window.location.origin + window.location.pathname;
-      const directBillLink = `${baseUrl}?cid=${cust.id}`;
-      
-      const waMsg = `চেতিয়া গাঁও থলুৱা বজাৰ\nপ্ৰতি, ${cust.name}\nবৰ্তমান মুঠ বকেয়া বাকী: ₹${due}\nযোগাযোগ: 9613777612\n\nতলৰ লিংকত ক্লিক কৰি আপোনাৰ ডিজিটেল বিল চাওক:\n${directBillLink}\n\nধন্যবাদ! পুনৰ আহিব।`;
-      document.getElementById("waBtn").href = `https://wa.me/91${cust.phone}?text=${encodeURIComponent(waMsg)}`;
-
-      renderCustomerDetailsById(custId);
-    }
-
     function openEditCustomerModal() {
       if (!currentManager || !currentManager.isAdmin) return;
-      const custId = document.getElementById("custSelect").value;
-      const cust = appData.customers.find(c => c.id === custId);
+      const cust = appData.customers.find(c => c.id === document.getElementById("custSelect").value);
       if (!cust) return;
       document.getElementById("editCustId").value = cust.id;
       document.getElementById("editCustName").value = cust.name;
       document.getElementById("editCustPhone").value = cust.phone;
       document.getElementById("editCustAddress").value = cust.address;
+      document.getElementById("editCustLimit").value = cust.creditLimit || appData.settings.defaultCreditLimit || 3000;
       document.getElementById("editCustomerModal").classList.remove("hidden");
     }
-
-    function closeEditCustomerModal() {
-      document.getElementById("editCustomerModal").classList.add("hidden");
-    }
+    function closeEditCustomerModal() { document.getElementById("editCustomerModal").classList.add("hidden"); }
 
     function saveEditedCustomer() {
       const custId = document.getElementById("editCustId").value;
@@ -1498,6 +2552,9 @@
       cust.name = document.getElementById("editCustName").value.trim();
       cust.phone = document.getElementById("editCustPhone").value.trim();
       cust.address = document.getElementById("editCustAddress").value.trim();
+      cust.creditLimit = parseFloat(document.getElementById("editCustLimit").value) || appData.settings.defaultCreditLimit || 3000;
+      cust.updatedAt = Date.now();
+      appData.lastModified = Date.now();
       pushToGoogleSheets();
       closeEditCustomerModal();
       refreshCustomerDropdown(custId);
@@ -1510,8 +2567,14 @@
       const cust = appData.customers.find(c => c.id === custId);
       if (!cust) return;
       if (confirm(`আপুনি নিশ্চিতনে '${cust.name}'-ৰ সকলো হিচাপ আৰু প্ৰফাইল মচি পেলাব?`)) {
+        const now = Date.now();
+        appData.deletedCustMap[custId] = now;
+        appData.transactions.filter(t => t.customerId === custId).forEach(t => {
+          appData.deletedTxMap[t.id] = now;
+        });
         appData.customers = appData.customers.filter(c => c.id !== custId);
         appData.transactions = appData.transactions.filter(t => t.customerId !== custId);
+        appData.lastModified = now;
         pushToGoogleSheets();
         refreshCustomerDropdown();
       }
@@ -1522,7 +2585,19 @@
       const name = document.getElementById("newCustName").value.trim();
       if (!name) return;
       const id = "C" + Date.now();
-      appData.customers.push({ id, name, phone: document.getElementById("newCustPhone").value.trim(), address: document.getElementById("newCustAddress").value.trim(), photo: "./logo.png" });
+      appData.customers.push({
+        id, name,
+        phone: document.getElementById("newCustPhone").value.trim(),
+        address: document.getElementById("newCustAddress").value.trim(),
+        photo: "./logo.png",
+        creditLimit: appData.settings.defaultCreditLimit || 3000,
+        lastUpdated: new Date().toLocaleString('en-GB'),
+        updatedAt: Date.now()
+      });
+      appData.lastModified = Date.now();
+      document.getElementById("newCustName").value = "";
+      document.getElementById("newCustPhone").value = "";
+      document.getElementById("newCustAddress").value = "";
       pushToGoogleSheets();
       toggleNewCustForm();
       refreshCustomerDropdown(id);
@@ -1530,53 +2605,35 @@
 
     function stepQty(amount) {
       let input = document.getElementById("qtyNumber");
-      let currentVal = parseFloat(input.value) || 0;
-      let newVal = Math.max(0.1, currentVal + amount);
+      let newVal = Math.max(0.1, (parseFloat(input.value) || 0) + amount);
       input.value = newVal.toFixed(2).replace(/\.00$/, '').replace(/(\.[1-9])0$/, '$1');
-      calcTotalAmount();
-      updateChipActiveState();
+      calcTotalAmount(); updateChipActiveState();
     }
-
     function setQuickQty(val) {
-      let input = document.getElementById("qtyNumber");
-      input.value = val;
-      calcTotalAmount();
-      updateChipActiveState();
+      document.getElementById("qtyNumber").value = val;
+      calcTotalAmount(); updateChipActiveState();
     }
-
     function updateChipActiveState() {
       let val = parseFloat(document.getElementById("qtyNumber").value) || 0;
       document.querySelectorAll(".qty-chip").forEach(chip => {
-        let chipVal = parseFloat(chip.textContent);
-        if (chipVal === val) chip.classList.add("active");
-        else chip.classList.remove("active");
+        chip.classList.toggle("active", parseFloat(chip.textContent) === val);
       });
     }
-
     function calcTotalAmount() {
       let q = parseFloat(document.getElementById("qtyNumber").value) || 0;
       let r = parseFloat(document.getElementById("rate").value) || 0;
-      if (q > 0 && r > 0) {
-        document.getElementById("amount").value = Math.round(q * r);
-      }
+      if (q > 0 && r > 0) document.getElementById("amount").value = Math.round(q * r);
     }
-
     function updateDefaultRate() {
       let item = document.getElementById("itemType").value;
-      if (item === "থলুৱা গাহৰি মাংস") document.getElementById("rate").value = 300;
-      else if (item === "সতেজ মাছ") document.getElementById("rate").value = 250;
+      if (item === "থলুৱা গাহৰি মাংস") document.getElementById("rate").value = appData.settings.porkRate || 300;
+      else if (item === "সতেজ মাছ") document.getElementById("rate").value = appData.settings.fishRate || 250;
       calcTotalAmount();
     }
-
     function toggleTxTypeFields() {
-      let type = document.getElementById("txType").value;
-      if (type === "credit") {
-        document.getElementById("itemDetailSection").classList.add("hidden");
-        document.getElementById("creditAmountRow").classList.remove("hidden");
-      } else {
-        document.getElementById("itemDetailSection").classList.remove("hidden");
-        document.getElementById("creditAmountRow").classList.add("hidden");
-      }
+      let isCredit = document.getElementById("txType").value === "credit";
+      document.getElementById("itemDetailSection").classList.toggle("hidden", isCredit);
+      document.getElementById("creditAmountRow").classList.toggle("hidden", !isCredit);
     }
 
     function addTransaction() {
@@ -1584,10 +2641,8 @@
       if (!custId) return;
       const type = document.getElementById("txType").value;
       const d = document.getElementById("entryDateInput").value.split("-").reverse().join("/");
-      
-      let amt = 0;
-      let item = "";
-      let qtyStr = "-";
+      const tVal = document.getElementById("entryTimeInput").value || "";
+      let amt = 0, item = "", qtyStr = "-";
 
       if (type === "credit") {
         amt = parseFloat(document.getElementById("creditAmountInput").value) || 0;
@@ -1598,28 +2653,28 @@
         let q = parseFloat(document.getElementById("qtyNumber").value) || 0;
         qtyStr = (q > 0) ? `${q} কেজি` : "-";
       }
-
       if (amt <= 0) { alert("সঠিক টকাৰ পৰিমাণ দিয়ক!"); return; }
 
-      const newTx = {
+      appData.transactions.push({
         id: "T" + Date.now(),
         customerId: custId,
         date: d,
+        time: tVal,
         item: item,
         qty: qtyStr,
         note: document.getElementById("note").value.trim() || "-",
         debit: (type === 'credit') ? 0 : amt,
         credit: (type === 'credit') ? amt : 0,
+        enteredBy: currentManager ? currentManager.name : "",
+        updatedAt: Date.now(),
         proofPhoto: capturedPhotoBase64 || "",
         gpsLocation: capturedGpsLocation || ""
-      };
+      });
 
-      appData.transactions.push(newTx);
-      
-      // লোকাল স্ক্ৰীনত তৎক্ষণাত আপডেট + গুগল শ্বীটলৈ প্ৰেৰণ
+      touchCustomerBaakiTimestamp(custId);
       renderCustomerDetails();
       pushToGoogleSheets();
-      alert("✅ এন্ট্ৰি সংৰক্ষিত হ'ল আৰু Google Sheets-লৈ প্ৰেৰণ হ'ল!");
+      alert("✅ এন্ট্ৰি সংৰক্ষিত হ'ল!");
       
       document.getElementById("note").value = "";
       capturedPhotoBase64 = "";
@@ -1629,97 +2684,115 @@
       if (type === "credit") document.getElementById("creditAmountInput").value = "";
     }
 
-    function generateInvoiceImage() {
+    // HD PNG Export with SolaimanLipi Bold ready guarantee
+    async function generateInvoiceImage() {
       const receiptEl = document.getElementById("receiptArea");
       const custName = document.getElementById("recName").textContent;
-      html2canvas(receiptEl, {
-        scale: 3,
-        useCORS: true,
-        logging: false
-      }).then(canvas => {
+      if (document.fonts && document.fonts.ready) {
+        try { await document.fonts.ready; } catch (e) {}
+      }
+      receiptEl.classList.add("exporting-hd");
+      html2canvas(receiptEl, { scale: 3, useCORS: true, logging: false }).then(canvas => {
+        receiptEl.classList.remove("exporting-hd");
         let a = document.createElement("a");
         a.download = `Bill_${custName}_HD.png`;
         a.href = canvas.toDataURL("image/png");
         a.click();
+      }).catch(() => receiptEl.classList.remove("exporting-hd"));
+    }
+
+    function printThermalReceipt() {
+      const custId = document.getElementById("custSelect").value;
+      const cust = appData.customers.find(c => c.id === custId);
+      if (!cust) return;
+      let debit = 0, credit = 0, rowsHtml = "";
+      appData.transactions.filter(t => t.customerId === custId).forEach(t => {
+        debit += Number(t.debit) || 0; credit += Number(t.credit) || 0;
+        rowsHtml += `<tr><td style="padding:2px 0;">${esc(t.date)}</td><td style="padding:2px 0;">${esc(t.item)}</td><td style="text-align:right; padding:2px 0;">${t.debit ? '+'+t.debit : '-'+t.credit}</td></tr>`;
       });
+      const due = debit - credit;
+      const verifiedTime = cust.lastUpdated || savedStampMeta || new Date().toLocaleString('en-GB');
+      const printContainer = document.getElementById("thermalPrintArea");
+      printContainer.innerHTML = `
+        <div style="text-align:center; border-bottom:1px dashed #000; padding-bottom:4px;">
+          <h3 style="margin:0; font-size:14px;">চেতিয়া গাঁও থলুৱা বজাৰ</h3>
+          <p style="margin:2px 0; font-size:10px;">"পথাৰো আমাৰ, বজাৰো আমাৰ" | 📞 9613777612</p>
+        </div>
+        <div style="font-size:10px; margin:4px 0; border-bottom:1px dashed #000; padding-bottom:4px;">
+          গ্ৰাহক: ${esc(cust.name)} | ঠিকনা: ${esc(cust.address)}<br>ফোন: ${esc(cust.phone)} | তাৰিখ: ${new Date().toLocaleDateString('en-GB')}
+        </div>
+        <table style="width:100%; font-size:10px; border-collapse:collapse;">
+          <thead><tr style="border-bottom:1px solid #000;"><th style="text-align:left;">তাৰিখ</th><th style="text-align:left;">সামগ্ৰী</th><th style="text-align:right;">টকা</th></tr></thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+        <div style="border-top:1px dashed #000; margin-top:4px; padding-top:4px; font-size:10px;">
+          <div style="display:flex; justify-content:space-between;"><span>মুঠ বাকী (+):</span><span>₹${debit}</span></div>
+          <div style="display:flex; justify-content:space-between;"><span>ধন পৰিশোধ (-):</span><span>-₹${credit}</span></div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:bold; border-top:1px solid #000; margin-top:2px; padding-top:2px;">
+            <span>মুঠ বকেয়া বাকী (=):</span><span>₹${due}</span>
+          </div>
+        </div>
+        <div style="text-align:center; margin-top:8px; font-size:10px;">UPI: ${esc(businessUpiId)}<br>Verified: ${esc(verifiedTime)}<br>🙏 ধন্যবাদ!</div>`;
+      printContainer.classList.remove("hidden");
+      window.print();
+      setTimeout(() => printContainer.classList.add("hidden"), 1000);
     }
 
     function generatePassbookPdf() {
       const custId = document.getElementById("custSelect").value;
       const cust = appData.customers.find(c => c.id === custId);
       if (!cust) return;
-
       const printWin = window.open('', '', 'width=900,height=700');
-      let txRows = "";
-      let tDebit = 0, tCredit = 0;
-
+      let txRows = "", tDebit = 0, tCredit = 0;
       appData.transactions.filter(t => t.customerId === custId).forEach(t => {
-        tDebit += t.debit;
-        tCredit += t.credit;
+        tDebit += Number(t.debit) || 0; tCredit += Number(t.credit) || 0;
         let imgTag = t.proofPhoto ? `<br><img src="${t.proofPhoto}" style="max-height:60px; border-radius:4px; margin-top:2px;">` : '';
-        txRows += `
-          <tr>
-            <td style="padding:6px; border:1px solid #ccc; text-align:center;">${t.date}</td>
-            <td style="padding:6px; border:1px solid #ccc;"><b>${t.item}</b></td>
-            <td style="padding:6px; border:1px solid #ccc; text-align:center;">${t.qty || '-'}</td>
-            <td style="padding:6px; border:1px solid #ccc; color:#c62828; text-align:right;">₹${t.debit}</td>
-            <td style="padding:6px; border:1px solid #ccc; color:#1b5e20; text-align:right;">₹${t.credit}</td>
-            <td style="padding:6px; border:1px solid #ccc; font-size:11px;">${t.note || '-'} ${imgTag}</td>
-          </tr>
-        `;
+        txRows += `<tr>
+          <td style="padding:6px; border:1px solid #ccc; text-align:center;">${esc(t.date)}</td>
+          <td style="padding:6px; border:1px solid #ccc;"><b>${esc(t.item)}</b></td>
+          <td style="padding:6px; border:1px solid #ccc; text-align:center;">${esc(t.qty || '-')}</td>
+          <td style="padding:6px; border:1px solid #ccc; color:#c62828; text-align:right;">₹${t.debit}</td>
+          <td style="padding:6px; border:1px solid #ccc; color:#1b5e20; text-align:right;">₹${t.credit}</td>
+          <td style="padding:6px; border:1px solid #ccc; font-size:12px;">${esc(t.note || '-')} ${imgTag}</td>
+        </tr>`;
       });
-
       const totalDue = tDebit - tCredit;
+      const verifiedTime = cust.lastUpdated || savedStampMeta || new Date().toLocaleString('en-GB');
 
       printWin.document.write(`
-        <html>
-        <head>
-          <title>পাছবুক ষ্টেটমেন্ট - ${cust.name}</title>
-          <style>
-            body { font-family: sans-serif; padding: 20px; color: #111; }
-            table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-            th { background: #e8f5e9; color: #0d3810; padding: 8px; border: 1px solid #aaa; }
-          </style>
-        </head>
-        <body>
+        <html><head><title>পাছবুক ষ্টেটমেন্ট - ${esc(cust.name)}</title>
+        <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@700;800&display=swap" rel="stylesheet">
+        <style>
+          body{font-family:'SolaimanLipi','Noto Sans Bengali',sans-serif;font-weight:700;padding:20px;color:#111;}
+          table{width:100%;border-collapse:collapse;margin-top:15px;}
+          th{background:#e8f5e9;color:#0d3810;padding:8px;border:1px solid #aaa;font-weight:800;}
+          .sum-box{margin-top:14px;border-top:2px solid #0d3810;padding-top:8px;text-align:right;line-height:1.7;}
+        </style>
+        </head><body>
           <div style="text-align:center; border-bottom:2px solid #0d3810; padding-bottom:10px;">
             <h2 style="margin:0; color:#0d3810;">চেতিয়া গাঁও থলুৱা বজাৰ</h2>
-            <p style="margin:2px 0;">"পথাৰো আমাৰ, বজাৰো আমাৰ"</p>
-            <p style="margin:1px 0; font-size:12px;">জয় জুবিন দা | জয় আই অসম | 📞 9613777612</p>
+            <p style="margin:2px 0;">"পথাৰো আমাৰ, বজাৰো আমাৰ" | 📞 9613777612</p>
             <h3 style="margin:5px 0; color:#333;">গ্ৰাহকৰ ডিজিটেল পাছবুক ষ্টেটমেন্ট</h3>
           </div>
           <div style="margin-top:10px; display:flex; justify-content:space-between;">
-            <div><b>গ্ৰাহক:</b> ${cust.name}<br><b>ঠিকনা:</b> ${cust.address}<br><b>ফোন:</b> ${cust.phone}</div>
-            <div style="text-align:right;"><b>প্ৰস্তুতৰ তাৰিখ:</b> ${new Date().toLocaleDateString('en-GB')}<br><b>মুঠ বাকী:</b> <span style="color:#c62828; font-size:18px; font-weight:bold;">₹${totalDue}</span></div>
+            <div><b>গ্ৰাহক:</b> ${esc(cust.name)}<br><b>ঠিকনা:</b> ${esc(cust.address)}<br><b>ফোন:</b> ${esc(cust.phone)}</div>
+            <div style="text-align:right;"><b>তাৰিখ:</b> ${new Date().toLocaleDateString('en-GB')}<br><b>মুঠ বাকী:</b> <span style="color:#c62828; font-size:18px; font-weight:800;">₹${totalDue}</span></div>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>তাৰিখ</th>
-                <th>সামগ্ৰী</th>
-                <th>পৰিমাণ</th>
-                <th>বাকী (+)</th>
-                <th>জমা (-)</th>
-                <th>ৰিমাৰ্কচ</th>
-              </tr>
-            </thead>
-            <tbody>${txRows}</tbody>
-          </table>
-          <div style="margin-top:20px; text-align:center; font-style:italic; font-size:12px;">
-            🙏 ধন্যবাদ! আপোনাৰ সেৱাত চেতিয়া গাঁও থলুৱা বজাৰ।
+          <table><thead><tr><th>তাৰিখ</th><th>সামগ্ৰী</th><th>পৰিমাণ</th><th>বাকী (+)</th><th>জমা (-)</th><th>ৰিমাৰ্কচ</th></tr></thead><tbody>${txRows}</tbody></table>
+          <div class="sum-box">
+            <div>মুঠ বাকী / বিক্ৰী (+): <b>₹${tDebit}</b></div>
+            <div style="color:#1b5e20;">মুঠ ধন পৰিশোধ (-): <b>- ₹${tCredit}</b></div>
+            <div style="font-size:20px; color:#c62828; font-weight:800;">মুঠ বকেয়া বাকী (=): ₹${totalDue}</div>
+            <div style="font-size:12px; color:#0d47a1; margin-top:4px;">✔ Digitally Verified: Rantu Chetia (${esc(verifiedTime)})</div>
           </div>
-        </body>
-        </html>
-      `);
-      printWin.document.close();
-      printWin.focus();
-      setTimeout(() => { printWin.print(); }, 500);
+        </body></html>`);
+      printWin.document.close(); printWin.focus();
+      setTimeout(() => printWin.print(), 700);
     }
 
-    if (!checkUrlViewMode()) {
-      refreshCustomerDropdown();
-      checkExistingSession();
-    }
+    // Boot: Verify active server token before revealing anything
+    verifySavedSession();
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
   </script>
 </body>
